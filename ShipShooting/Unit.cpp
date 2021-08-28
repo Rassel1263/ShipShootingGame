@@ -3,7 +3,6 @@
 
 Unit::Unit()
 {
-	spr.LoadAll(L"a");
 }
 
 void Unit::Update(float deltaTime)
@@ -12,5 +11,11 @@ void Unit::Update(float deltaTime)
 
 void Unit::Render()
 {
-	spr.Render(RenderInfo{});
+}
+
+void Unit::SetAbility(float hp, float speed)
+{
+	this->ability.hp = hp;
+	this->ability.maxHp = hp;
+	this->ability.speed = speed;
 }

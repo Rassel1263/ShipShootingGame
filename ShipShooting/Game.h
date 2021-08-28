@@ -14,8 +14,8 @@ struct CUSTOMVERTEX
 class Game : public Singleton<Game>
 {
 public:
-	int screenWidth = 1920;
-	int screenHeight = 1080;
+	float screenWidth = 1920;
+	float screenHeight = 1080;
 
 	LPDIRECT3D9             pD3D = NULL; // Used to create the D3DDevice
 	LPDIRECT3DDEVICE9       pd3dDevice = NULL; // Our rendering device

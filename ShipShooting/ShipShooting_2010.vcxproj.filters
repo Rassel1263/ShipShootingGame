@@ -8,6 +8,30 @@
     <Filter Include="DXUT">
       <UniqueIdentifier>{a43c5c25-0e86-4a20-b64a-883785ff74fd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core">
+      <UniqueIdentifier>{d0b12a70-6541-469f-8574-2b36ce9c1781}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene">
+      <UniqueIdentifier>{09b2564c-6a09-4ffc-b380-b8fe7ce670f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object">
+      <UniqueIdentifier>{a00788b1-c775-43e7-a46d-10f37d85e94d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Unit">
+      <UniqueIdentifier>{6d360160-ef03-4685-becf-552295224d32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Unit\Player">
+      <UniqueIdentifier>{8602a5d7-41e9-483b-a3b1-c09c247e829c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Unit\Player\Waepon">
+      <UniqueIdentifier>{ce147fe0-b336-47b6-8f4e-d45fcb893d3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Unit\Player\Ship">
+      <UniqueIdentifier>{bcd86a5d-ffaa-4ca4-922b-4fa945cbdbf8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Effect">
+      <UniqueIdentifier>{caa83c17-7331-4291-9bd0-acb98a624e25}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="DXUT\Optional\directx.ico">
@@ -15,29 +39,137 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ShipShooting.cpp" />
-    <ClCompile Include="Game.cpp" />
-    <ClCompile Include="Texture.cpp" />
-    <ClCompile Include="Sprite.cpp" />
-    <ClCompile Include="Object.cpp" />
-    <ClCompile Include="Collider.cpp" />
-    <ClCompile Include="Scene.cpp" />
-    <ClCompile Include="GameScene.cpp" />
-    <ClCompile Include="Unit.cpp" />
-    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Camera.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Collider.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Input.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Object.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="ShipShooting.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Sprite.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Unit.cpp">
+      <Filter>Object\Unit</Filter>
+    </ClCompile>
+    <ClCompile Include="CEnemy.cpp">
+      <Filter>Object\Unit</Filter>
+    </ClCompile>
+    <ClCompile Include="GameScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Ocean.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Object\Unit\Player\Ship</Filter>
+    </ClCompile>
+    <ClCompile Include="CWeapon.cpp">
+      <Filter>Object\Unit\Player\Waepon</Filter>
+    </ClCompile>
+    <ClCompile Include="MachineGun.cpp">
+      <Filter>Object\Unit\Player\Waepon</Filter>
+    </ClCompile>
+    <ClCompile Include="CBullet.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="HomingBullet.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="MachinegunBullet.cpp">
+      <Filter>Object\Unit\Player\Waepon</Filter>
+    </ClCompile>
+    <ClCompile Include="Cannon.cpp">
+      <Filter>Object\Unit\Player\Waepon</Filter>
+    </ClCompile>
+    <ClCompile Include="Effect.cpp">
+      <Filter>Object\Effect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Header.h" />
-    <ClInclude Include="Singleton.h" />
-    <ClInclude Include="Game.h" />
-    <ClInclude Include="Texture.h" />
-    <ClInclude Include="Sprite.h" />
-    <ClInclude Include="Object.h" />
-    <ClInclude Include="Collider.h" />
-    <ClInclude Include="Scene.h" />
-    <ClInclude Include="GameScene.h" />
-    <ClInclude Include="Unit.h" />
-    <ClInclude Include="Camera.h" />
+    <ClInclude Include="Camera.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Collider.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Header.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Input.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Object.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Singleton.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprite.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Unit.h">
+      <Filter>Object\Unit</Filter>
+    </ClInclude>
+    <ClInclude Include="CEnemy.h">
+      <Filter>Object\Unit</Filter>
+    </ClInclude>
+    <ClInclude Include="GameScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Ocean.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Object\Unit\Player\Ship</Filter>
+    </ClInclude>
+    <ClInclude Include="CWeapon.h">
+      <Filter>Object\Unit\Player\Waepon</Filter>
+    </ClInclude>
+    <ClInclude Include="MachineGun.h">
+      <Filter>Object\Unit\Player\Waepon</Filter>
+    </ClInclude>
+    <ClInclude Include="CBullet.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="HomingBullet.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="MachinegunBullet.h">
+      <Filter>Object\Unit\Player\Waepon</Filter>
+    </ClInclude>
+    <ClInclude Include="Cannon.h">
+      <Filter>Object\Unit\Player\Waepon</Filter>
+    </ClInclude>
+    <ClInclude Include="Effect.h">
+      <Filter>Object\Effect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CLInclude Include="resource.h">

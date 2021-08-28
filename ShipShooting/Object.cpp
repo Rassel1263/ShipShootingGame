@@ -40,8 +40,11 @@ void ObjectManager::Collision()
 			{
 				for (auto body2 : (*it2)->bodies)
 				{
-					(*it)->OnCollision(body2);
-					(*it2)->OnCollision(body1);
+					if (IntersectCollider(body1, body2))
+					{
+						(*it)->OnCollision(body2);
+						(*it2)->OnCollision(body1);
+					}
 				}
 			}
 		}

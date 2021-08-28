@@ -1,10 +1,13 @@
 #include "Header.h"
 #include "GameScene.h"
-#include "Unit.h"
+#include "Player.h"
+#include "Ocean.h"
 
 void GameScene::Init()
 {
-	obm.AddObject(new Unit());
+	obm.AddObject(player = new Player());
+	obm.AddObject(enemy = new CEnemy());
+	obm.AddObject(new Ocean());
 }
 
 void GameScene::Update(float deltaTime)

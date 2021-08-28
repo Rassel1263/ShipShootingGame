@@ -4,6 +4,8 @@ namespace fs = std::filesystem;
 
 void Sprite::LoadAll(std::wstring filePath, float aniMaxTime, bool aniLoop)
 {
+	textures.clear();
+
 	if (fs::is_directory(filePath))
 	{
 		for (auto file : fs::recursive_directory_iterator(filePath))
@@ -47,25 +49,25 @@ void Sprite::Update(float deltaTime)
 
 void Sprite::Render(const RenderInfo& ri)
 {
-	CUSTOMVERTEX* v = nullptr;
+	CUSTOMVERTEX* pVertices = nullptr;
 
-	Game::GetInstance().pVB->Lock(0, 0, (void**)&v, 0);
+	Game::GetInstance().pVB->Lock(0, 0, (void**)&pVertices, 0);
 
-	v[0].pos = D3DXVECTOR3(0.0f, GetNowScene()->info.Width, 0.0f);
-	v[0].color = color;
-	v[0].uv = D3DXVECTOR2(0.0f, 0.0f);
+	pVertices[0].pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	pVertices[0].color = color;
+	pVertices[0].uv = D3DXVECTOR2(0.0f, 1.0f);
 
-	v[1].pos = D3DXVECTOR3(GetNowScene()->info.Width, GetNowScene()->info.Height, 0.0f);
-	v[1].color = color;
-	v[1].uv = D3DXVECTOR2(1.0f, 0.0f);
+	pVertices[1].pos = D3DXVECTOR3(0.0f, GetNowScene()->info.Height * (1.0f - heightRatio), 0.0f);
+	pVertices[1].color = color;
+	pVertices[1].uv = D3DXVECTOR2(0.0f, heightRatio);
 
-	v[2].pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	v[2].color = color;
-	v[2].uv = D3DXVECTOR2(0.0f, 1.0f);
+	pVertices[2].pos = D3DXVECTOR3(GetNowScene()->info.Width * widthRatio, 0.0f, 0.0f);
+	pVertices[2].color = color;
+	pVertices[2].uv = D3DXVECTOR2(1.0f * widthRatio, 1.0f);
 
-	v[3].pos = D3DXVECTOR3(GetNowScene()->info.Width, 0.0f, 0.0f);
-	v[3].color = color;
-	v[3].uv = D3DXVECTOR2(1.0f, 1.0f);
+	pVertices[3].pos = D3DXVECTOR3(GetNowScene()->info.Width * widthRatio, GetNowScene()->info.Height * (1.0f - heightRatio), 0.0f);
+	pVertices[3].color = color;
+	pVertices[3].uv = D3DXVECTOR2(1.0f * widthRatio, heightRatio);
 
 	Game::GetInstance().pVB->Unlock();
 

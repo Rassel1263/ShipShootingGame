@@ -21,6 +21,9 @@ public:
 	float aniTime = 0.0f;
 	float aniMaxtime = 0.1f;
 
+	float widthRatio = 1.0f;
+	float heightRatio= 0.0f;
+
 	D3DXCOLOR color = D3DCOLOR_ARGB(255, 255, 255, 255);
 
 	std::vector<const Texture*> textures;

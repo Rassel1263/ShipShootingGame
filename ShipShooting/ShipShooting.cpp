@@ -58,93 +58,87 @@ VOID Cleanup()
 }
 
 
-
-
-
-
-
 //-----------------------------------------------------------------------------
 // Name: Render()
 // Desc: Draws the scene
 //-----------------------------------------------------------------------------
 VOID Render()
 {
-    
+
 }
-
-
-
 
 //-----------------------------------------------------------------------------
 // Name: MsgProc()
 // Desc: The window's message handler
 //-----------------------------------------------------------------------------
-LRESULT WINAPI MsgProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam )
+LRESULT WINAPI MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-    switch( msg )
-    {
-        case WM_DESTROY:
-            Cleanup();
-            PostQuitMessage( 0 );
-            return 0;
-    }
+	switch (msg)
+	{
+	case WM_MOUSEMOVE:
+		Input::GetInstance().mousePos = D3DXVECTOR2(LOWORD(lParam), HIWORD(lParam));
+		break;
+	case WM_DESTROY:
+		Cleanup();
+		PostQuitMessage(0);
+		return 0;
+	}
 
-    return DefWindowProc( hWnd, msg, wParam, lParam );
+	return DefWindowProc(hWnd, msg, wParam, lParam);
 }
-
-
 
 
 //-----------------------------------------------------------------------------
 // Name: WinMain()
 // Desc: The application's entry point
 //-----------------------------------------------------------------------------
-INT WINAPI wWinMain( HINSTANCE hInst, HINSTANCE, LPWSTR, INT )
+INT WINAPI wWinMain(HINSTANCE hInst, HINSTANCE, LPWSTR, INT)
 {
-    UNREFERENCED_PARAMETER( hInst );
+	UNREFERENCED_PARAMETER(hInst);
 
-    // Register the window class
-    WNDCLASSEX wc =
-    {
-        sizeof( WNDCLASSEX ), CS_CLASSDC, MsgProc, 0L, 0L,
-        GetModuleHandle( NULL ), NULL, NULL, NULL, NULL,
-        L"D3D Tutorial", NULL
-    };
-    RegisterClassEx( &wc );
+	// Register the window class
+	WNDCLASSEX wc =
+	{
+		sizeof(WNDCLASSEX), CS_CLASSDC, MsgProc, 0L, 0L,
+		GetModuleHandle(NULL), NULL, NULL, NULL, NULL,
+		L"D3D Tutorial", NULL
+	};
+	RegisterClassEx(&wc);
 
-    // Create the application's window
-    HWND hWnd = CreateWindow( L"D3D Tutorial", L"D3D Tutorial 05: ShipShooting",
-                              WS_POPUP, 0, 0, Game::GetInstance().screenWidth, Game::GetInstance().screenHeight,
-                              NULL, NULL, wc.hInstance, NULL );
+	Game::GetInstance().Check();
+	// Create the application's window
+	HWND hWnd = CreateWindow(L"D3D Tutorial", L"D3D Tutorial 05: ShipShooting",
+		WS_POPUP, 0, 0, Game::GetInstance().screenWidth, Game::GetInstance().screenHeight,
+		NULL, NULL, wc.hInstance, NULL);
 
-    Game::GetInstance().Check();
-    // Initialize Direct3D
-    if( SUCCEEDED( Game::GetInstance().Init( hWnd ) ) )
-    {
-            // Show the window
-            ShowWindow( hWnd, SW_SHOWDEFAULT );
-            UpdateWindow( hWnd );
+	Game::GetInstance().Check();
+	// Initialize Direct3D
+	if (SUCCEEDED(Game::GetInstance().Init(hWnd)))
+	{
+		// Show the window
+		ShowWindow(hWnd, SW_SHOWDEFAULT);
+		UpdateWindow(hWnd);
 
-            // Enter the message loop
-            MSG msg;
-            ZeroMemory( &msg, sizeof( msg ) );
-            while( msg.message != WM_QUIT )
-            {
-                if( PeekMessage( &msg, NULL, 0U, 0U, PM_REMOVE ) )
-                {
-                    TranslateMessage( &msg );
-                    DispatchMessage( &msg );
-                }
-                else
-                {
-                    Game::GetInstance().Update(1 / 60.0f);
-                    Game::GetInstance().Render();
-                }
-            }
-    }
+		// Enter the message loop
+		MSG msg;
+		ZeroMemory(&msg, sizeof(msg));
+		while (msg.message != WM_QUIT)
+		{
+			if (PeekMessage(&msg, NULL, 0U, 0U, PM_REMOVE))
+			{
+				TranslateMessage(&msg);
+				DispatchMessage(&msg);
+			}
+			else
+			{
+				Game::GetInstance().Update(1 / 60.0f);
+				Game::GetInstance().Render();
+			}
+		}
+	}
 
-    UnregisterClass( L"D3D Tutorial", wc.hInstance );
-    return 0;
+	UnregisterClass(L"D3D Tutorial", wc.hInstance);
+	return 0;
 }
 
 
