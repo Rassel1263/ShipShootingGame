@@ -16,14 +16,37 @@ Player::Player()
 
 void Player::Update(float deltaTime)
 {
+
+	if(pos.x > -300 && pos.x < 300)
+		Camera::GetInstance().destCameraPos.x = pos.x;
+
+	std::cout << pos.x << "    " << std::endl;
+
 	Move(deltaTime);
 	SetWeaponPos();
 
 	if (Input::GetInstance().KeyPress('Q'))
 		machineGun->Shoot();
 
-	if (Input::GetInstance().KeyPress('W'))
+	if (Input::GetInstance().KeyDown('W'))
 		cannon->Shoot();
+
+	if (Input::GetInstance().KeyDown(VK_TAB))
+	{
+		static bool toggle = false;
+
+		toggle = !toggle;
+
+		if (toggle)
+		{
+			Camera::GetInstance().divideProj = 0.9f;
+		}
+		else
+			Camera::GetInstance().divideProj = 1.5f;
+
+
+		Camera::GetInstance().Init();
+	}
 
 	if (Input::GetInstance().KeyDown(VK_SPACE))
 		nowScene->obm.AddObject(new HomingBullet(pos));

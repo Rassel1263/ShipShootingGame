@@ -1,6 +1,15 @@
 #include "Header.h"
 #include "Texture.h"
 
+TextureManager::~TextureManager()
+{
+    for (auto& tex : textures)
+    {
+        SAFE_RELEASE(tex.second->src);
+        SAFE_DELETE(tex.second);
+    }
+}
+
 const Texture* TextureManager::GetTexture(std::wstring filePath)
 {
     auto tf = textures.find(filePath);

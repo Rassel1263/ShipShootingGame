@@ -3,7 +3,6 @@
 
 void Camera::Init()
 {
-	divideProj = 1.5f;
 
 	D3DXVECTOR3 vEyePt = { 0.0f, 0.0f, -20.0f };
 	D3DXVECTOR3 vLookatPt = { 0.0f, 0.0f, 0.0f };

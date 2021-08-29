@@ -18,5 +18,6 @@ public:
 	virtual void Render() override;
 	virtual bool Move(float deltaTime) = 0;
 	void SetAbility(float hp, float speed);
+	D3DXVECTOR2 CheckPos();
 };
 

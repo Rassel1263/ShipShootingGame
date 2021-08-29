@@ -1,4 +1,5 @@
 #pragma once
+#include "Effect.h"
 
 class Unit;
 class CWeapon : public Object

@@ -10,7 +10,7 @@ class TextureManager : public Singleton<TextureManager>
 {
 	std::map<std::wstring, Texture*> textures;
 public:
-
+	~TextureManager();
 	const Texture* GetTexture(std::wstring filePath);
 };
 

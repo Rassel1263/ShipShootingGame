@@ -19,3 +19,8 @@ void Unit::SetAbility(float hp, float speed)
 	this->ability.maxHp = hp;
 	this->ability.speed = speed;
 }
+
+D3DXVECTOR2 Unit::CheckPos()
+{
+	return D3DXVECTOR2(0, 0);
+}

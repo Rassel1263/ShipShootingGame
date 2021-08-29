@@ -87,6 +87,11 @@ HRESULT Game::Init(HWND hWnd)
 
 void Game::Update(float deltaTime)
 {
+	if (Input::GetInstance().KeyDown(VK_ESCAPE))
+	{
+		PostQuitMessage(0);
+	}
+
 	if (nextScene)
 	{
 		SAFE_DELETE(nowScene);
