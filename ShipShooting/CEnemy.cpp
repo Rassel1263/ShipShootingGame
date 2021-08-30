@@ -18,9 +18,19 @@ void CEnemy::Render()
 {
 	ri.pos = pos;
 	spr.Render(ri);
+	
+	Object::Render();
 }
 
 bool CEnemy::Move(float deltaTime)
 {
 	return false;
+}
+
+void CEnemy::SetCollider(float left, float bottom, float right, float top)
+{
+	Collider::AABB aabb;
+	aabb.min = { left, bottom };
+	aabb.max = { right, top};
+	bodies.push_back(Collider(L"enemy", this, &aabb));
 }

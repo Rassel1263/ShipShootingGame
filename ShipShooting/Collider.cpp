@@ -1,7 +1,7 @@
 #include "Header.h"
 #include "Collider.h"
 
-Collider::Collider(const std::wstring& name, Object* obj, AABB* aabb)
+Collider::Collider(const std::wstring& name, Object* obj, AABB* aabb, D3DXCOLOR color)
 {
     if (aabb)
     {
@@ -9,8 +9,10 @@ Collider::Collider(const std::wstring& name, Object* obj, AABB* aabb)
         this->aabb = *aabb;
     }
 
-    this->name = name;
+    this->tag = name;
     this->obj = obj;
+    this->color = color;
+    this->obj->bCollider = true;
 }
 
 bool IntersectCollider(Collider& col1, Collider& col2)

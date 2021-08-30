@@ -11,6 +11,8 @@ public:
 	int bulletMaxAmount = 0.0f;
 
 	float shootInterval = 0.0f;
+	float shootTimer = 0.0f;
+
 	float reloadTime = 0.0f;
 	float reloadTimer = 0.0f;
 

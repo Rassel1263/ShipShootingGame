@@ -16,9 +16,9 @@ void Camera::Init()
 
 void Camera::Update(float deltaTime)
 {
-	D3DXVec2Lerp(&cameraPos, &destCameraPos, &cameraPos, 0.1f);
-	D3DXVec2Lerp(&cameraScale, &destCameraScale, &cameraScale, 0.1f);
-	D3DXVec2Lerp(&cameraQuaken, &destCameraQuaken, &cameraQuaken, 0.1f);
+	D3DXVec2Lerp(&cameraPos, &cameraPos, &destCameraPos, 0.1f);
+	D3DXVec2Lerp(&cameraScale, &cameraScale, &destCameraScale, 0.1f);
+	D3DXVec2Lerp(&cameraQuaken, &cameraQuaken, &destCameraQuaken, 0.1f);
 
 	D3DXMatrixTranslation(&matWorld, (rand() % 2 ? 1 : -1) * cameraQuaken.x - cameraPos.x, (rand() % 2 ? 1 : -1) * cameraQuaken.y - cameraPos.y, 0.0f);
 	Game::GetInstance().pd3dDevice->SetTransform(D3DTS_WORLD, &matWorld);

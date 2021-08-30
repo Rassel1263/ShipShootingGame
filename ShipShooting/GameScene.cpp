@@ -6,8 +6,10 @@
 void GameScene::Init()
 {
 	obm.AddObject(player = new Player());
-	obm.AddObject(enemy = new CEnemy());
 	obm.AddObject(new Ocean());
+
+	enemyManager.SpawnEnemy(D3DXVECTOR2(0, 200), EnemyType::FloatingEnemy);
+	enemyManager.SpawnEnemy(D3DXVECTOR2(200, 200), EnemyType::FlyingEnemy);
 }
 
 void GameScene::Update(float deltaTime)

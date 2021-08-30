@@ -32,6 +32,12 @@
     <Filter Include="Object\Effect">
       <UniqueIdentifier>{caa83c17-7331-4291-9bd0-acb98a624e25}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Object\Bullet">
+      <UniqueIdentifier>{e2a4d9a3-476b-4531-b328-a0998450796b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Unit\Enemy">
+      <UniqueIdentifier>{889c3e3e-c452-42a6-ac20-4e117751f710}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="DXUT\Optional\directx.ico">
@@ -66,9 +72,6 @@
     <ClCompile Include="Unit.cpp">
       <Filter>Object\Unit</Filter>
     </ClCompile>
-    <ClCompile Include="CEnemy.cpp">
-      <Filter>Object\Unit</Filter>
-    </ClCompile>
     <ClCompile Include="GameScene.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
@@ -87,20 +90,38 @@
     <ClCompile Include="MachineGun.cpp">
       <Filter>Object\Unit\Player\Waepon</Filter>
     </ClCompile>
-    <ClCompile Include="CBullet.cpp">
-      <Filter>Object</Filter>
-    </ClCompile>
-    <ClCompile Include="HomingBullet.cpp">
-      <Filter>Object</Filter>
-    </ClCompile>
-    <ClCompile Include="MachinegunBullet.cpp">
-      <Filter>Object\Unit\Player\Waepon</Filter>
-    </ClCompile>
     <ClCompile Include="Cannon.cpp">
       <Filter>Object\Unit\Player\Waepon</Filter>
     </ClCompile>
     <ClCompile Include="Effect.cpp">
       <Filter>Object\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="CBullet.cpp">
+      <Filter>Object\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="HomingBullet.cpp">
+      <Filter>Object\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="Torpedo.cpp">
+      <Filter>Object\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="MachinegunBullet.cpp">
+      <Filter>Object\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="CEnemy.cpp">
+      <Filter>Object\Unit\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="FlyingEnemy.cpp">
+      <Filter>Object\Unit\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="FloatingEnemy.cpp">
+      <Filter>Object\Unit\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyManager.cpp">
+      <Filter>Object\Unit\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="MissileTurret.cpp">
+      <Filter>Object\Unit\Player\Waepon</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -134,9 +155,6 @@
     <ClInclude Include="Unit.h">
       <Filter>Object\Unit</Filter>
     </ClInclude>
-    <ClInclude Include="CEnemy.h">
-      <Filter>Object\Unit</Filter>
-    </ClInclude>
     <ClInclude Include="GameScene.h">
       <Filter>Scene</Filter>
     </ClInclude>
@@ -155,20 +173,38 @@
     <ClInclude Include="MachineGun.h">
       <Filter>Object\Unit\Player\Waepon</Filter>
     </ClInclude>
-    <ClInclude Include="CBullet.h">
-      <Filter>Object</Filter>
-    </ClInclude>
-    <ClInclude Include="HomingBullet.h">
-      <Filter>Object</Filter>
-    </ClInclude>
-    <ClInclude Include="MachinegunBullet.h">
-      <Filter>Object\Unit\Player\Waepon</Filter>
-    </ClInclude>
     <ClInclude Include="Cannon.h">
       <Filter>Object\Unit\Player\Waepon</Filter>
     </ClInclude>
     <ClInclude Include="Effect.h">
       <Filter>Object\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="CBullet.h">
+      <Filter>Object\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="HomingBullet.h">
+      <Filter>Object\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Torpedo.h">
+      <Filter>Object\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="MachinegunBullet.h">
+      <Filter>Object\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="FlyingEnemy.h">
+      <Filter>Object\Unit\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="CEnemy.h">
+      <Filter>Object\Unit\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="FloatingEnemy.h">
+      <Filter>Object\Unit\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyManager.h">
+      <Filter>Object\Unit\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="MissileTurret.h">
+      <Filter>Object\Unit\Player\Waepon</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

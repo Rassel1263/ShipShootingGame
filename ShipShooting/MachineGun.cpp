@@ -8,7 +8,7 @@ MachineGun::MachineGun(Unit* owner, D3DXVECTOR2 offset) : CWeapon(owner, offset)
 
 	bulletAmount = 30;
 	bulletMaxAmount = 30;
-	shootInterval = 0.05f;
+	shootInterval = 0.3f;
 
 	reloadTime = 5.0f;
 }
@@ -26,7 +26,7 @@ void MachineGun::Update(float deltaTime)
 		}
 	}
 
-	shootInterval -= deltaTime;
+	shootTimer += deltaTime;
 	CWeapon::Update(deltaTime);
 }
 
@@ -39,12 +39,14 @@ void MachineGun::Shoot()
 {
 	if (bulletAmount > 0)
 	{
-		if (shootInterval <= 0.0f)
+		if (shootTimer >= shootInterval)
 		{
-			shootInterval = 0.05f;
-			bulletAmount -= 2;
-			nowScene->obm.AddObject(new MachinegunBullet(D3DXVECTOR2(pos.x - 5, pos.y)));
-			nowScene->obm.AddObject(new MachinegunBullet(D3DXVECTOR2(pos.x + 5, pos.y)));
+			shootTimer = 0.0f;
+			if(!nowScene->player->skill1)
+				bulletAmount -= 2;
+
+			nowScene->obm.AddObject(new MachinegunBullet(D3DXVECTOR2(pos.x - 5, pos.y), owner->target));
+			nowScene->obm.AddObject(new MachinegunBullet(D3DXVECTOR2(pos.x + 5, pos.y), owner->target));
 		}
 	}
 

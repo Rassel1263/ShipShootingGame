@@ -62,6 +62,9 @@ HRESULT Game::Init(HWND hWnd)
 		return E_FAIL;
 	}
 
+	if (FAILED(D3DXCreateLine(pd3dDevice, &pLine)))
+		return E_FAIL;
+
 	Camera::GetInstance().Init();
 	// Turn off culling
 	pd3dDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
@@ -131,4 +134,14 @@ void Game::Render()
 void Game::ChangeScene(Scene* nextScene)
 {
 	this->nextScene = nextScene;
+}
+
+void Game::DrawLine(D3DXVECTOR2 p1, D3DXVECTOR2 p2, D3DXMATRIX matrix, D3DCOLOR color)
+{
+	pLine->SetWidth(2.0f);
+	pLine->Begin();
+	D3DXVECTOR3 v[] = { D3DXVECTOR3(p1.x, p1.y, 0.0f), D3DXVECTOR3(p2.x, p2.y, 0.0f) };
+	D3DXMATRIX retMat = matrix * Camera::GetInstance().matWorld * Camera::GetInstance().matView * Camera::GetInstance().matProj;
+	pLine->DrawTransform(v, 2, &retMat, color);
+	pLine->End();
 }

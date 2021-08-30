@@ -14,9 +14,11 @@ public:
 		D3DXVECTOR2 min = { 0, 0 }, max = { 0.0f, 0.0f };
 	} aabb;
 
-	Collider(const std::wstring& name, Object* obj, AABB* aabb);
+	Collider(const std::wstring& name, Object* obj, AABB* aabb, D3DXCOLOR color = D3DCOLOR_ARGB(255, 255, 0, 0));
 	Object* obj;
-	std::wstring name;
+	std::wstring tag;
+
+	D3DXCOLOR color = D3DCOLOR_ARGB(255, 0, 0, 0);
 };
 
 

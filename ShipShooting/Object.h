@@ -5,9 +5,12 @@ class Object
 public:
 	bool destroy = false;
 	bool bCollider = false;
+	bool bCamera = true;
 	D3DXVECTOR2 pos = { 0, 0 };
 	int layer = 0;
 	std::vector<Collider> bodies;
+
+
 
 	virtual void Update(float deltaTime);
 	virtual void Render();

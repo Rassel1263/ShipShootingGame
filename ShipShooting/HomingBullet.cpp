@@ -1,43 +1,66 @@
 #include "Header.h"
 #include "HomingBullet.h"
+#include "Effect.h"
 
-HomingBullet::HomingBullet(D3DXVECTOR2 pos) : CBullet(pos)
+HomingBullet::HomingBullet(D3DXVECTOR2 pos, Unit* target) : CBullet(pos, target)
 {
+	this->pos = pos;
+	spr.LoadAll(L"Assets/Sprites/Unit/Bullet/Missile");
+	turnSpeed = D3DXToRadian(10);
+	startTime = 0.5f;
+
+	angle = D3DXToRadian(nowScene->GetRandomNumber(0, 360));
+
+	SetCollider(-10, -10, 10, 10);
 }
 
 void HomingBullet::Update(float deltaTime)
 {
-	homingTime += deltaTime;
-	if (homingTime >= 0.05f)
+	if (startTime < 0.0f)
 	{
-		D3DXVECTOR2 distance = nowScene->enemy->pos - pos;
-		D3DXVec2Normalize(&distance, &distance);
-		angle = atan2(distance.y, distance.x);
+		startTime -= deltaTime;
+	}
+	else
+	{
+		D3DXVECTOR2 distance = target->pos - pos;
+		float targetAngle = atan2(distance.y, distance.x);
+		float diff = targetAngle - angle;
 
-		float diff = angle - rotate;
-		float turnSpeed = D3DXToRadian(3);
+		turnTime += deltaTime;
 
-		/*if (diff >= D3DX_PI)
-			diff -= D3DX_PI;
+		if (turnTime >= 0.05f)
+		{
+			if (diff > D3DX_PI)
+				diff -= D3DX_PI * 2;
+			else if (diff < -D3DX_PI)
+				diff += D3DX_PI * 2;
 
-		if (diff <= -D3DX_PI)
-			diff += D3DX_PI;*/
+			if (diff > turnSpeed)
+				angle += turnSpeed;
+			else if (diff < -turnSpeed)
+				angle -= turnSpeed;
+			else
+				angle = targetAngle;
 
-		if (diff > turnSpeed)
-			rotate += turnSpeed;
-		else if (diff < -turnSpeed)
-			rotate -= turnSpeed;
-		else
-			rotate = turnSpeed;
 
-		homingTime = 0.0f;
+			turnTime = 0.0f;
+		}
 	}
 
-	pos += D3DXVECTOR2(cosf(rotate), sinf(rotate)) * 300 * deltaTime;
-	ri.rotate = D3DXToDegree(-rotate);
+	ri.rotate = D3DXToDegree(-angle);
+
+	pos += D3DXVECTOR2(cos(angle), sinf(angle)) * 300 * deltaTime;
+
+	CBullet::Update(deltaTime);
 }
 
 void HomingBullet::Render()
 {
 	CBullet::Render();
+}
+
+
+void HomingBullet::CreateEffect()
+{
+	nowScene->obm.AddObject(new Effect(L"Missile", pos, D3DXVECTOR2(1, 1), 0.05f, 0, 1));
 }

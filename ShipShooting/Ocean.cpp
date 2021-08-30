@@ -6,7 +6,7 @@ Ocean::Ocean()
 	spr.LoadAll(L"Assets/Sprites/ocean.png");
 
 
-	layer = -1;
+	layer = -10;
 }
 
 void Ocean::Update(float deltaTime)

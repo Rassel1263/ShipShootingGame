@@ -1,5 +1,11 @@
 #pragma once
 
+enum class Team
+{
+	Ally,
+	Enemy,
+};
+
 class Unit : public Object
 {
 public:
@@ -10,8 +16,13 @@ public:
 		float speed = 0.0f;
 	} ability;
 
+	Team team;
+
 	Sprite spr;
 	RenderInfo ri;
+
+	Unit* target = NULL;
+
 	Unit();
 
 	virtual void Update(float deltaTime) override;

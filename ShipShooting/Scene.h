@@ -1,14 +1,14 @@
 #pragma once
 
-#include "CEnemy.h"
 #include "Player.h"
+#include "EnemyManager.h"
 
 class Scene
 {
 public:
 	ObjectManager obm;
 	Player* player = NULL;
-	CEnemy* enemy = NULL;
+	EnemyManager enemyManager;
 	std::random_device rd;
 	
 	virtual void Init();

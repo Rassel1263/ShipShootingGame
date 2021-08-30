@@ -20,9 +20,9 @@ public:
 	LPDIRECT3D9             pD3D = NULL; // Used to create the D3DDevice
 	LPDIRECT3DDEVICE9       pd3dDevice = NULL; // Our rendering device
 	LPDIRECT3DVERTEXBUFFER9 pVB = NULL; // Buffer to hold vertices
+	LPD3DXLINE pLine = NULL;
 
 	Scene* nextScene = NULL;
-
 
 	void Check();
 
@@ -31,5 +31,6 @@ public:
 	void Update(float deltaTime);
 	void Render();
 	void ChangeScene(Scene* nextScene);
+	void DrawLine(D3DXVECTOR2 p1, D3DXVECTOR2 p2, D3DXMATRIX matrix, D3DCOLOR color);
 };
 

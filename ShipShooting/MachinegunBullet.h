@@ -4,9 +4,11 @@
 class MachinegunBullet : public CBullet
 {
 public:
-	MachinegunBullet(D3DXVECTOR2 pos);
+	MachinegunBullet(D3DXVECTOR2 pos, Unit* target);
 
 	virtual void Update(float deltaTime) override;
 	virtual void Render() override;
+	virtual void CreateEffect() override;
+
 };
 

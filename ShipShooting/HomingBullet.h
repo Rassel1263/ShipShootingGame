@@ -4,14 +4,15 @@
 class HomingBullet : public CBullet
 {
 public:
-	float homingTime = 0.0f;
-	
-	float rotate = 0.0f;
+	float startTime = 0.0f;
+	float turnSpeed = 0.0f;
+	float turnTime = 0.0f;
 
 
-	HomingBullet(D3DXVECTOR2 pos);
+	HomingBullet(D3DXVECTOR2 pos, Unit* target);
 
 	virtual void Update(float deltaTime) override;
 	virtual void Render() override;
+	virtual void CreateEffect() override;
 };
 

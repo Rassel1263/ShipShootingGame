@@ -7,6 +7,28 @@ void Object::Update(float deltaTime)
 
 void Object::Render()
 {
+#ifdef _DEBUG
+	if (bCollider)
+	{
+		for (auto body : bodies)
+		{
+			D3DXMATRIX matrix;
+
+			if (bCamera)
+				D3DXMatrixTranslation(&matrix, pos.x, pos.y, 0.0f);
+			else
+				D3DXMatrixTranslation(&matrix, pos.x + Camera::GetInstance().cameraPos.x, pos.y + Camera::GetInstance().cameraPos.y, 0.0f);
+
+			if (body.type == Collider::TYPE::AABB)
+			{
+				Game::GetInstance().DrawLine(body.aabb.min, D3DXVECTOR2(body.aabb.max.x, body.aabb.min.y), matrix, body.color);
+				Game::GetInstance().DrawLine(D3DXVECTOR2(body.aabb.max.x, body.aabb.min.y), body.aabb.max, matrix, body.color);
+				Game::GetInstance().DrawLine(body.aabb.max, D3DXVECTOR2(body.aabb.min.x, body.aabb.max.y), matrix, body.color);
+				Game::GetInstance().DrawLine(D3DXVECTOR2(body.aabb.min.x, body.aabb.max.y), body.aabb.min, matrix, body.color);
+			}
+		}
+	}
+#endif
 }
 
 void Object::OnCollision(Collider& coll)

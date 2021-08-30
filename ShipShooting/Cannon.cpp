@@ -15,6 +15,15 @@ Cannon::Cannon(Unit* owner, D3DXVECTOR2 offset) : CWeapon(owner, offset)
 
 void Cannon::Update(float deltaTime)
 {
+	if (owner->target != NULL)
+	{
+		D3DXVECTOR2 distance = owner->target->pos - pos;
+		D3DXVec2Normalize(&distance, &distance);
+		float angle = atan2(distance.y, distance.x);
+
+		ri.rotate = D3DXToDegree(-angle) + 90;
+	}
+
 	if (bulletAmount < 5)
 	{
 		reloadTimer += deltaTime;
@@ -25,13 +34,7 @@ void Cannon::Update(float deltaTime)
 		}
 	}
 
-	shootInterval -= deltaTime;
-
-	D3DXVECTOR2 distance = nowScene->enemy->pos - pos;
-	D3DXVec2Normalize(&distance, &distance);
-	float angle = atan2(distance.y, distance.x);
-
-	ri.rotate = D3DXToDegree(-angle) + 90;
+	shootTimer += deltaTime;
 
 	CWeapon::Render();
 }
@@ -44,15 +47,16 @@ void Cannon::Render()
 void Cannon::Shoot()
 {
 	if (bulletAmount > 0)
-		if (shootInterval <= 0.0f)
+		if (shootTimer >= shootInterval)
 		{
-			shootInterval = 1.0f;
+			shootTimer = 0.0f;
 			bulletAmount--;
 			float radian = D3DXToRadian(-ri.rotate + 80);
 			D3DXVECTOR2 fixpos = pos + D3DXVECTOR2(cosf(radian), sinf(radian)) * 13;
+			D3DXVECTOR2 targetPos = (owner->target) ? owner->target->pos : D3DXVECTOR2(nowScene->GetRandomNumber(-200, 200), (100, 200));
 
 			nowScene->obm.AddObject(new Effect(L"CannonShot", fixpos, D3DXVECTOR2(1, 1), 0.05f, ri.rotate, 1, D3DXVECTOR2(0.5f, 0.0f)));
-			nowScene->obm.AddObject(new Effect(L"CannonBoom", nowScene->enemy->pos + D3DXVECTOR2(nowScene->GetRandomNumber(-10, 10), nowScene->GetRandomNumber(-100, 100)),
+			nowScene->obm.AddObject(new Effect(L"CannonBoom", targetPos + D3DXVECTOR2(nowScene->GetRandomNumber(-10, 10), nowScene->GetRandomNumber(-50, 50)),
 				D3DXVECTOR2(1, 1), 0.05f, ri.rotate, 1, D3DXVECTOR2(0.5f, 0.0f)));
 		}
 }
