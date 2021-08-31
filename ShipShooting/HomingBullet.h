@@ -9,10 +9,11 @@ public:
 	float turnTime = 0.0f;
 
 
-	HomingBullet(D3DXVECTOR2 pos, Unit* target);
+	HomingBullet(D3DXVECTOR2 pos, Unit* target, float damage);
 
 	virtual void Update(float deltaTime) override;
 	virtual void Render() override;
 	virtual void CreateEffect() override;
+	void HomingSystem(float deltaTime);
 };
 

@@ -2,7 +2,7 @@
 #include "MachinegunBullet.h"
 #include "Effect.h"
 
-MachinegunBullet::MachinegunBullet(D3DXVECTOR2 pos, Unit* target) : CBullet(pos, target)
+MachinegunBullet::MachinegunBullet(D3DXVECTOR2 pos, Unit* target, float damage) : CBullet(pos, target, damage)
 {
 	spr.LoadAll(L"Assets/Sprites/Unit/Bullet/machine.png");
 
@@ -12,9 +12,11 @@ MachinegunBullet::MachinegunBullet(D3DXVECTOR2 pos, Unit* target) : CBullet(pos,
 		D3DXVec2Normalize(&distance, &distance);
 		angle = atan2(distance.y, distance.x);
 	}
+	else
+		angle = D3DXToRadian(90);
 
-	SetCollider(-3, -3, 3, 3);
 	ri.rotate = D3DXToDegree(-angle);
+	SetCollider(-3, -3, 3, 3);
 }
 
 void MachinegunBullet::Update(float deltaTime)
@@ -31,5 +33,5 @@ void MachinegunBullet::Render()
 
 void MachinegunBullet::CreateEffect()
 {
-	nowScene->obm.AddObject(new Effect(L"Machinegun", pos, D3DXVECTOR2(1, 1), 0.05f, 0, 1));
+	nowScene->obm.AddObject(new Effect(L"Machinegun", pos, D3DXVECTOR2(1, 1), D3DXVECTOR2(0.5f, 0.5f), 0.05f, 0));
 }

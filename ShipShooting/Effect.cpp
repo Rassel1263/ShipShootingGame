@@ -1,7 +1,7 @@
 #include "Header.h"
 #include "Effect.h"
 
-Effect::Effect(std::wstring eftName, D3DXVECTOR2 pos, D3DXVECTOR2 scale, float aniTime, float rotate, int index, D3DXVECTOR2 pivot, std::function<void()> func)
+Effect::Effect(std::wstring eftName, D3DXVECTOR2 pos, D3DXVECTOR2 scale, D3DXVECTOR2 pivot, float aniTime, float rotate,std::function<void()> func)
 {
 	spr.LoadAll(L"Assets/Sprites/Effect/" + eftName, aniTime, false);
 	this->pos = pos;
@@ -10,11 +10,22 @@ Effect::Effect(std::wstring eftName, D3DXVECTOR2 pos, D3DXVECTOR2 scale, float a
 	this->maxVisibleTime = aniTime;
 	this->func = func;
 	ri.rotate = rotate;
-
 	ri.pivot = pivot;
 
+	this->index = 1;
+}
 
-	this->index = index;
+Effect::Effect(std::wstring eftName, D3DXVECTOR2 pos, D3DXVECTOR2 scale, float aniTime, float visibleTime, float rotate, std::function<void()> func)
+{
+	spr.LoadAll(L"Assets/Sprites/Effect/" + eftName, aniTime, false);
+	this->pos = pos;
+	ri.scale = scale;
+	this->visibleTime = visibleTime;
+	this->maxVisibleTime = visibleTime;
+	this->func = func;
+	ri.rotate = rotate;
+
+	this->index = 2;
 }
 
 void Effect::Update(float deltaTime)
@@ -35,7 +46,10 @@ void Effect::Update(float deltaTime)
 		spr.color.a = visibleTime / maxVisibleTime;
 
 		if (spr.color.a <= 0.0f)
+		{
+			if (func) func();
 			destroy = true;
+		}
 	}
 
 	spr.Update(deltaTime);

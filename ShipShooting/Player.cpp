@@ -9,13 +9,18 @@
 
 Player::Player()
 {
+	team = Team::Ally;
+
 	spr.LoadAll(L"Assets/Sprites/Unit/Player/Ship");
 	pos.y = -200;
 
 	SetAbility(100, 300);
+	SetCollider(-50, -100, 50, 100, L"ally");
 	nowScene->obm.AddObject(machineGun = new MachineGun(this, D3DXVECTOR2(0, 26)));
 	nowScene->obm.AddObject(cannon = new Cannon(this, D3DXVECTOR2(0, -25)));
 	nowScene->obm.AddObject(turret = new MissileTurret(this, D3DXVECTOR2(2, 26)));
+
+	
 }
 
 void Player::Update(float deltaTime)
@@ -24,36 +29,9 @@ void Player::Update(float deltaTime)
 
 	Move(deltaTime);
 	SetWeaponPos();
-	ShootControll(); 
-
-	if (Input::GetInstance().KeyDown('A'))
-	{
-		if (!skill1 && skill1CoolTime <= 0.0f)
-		{
-			skil1Timer = 5.0f;
-			machineGun->shootInterval /= 4;
-			skill1 = true;
-		}
-	}
-
-
-	if (skill1)
-	{
-		spr.color.g = spr.color.b = 0.0f;
-		skil1Timer -= deltaTime;
-
-		if (skil1Timer <= 0.0f)
-		{
-			spr.color.g = spr.color.b = 1.0f;
-			machineGun->shootInterval *= 4;
-			skill1 = false;
-			skill1CoolTime = 5.0f;
-		}
-	}
-
-	if(skill1CoolTime > 0.0)
-		skill1CoolTime -= deltaTime;
-
+	ShootControll();
+	FirstSkillControll(deltaTime);
+	SecondSkillControll(deltaTime);
 
 	spr.Update(deltaTime);
 }
@@ -62,6 +40,8 @@ void Player::Render()
 {
 	ri.pos = pos;
 	spr.Render(ri);
+
+	Unit::Render();
 }
 
 bool Player::Move(float deltaTime)
@@ -73,7 +53,7 @@ bool Player::Move(float deltaTime)
 
 	if (Input::GetInstance().KeyPress(VK_DOWN))
 	{
-		if (ability.speed > 200)
+		if (ability.speed > 100)
 			ability.speed -= 200 * deltaTime;
 	}
 	if (Input::GetInstance().KeyPress(VK_RIGHT))
@@ -90,9 +70,20 @@ bool Player::Move(float deltaTime)
 	return true;
 }
 
+void Player::Hit(float damage)
+{
+	this->hitDamage = damage;
+}
+
 void Player::SetTarget(EnemyType enemyType)
 {
 	float minLength = 999999.0f;
+
+	if (nowScene->enemyManager.allEnemys.size() <= 0)
+	{
+		target = NULL;
+		return;
+	}
 
 	if (enemyType == EnemyType::None)
 	{
@@ -111,6 +102,12 @@ void Player::SetTarget(EnemyType enemyType)
 
 	if (enemyType == EnemyType::FloatingEnemy)
 	{
+		if (nowScene->enemyManager.floatingEnemys.size() <= 0)
+		{
+			target = NULL;
+			return;
+		}
+
 		for (auto& enemy : nowScene->enemyManager.floatingEnemys)
 		{
 			D3DXVECTOR2 distance = enemy->pos - pos;
@@ -126,6 +123,12 @@ void Player::SetTarget(EnemyType enemyType)
 
 	if (enemyType == EnemyType::FlyingEnemy)
 	{
+		if (nowScene->enemyManager.flyingEnemys.size() <= 0)
+		{
+			target = NULL;
+			return;
+		}
+
 		for (auto& enemy : nowScene->enemyManager.flyingEnemys)
 		{
 			D3DXVECTOR2 distance = enemy->pos - pos;
@@ -190,7 +193,7 @@ void Player::ShootControll()
 		SetTarget(EnemyType::FloatingEnemy);
 
 		if (target)
-			nowScene->obm.AddObject(new Torpedo(pos, target));
+			nowScene->obm.AddObject(new Torpedo(pos, target, 5));
 	}
 
 	if (Input::GetInstance().KeyDown('R'))
@@ -199,5 +202,61 @@ void Player::ShootControll()
 		turret->Shoot();
 	}
 
+}
 
+void Player::FirstSkillControll(float deltaTime)
+{
+	if (Input::GetInstance().KeyDown('A'))
+	{
+		if (!skill1 && skill1CoolTime <= 0.0f)
+		{
+			skill1Timer = 5.0f;
+			machineGun->shootInterval /= 4;
+			skill1 = true;
+		}
+	}
+
+
+	if (skill1)
+	{
+		spr.color.g = spr.color.b = 0.0f;
+		skill1Timer -= deltaTime;
+
+		if (skill1Timer <= 0.0f)
+		{
+			spr.color.g = spr.color.b = 1.0f;
+			machineGun->shootInterval *= 4;
+			skill1 = false;
+			skill1CoolTime = 5.0f;
+		}
+	}
+
+	if (skill1CoolTime > 0.0)
+		skill1CoolTime -= deltaTime;
+}
+
+void Player::SecondSkillControll(float deltaTime)
+{
+	if (Input::GetInstance().KeyDown('S'))
+	{
+		if (!skill2)
+		{
+			auto lambda = []{ nowScene->obm.AddObject(new Effect(L"AirBoom", D3DXVECTOR2(0, 0), D3DXVECTOR2(1, 1), D3DXVECTOR2(0.5, 0.5), 0.05f, 0)); };
+
+			nowScene->obm.AddObject(new Effect(L"AirSupport", pos, D3DXVECTOR2(1, 1), D3DXVECTOR2(0.5, 0.5), 0.1f, 0, lambda));
+			skill2 = true;
+		}
+	}
+
+
+	if (skill2)
+	{
+		skill2CoolTime -= deltaTime;
+
+		if (skill2CoolTime <= 0.0f)
+		{
+			skill2 = false;
+			skill2CoolTime = 10.0f;
+		}
+	}
 }

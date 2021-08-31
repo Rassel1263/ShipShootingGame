@@ -20,18 +20,18 @@ void MissileTurret::Render()
 void MissileTurret::Shoot()
 {
 	D3DXVECTOR2 fixedPos = pos + D3DXVECTOR2(-27, 12);
-	nowScene->obm.AddObject(new Effect(L"CannonShot", fixedPos, D3DXVECTOR2(1, 1), 0.05f, ri.rotate, 1, D3DXVECTOR2(0.5f, 0.0f)));
-	nowScene->obm.AddObject(new HomingBullet(fixedPos, owner->target));
+	nowScene->obm.AddObject(new Effect(L"CannonShot", fixedPos, D3DXVECTOR2(1, 1), D3DXVECTOR2(0.5f, 0.0f), 0.05f, ri.rotate));
+	nowScene->obm.AddObject(new HomingBullet(fixedPos, owner->target, damage));
 
 	fixedPos = pos + D3DXVECTOR2(-19, 12);
-	nowScene->obm.AddObject(new Effect(L"CannonShot", fixedPos, D3DXVECTOR2(1, 1), 0.05f, ri.rotate, 1, D3DXVECTOR2(0.5f, 0.0f)));
-	nowScene->obm.AddObject(new HomingBullet(fixedPos, owner->target));
+	nowScene->obm.AddObject(new Effect(L"CannonShot", fixedPos, D3DXVECTOR2(1, 1), D3DXVECTOR2(0.5f, 0.0f), 0.05f, ri.rotate));
+	nowScene->obm.AddObject(new HomingBullet(fixedPos, owner->target, damage));
 
 	fixedPos = pos + D3DXVECTOR2(19, 12);
-	nowScene->obm.AddObject(new Effect(L"CannonShot", fixedPos, D3DXVECTOR2(1, 1), 0.05f, ri.rotate, 1, D3DXVECTOR2(0.5f, 0.0f)));
-	nowScene->obm.AddObject(new HomingBullet(fixedPos, owner->target));
+	nowScene->obm.AddObject(new Effect(L"CannonShot", fixedPos, D3DXVECTOR2(1, 1), D3DXVECTOR2(0.5f, 0.0f), 0.05f, ri.rotate));
+	nowScene->obm.AddObject(new HomingBullet(fixedPos, owner->target, damage));
 
 	fixedPos = pos + D3DXVECTOR2(27, 12);
-	nowScene->obm.AddObject(new Effect(L"CannonShot", fixedPos, D3DXVECTOR2(1, 1), 0.05f, ri.rotate, 1, D3DXVECTOR2(0.5f, 0.0f)));
-	nowScene->obm.AddObject(new HomingBullet(fixedPos, owner->target));
+	nowScene->obm.AddObject(new Effect(L"CannonShot", fixedPos, D3DXVECTOR2(1, 1), D3DXVECTOR2(0.5f, 0.0f), 0.05f, ri.rotate));
+	nowScene->obm.AddObject(new HomingBullet(fixedPos, owner->target, damage));
 }

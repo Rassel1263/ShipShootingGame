@@ -2,7 +2,7 @@
 #include "HomingBullet.h"
 #include "Effect.h"
 
-HomingBullet::HomingBullet(D3DXVECTOR2 pos, Unit* target) : CBullet(pos, target)
+HomingBullet::HomingBullet(D3DXVECTOR2 pos, Unit* target, float damage) : CBullet(pos, target, damage)
 {
 	this->pos = pos;
 	spr.LoadAll(L"Assets/Sprites/Unit/Bullet/Missile");
@@ -10,11 +10,33 @@ HomingBullet::HomingBullet(D3DXVECTOR2 pos, Unit* target) : CBullet(pos, target)
 	startTime = 0.5f;
 
 	angle = D3DXToRadian(nowScene->GetRandomNumber(0, 360));
+	ri.rotate = D3DXToDegree(-angle);
 
 	SetCollider(-10, -10, 10, 10);
 }
 
 void HomingBullet::Update(float deltaTime)
+{
+	if (target)
+		HomingSystem(deltaTime);
+
+	pos += D3DXVECTOR2(cos(angle), sinf(angle)) * 300 * deltaTime;
+
+	CBullet::Update(deltaTime);
+}
+
+void HomingBullet::Render()
+{
+	CBullet::Render();
+}
+
+
+void HomingBullet::CreateEffect()
+{
+	nowScene->obm.AddObject(new Effect(L"Missile", pos, D3DXVECTOR2(1, 1), D3DXVECTOR2(0.5f, 0.5f), 0.05f, 0));
+}
+
+void HomingBullet::HomingSystem(float deltaTime)
 {
 	if (startTime < 0.0f)
 	{
@@ -45,22 +67,7 @@ void HomingBullet::Update(float deltaTime)
 
 			turnTime = 0.0f;
 		}
+
+		ri.rotate = D3DXToDegree(-angle);
 	}
-
-	ri.rotate = D3DXToDegree(-angle);
-
-	pos += D3DXVECTOR2(cos(angle), sinf(angle)) * 300 * deltaTime;
-
-	CBullet::Update(deltaTime);
-}
-
-void HomingBullet::Render()
-{
-	CBullet::Render();
-}
-
-
-void HomingBullet::CreateEffect()
-{
-	nowScene->obm.AddObject(new Effect(L"Missile", pos, D3DXVECTOR2(1, 1), 0.05f, 0, 1));
 }

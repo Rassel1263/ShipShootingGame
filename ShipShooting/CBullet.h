@@ -9,7 +9,11 @@ public:
 	
 	Unit* target = NULL;
 
-	CBullet(D3DXVECTOR2 pos, Unit* target);
+	std::wstring team;
+
+	float damage = 0.0f;
+
+	CBullet(D3DXVECTOR2 pos, Unit* target, float damage);
 
 	virtual void Update(float deltaTime) override;
 	virtual void Render() override;

@@ -15,6 +15,8 @@ public:
 
 	float reloadTime = 0.0f;
 	float reloadTimer = 0.0f;
+	
+	float damage = 0.0f;
 
 	Unit* owner = NULL;
 	D3DXVECTOR2 offset;

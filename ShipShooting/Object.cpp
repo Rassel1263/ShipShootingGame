@@ -26,6 +26,15 @@ void Object::Render()
 				Game::GetInstance().DrawLine(body.aabb.max, D3DXVECTOR2(body.aabb.min.x, body.aabb.max.y), matrix, body.color);
 				Game::GetInstance().DrawLine(D3DXVECTOR2(body.aabb.min.x, body.aabb.max.y), body.aabb.min, matrix, body.color);
 			}
+			else if (body.type == Collider::TYPE::Circle)
+			{
+				D3DXVECTOR2 position[36];
+				for (int i = 0; i < 36; ++i)
+					position[i] = D3DXVec2Rotation(D3DXVECTOR2(0.0f, body.circle.radius), i * 10.0f);
+				for (int i = 0; i < 36; ++i)
+					if (bCamera)
+						Game::GetInstance().DrawLine(position[i], position[(i + 1) % 36], matrix, body.color);
+			}
 		}
 	}
 #endif

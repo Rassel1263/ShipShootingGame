@@ -8,10 +8,11 @@ public:
 	float turnSpeed = 0.0f;
 	float turnTime = 0.0f;
 
-	Torpedo(D3DXVECTOR2 pos, Unit* target);
+	Torpedo(D3DXVECTOR2 pos, Unit* target, float damage);
 
 	virtual void Update(float deltaTime) override;
 	virtual void Render() override;
 	virtual void CreateEffect() override;
+	void HomingSystem(float deltaTime);
 };
 

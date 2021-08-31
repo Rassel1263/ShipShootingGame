@@ -410,6 +410,7 @@
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="MachineGun.cpp" />
     <ClCompile Include="MachinegunBullet.cpp" />
+    <ClCompile Include="Mine.cpp" />
     <ClCompile Include="MissileTurret.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="Ocean.cpp" />
@@ -441,6 +442,7 @@
     <ClInclude Include="Input.h" />
     <ClInclude Include="MachineGun.h" />
     <ClInclude Include="MachinegunBullet.h" />
+    <ClInclude Include="Mine.h" />
     <ClInclude Include="MissileTurret.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="Ocean.h" />

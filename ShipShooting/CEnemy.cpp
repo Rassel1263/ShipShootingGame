@@ -1,15 +1,22 @@
 #include "Header.h"
 #include "CEnemy.h"
+#include "CBullet.h"
 
 CEnemy::CEnemy()
 {
+	team = Team::Enemy;
 	spr.LoadAll(L"Assets/Sprites/Unit/Enemy/MarineUnit");
+
+	SetAbility(30, 100);
 	this->pos = { 0, 200 };
 }
 
 void CEnemy::Update(float deltaTime)
 {
-	//pos.y -= nowScene->player->ability.speed / 2* deltaTime;
+	if (ability.hp <= 0)
+		Destroy();
+
+	pos.y -= nowScene->player->ability.speed / 2* deltaTime;
 
 	spr.Update(deltaTime);
 }
@@ -27,10 +34,24 @@ bool CEnemy::Move(float deltaTime)
 	return false;
 }
 
-void CEnemy::SetCollider(float left, float bottom, float right, float top)
+void CEnemy::OnCollision(Collider& coli)
 {
-	Collider::AABB aabb;
-	aabb.min = { left, bottom };
-	aabb.max = { right, top};
-	bodies.push_back(Collider(L"enemy", this, &aabb));
+	if (coli.tag == L"allybullet")
+	{
+		Hit(static_cast<CBullet*>(coli.obj)->damage);
+	}
 }
+
+void CEnemy::Destroy()
+{
+	destroy = true;
+	
+	nowScene->enemyManager.SortEnemyGroups(this, type);
+}
+
+void CEnemy::Hit(float damage)
+{
+	ability.hp -= damage;
+
+}
+

@@ -54,9 +54,11 @@ void Cannon::Shoot()
 			float radian = D3DXToRadian(-ri.rotate + 80);
 			D3DXVECTOR2 fixpos = pos + D3DXVECTOR2(cosf(radian), sinf(radian)) * 13;
 			D3DXVECTOR2 targetPos = (owner->target) ? owner->target->pos : D3DXVECTOR2(nowScene->GetRandomNumber(-200, 200), (100, 200));
+			if(owner->target) owner->target->Hit(5);
 
-			nowScene->obm.AddObject(new Effect(L"CannonShot", fixpos, D3DXVECTOR2(1, 1), 0.05f, ri.rotate, 1, D3DXVECTOR2(0.5f, 0.0f)));
+			nowScene->obm.AddObject(new Effect(L"CannonShot", fixpos, D3DXVECTOR2(1, 1), D3DXVECTOR2(0.5f, 0.0f), 0.05f, ri.rotate));
 			nowScene->obm.AddObject(new Effect(L"CannonBoom", targetPos + D3DXVECTOR2(nowScene->GetRandomNumber(-10, 10), nowScene->GetRandomNumber(-50, 50)),
-				D3DXVECTOR2(1, 1), 0.05f, ri.rotate, 1, D3DXVECTOR2(0.5f, 0.0f)));
+				D3DXVECTOR2(1, 1), D3DXVECTOR2(0.5, 0.0f), 0.05f, ri.rotate));
+
 		}
 }

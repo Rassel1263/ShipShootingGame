@@ -1,11 +1,23 @@
 #include "Header.h"
 #include "CBullet.h"
 
-CBullet::CBullet(D3DXVECTOR2 pos, Unit* target)
+CBullet::CBullet(D3DXVECTOR2 pos, Unit* target, float damage)
 {
-	spr.LoadAll(L"Assets/Sprites/a.png");
 	this->pos = pos;
 	this->target = target;
+	this->damage = damage;
+
+	if (target)
+	{
+		if (target->team == Team::Ally)
+			team = L"enemy";
+		if (target->team == Team::Enemy)
+			team = L"ally";
+	}
+	else
+		team = L"ally";
+
+	spr.LoadAll(L"Assets/Sprites/a.png");
 }
 
 void CBullet::Update(float deltaTime)
@@ -26,7 +38,9 @@ void CBullet::Render()
 
 void CBullet::OnCollision(Collider& coli)
 {
-	if (coli.tag == L"enemy")
+	if (!target) return;
+
+	if ((target->team == Team::Enemy && coli.tag == L"enemy") || (target->team == Team::Ally && coli.tag == L"ally"))
 	{
 		CreateEffect();
 		destroy = true;
@@ -38,6 +52,6 @@ void CBullet::SetCollider(float left, float bottom, float right, float top)
 	Collider::AABB aabb;
 	aabb.min = { left, bottom };
 	aabb.max = { right, top };
-	bodies.push_back(Collider(L"bullet", this, &aabb));
+	bodies.push_back(Collider(team + L"bullet", this, &aabb));
 }
 

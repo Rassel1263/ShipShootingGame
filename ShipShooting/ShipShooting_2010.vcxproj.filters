@@ -38,6 +38,9 @@
     <Filter Include="Object\Unit\Enemy">
       <UniqueIdentifier>{889c3e3e-c452-42a6-ac20-4e117751f710}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Object\Obstacle">
+      <UniqueIdentifier>{8316edc6-762f-46dd-8333-0061e1fdede8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="DXUT\Optional\directx.ico">
@@ -123,6 +126,9 @@
     <ClCompile Include="MissileTurret.cpp">
       <Filter>Object\Unit\Player\Waepon</Filter>
     </ClCompile>
+    <ClCompile Include="Mine.cpp">
+      <Filter>Object\Obstacle</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h">
@@ -205,6 +211,9 @@
     </ClInclude>
     <ClInclude Include="MissileTurret.h">
       <Filter>Object\Unit\Player\Waepon</Filter>
+    </ClInclude>
+    <ClInclude Include="Mine.h">
+      <Filter>Object\Obstacle</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
