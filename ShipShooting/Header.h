@@ -23,6 +23,9 @@
 
 #include "Camera.h"
 
+#include "ShaderManager.h"
+#include "ColorShader.h"
+
 #include "Collider.h"
 #include "Object.h"
 

@@ -41,10 +41,22 @@
     <Filter Include="Object\Obstacle">
       <UniqueIdentifier>{8316edc6-762f-46dd-8333-0061e1fdede8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shader">
+      <UniqueIdentifier>{7742e757-5f6e-403e-bd5f-2b35043ade69}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader\fx">
+      <UniqueIdentifier>{6e792e59-9de5-4649-b0c9-a97b0314de27}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Unit\Enemy\Boss">
+      <UniqueIdentifier>{9d2e923c-168d-497f-82ad-4265b1755c79}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="DXUT\Optional\directx.ico">
       <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Assets\Shader\colorShader.fx">
+      <Filter>Shader\fx</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -129,6 +141,17 @@
     <ClCompile Include="Mine.cpp">
       <Filter>Object\Obstacle</Filter>
     </ClCompile>
+    <ClCompile Include="ShaderManager.cpp">
+      <Filter>Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="ColorShader.cpp">
+      <Filter>Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="BigShip.cpp">
+      <Filter>Object\Unit\Enemy\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="Font.cpp" />
+    <ClCompile Include="PlayerUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h">
@@ -215,6 +238,17 @@
     <ClInclude Include="Mine.h">
       <Filter>Object\Obstacle</Filter>
     </ClInclude>
+    <ClInclude Include="ShaderManager.h">
+      <Filter>Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="ColorShader.h">
+      <Filter>Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="BigShip.h">
+      <Filter>Object\Unit\Enemy\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="Font.h" />
+    <ClInclude Include="PlayerUI.h" />
   </ItemGroup>
   <ItemGroup>
     <CLInclude Include="resource.h">
@@ -223,7 +257,5 @@
     <ResourceCompile Include="ShipShooting.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
   </ItemGroup>
 </Project>

@@ -4,8 +4,7 @@
 class FloatingEnemy : public CEnemy
 {
 public:
-	float attackTime = 0.0f;
-	float attackTimer = 0.0f;
+
 
 	FloatingEnemy(D3DXVECTOR2 pos);
 

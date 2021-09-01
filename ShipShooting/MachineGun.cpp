@@ -8,7 +8,7 @@ MachineGun::MachineGun(Unit* owner, D3DXVECTOR2 offset) : CWeapon(owner, offset)
 
 	bulletAmount = 30;
 	bulletMaxAmount = 30;
-	shootInterval = 0.3f;
+	shootInterval = 0.1f;
 
 	reloadTime = 5.0f;
 

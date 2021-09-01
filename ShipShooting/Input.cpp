@@ -52,5 +52,5 @@ bool Input::KeyPress(int nKey)
 
 D3DXVECTOR2 Input::GetFixedMousePos()
 {
-	return mousePos;
+	return D3DXVECTOR2(mousePos.x - 960, -mousePos.y + 540);
 }

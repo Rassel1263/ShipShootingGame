@@ -394,16 +394,19 @@
     <None Include="DXUT\Optional\directx.ico" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BigShip.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Cannon.cpp" />
     <ClCompile Include="CBullet.cpp" />
     <ClCompile Include="CEnemy.cpp" />
     <ClCompile Include="Collider.cpp" />
+    <ClCompile Include="ColorShader.cpp" />
     <ClCompile Include="CWeapon.cpp" />
     <ClCompile Include="Effect.cpp" />
     <ClCompile Include="EnemyManager.cpp" />
     <ClCompile Include="FloatingEnemy.cpp" />
     <ClCompile Include="FlyingEnemy.cpp" />
+    <ClCompile Include="Font.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="HomingBullet.cpp" />
@@ -415,7 +418,9 @@
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="Ocean.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerUI.cpp" />
     <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="ShaderManager.cpp" />
     <ClCompile Include="ShipShooting.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Texture.cpp" />
@@ -423,18 +428,19 @@
     <ClCompile Include="Unit.cpp" />
   </ItemGroup>
   <ItemGroup>
-  </ItemGroup>
-  <ItemGroup>
+    <ClInclude Include="BigShip.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Cannon.h" />
     <ClInclude Include="CBullet.h" />
     <ClInclude Include="CEnemy.h" />
     <ClInclude Include="Collider.h" />
+    <ClInclude Include="ColorShader.h" />
     <ClInclude Include="CWeapon.h" />
     <ClInclude Include="Effect.h" />
     <ClInclude Include="EnemyManager.h" />
     <ClInclude Include="FloatingEnemy.h" />
     <ClInclude Include="FlyingEnemy.h" />
+    <ClInclude Include="Font.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="Header.h" />
@@ -447,8 +453,10 @@
     <ClInclude Include="Object.h" />
     <ClInclude Include="Ocean.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerUI.h" />
     <CLInclude Include="resource.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="ShaderManager.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Texture.h" />
@@ -457,6 +465,11 @@
     <ResourceCompile Include="ShipShooting.rc" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Shader\colorShader.fx">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <FileType>Document</FileType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </None>
   </ItemGroup>
   <ItemGroup>
   </ItemGroup>

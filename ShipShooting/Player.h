@@ -15,7 +15,7 @@ public:
 	CEnemy* Target = NULL;
 	MissileTurret* turret = NULL;
 
-	bool toggle = false;
+	bool zoom = false;
 	bool skill1 = false;
 	bool skill2 = false;
 

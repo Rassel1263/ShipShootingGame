@@ -2,6 +2,7 @@
 
 enum class Team
 {
+	None,
 	Ally,
 	Enemy,
 };
@@ -24,6 +25,9 @@ public:
 	Unit* target = NULL;
 
 	bool bHit = false;
+
+	float hitTimer = 0.0f;
+	float hitTime = 0.0f;
 	float hitDamage = 0.0f;
 
 	Unit();
@@ -34,7 +38,7 @@ public:
 	virtual void Hit(float damage) = 0;
 	void SetAbility(float hp, float speed);
 	void SetCollider(float left, float bottom, float right, float top, std::wstring tag);
-	void SetCollider(float radius, std::wstring tag);
+	//void SetCollider(float radius, std::wstring tag);
 	D3DXVECTOR2 CheckPos();
 };
 

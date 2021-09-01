@@ -75,7 +75,7 @@ void Sprite::Render(const RenderInfo& ri)
 	D3DXVECTOR2 centerPos = D3DXVECTOR2(GetNowScene()->info.Width * ri.pivot.x, GetNowScene()->info.Height * ri.pivot.y);
 	D3DXMatrixTransformation2D(&matrix, &centerPos, 0, &ri.scale, &centerPos, -D3DXToRadian(ri.rotate), &(ri.pos - centerPos));
 
-	Game::GetInstance().pd3dDevice->SetTransform(D3DTS_WORLD, (bCamera) ? &matrix : &(matrix * Camera::GetInstance().matWorld));
+	Game::GetInstance().pd3dDevice->SetTransform(D3DTS_WORLD, (bCamera) ? &(matrix * Camera::GetInstance().matWorld) :  &matrix);
 	Game::GetInstance().pd3dDevice->SetTexture(0, GetNowScene()->src);
 	Game::GetInstance().pd3dDevice->SetStreamSource(0, Game::GetInstance().pVB, 0, sizeof(CUSTOMVERTEX));
 	Game::GetInstance().pd3dDevice->SetFVF(D3DFVF_CUSTOMVERTEX);

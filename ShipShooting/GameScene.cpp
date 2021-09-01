@@ -3,14 +3,23 @@
 #include "Player.h"
 #include "Ocean.h"
 #include "Mine.h"
+#include "BigShip.h"
+#include "PlayerUI.h"
+#include "Font.h"
 
 void GameScene::Init()
 {
+	ShaderManager::GetInstance().CreateEffect("Color", L"Assets/Shader/colorShader.fx", 1);
+
 	obm.AddObject(player = new Player());
+	obm.AddObject(new PlayerUI(player));
 	obm.AddObject(new Ocean());
 	obm.AddObject(new Mine(D3DXVECTOR2(0, -100)));
+	enemyManager.Init(10.0f, 10.0f);
+	enemyManager.SpawnEnemy(D3DXVECTOR2(0, 200), EnemyType::FlyingEnemy);
 
-	enemyManager.Init(3.0f);
+	obm.AddObject(new Font(D3DXVECTOR2(-30, 0), D3DXVECTOR2(1, 1), 30, gameTime));
+	//enemyManager.SpawnEnemy(D3DXVECTOR2(0, 300), EnemyType::BigShip);
 
 	//enemyManager.SpawnEnemy(D3DXVECTOR2(0, 200), EnemyType::FloatingEnemy);
 	//enemyManager.SpawnEnemy(D3DXVECTOR2(200, 200), EnemyType::FlyingEnemy);
@@ -18,7 +27,9 @@ void GameScene::Init()
 
 void GameScene::Update(float deltaTime)
 {
-	enemyManager.FloatSpawnManager(deltaTime);
+	gameTime -= deltaTime;
+
+	//enemyManager.FloatSpawnManager(deltaTime);
 
 	Scene::Update(deltaTime);
 }

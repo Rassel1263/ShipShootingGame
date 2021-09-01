@@ -13,7 +13,7 @@ Torpedo::Torpedo(D3DXVECTOR2 pos, Unit* target, float damage) : CBullet(pos, tar
 
 	if (target->team == Team::Enemy)
 	{
-		spr.LoadAll(L"Assets/Sprites/Unit/Bullet/torpedo.png");
+		spr.LoadAll(L"Assets/Sprites/Unit/Bullet/torpedo1.png");
 		angle = D3DXToRadian(90);
 		ri.rotate = 90;
 	}

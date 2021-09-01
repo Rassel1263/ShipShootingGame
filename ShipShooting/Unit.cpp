@@ -29,13 +29,6 @@ void Unit::SetCollider(float left, float bottom, float right, float top, std::ws
 	bodies.push_back(Collider(tag, this, &aabb));
 }
 
-void Unit::SetCollider(float radius, std::wstring tag)
-{
-	Collider::Circle circle;
-	circle.radius = radius;
-	bodies.push_back(Collider(tag, this, 0, &circle));
-}
-
 
 D3DXVECTOR2 Unit::CheckPos()
 {

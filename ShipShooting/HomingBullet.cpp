@@ -2,22 +2,27 @@
 #include "HomingBullet.h"
 #include "Effect.h"
 
-HomingBullet::HomingBullet(D3DXVECTOR2 pos, Unit* target, float damage) : CBullet(pos, target, damage)
+HomingBullet::HomingBullet(D3DXVECTOR2 pos, Unit* target, float damage, float angle) : CBullet(pos, target, damage)
 {
 	this->pos = pos;
-	spr.LoadAll(L"Assets/Sprites/Unit/Bullet/Missile");
+
+	if (target->team == Team::Enemy)
+		spr.LoadAll(L"Assets/Sprites/Unit/Bullet/Missile");
+	else if (target->team == Team::Ally)
+		spr.LoadAll(L"Assets/Sprites/Unit/Bullet/Missile2.png");
+
 	turnSpeed = D3DXToRadian(10);
 	startTime = 0.5f;
 
-	angle = D3DXToRadian(nowScene->GetRandomNumber(0, 360));
-	ri.rotate = D3DXToDegree(-angle);
+	this->angle = D3DXToRadian(angle);
+	ri.rotate = -angle;
 
 	SetCollider(-10, -10, 10, 10);
 }
 
 void HomingBullet::Update(float deltaTime)
 {
-	if (target)
+	if (target->team == Team::Enemy)
 		HomingSystem(deltaTime);
 
 	pos += D3DXVECTOR2(cos(angle), sinf(angle)) * 300 * deltaTime;

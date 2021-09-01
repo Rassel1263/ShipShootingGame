@@ -12,7 +12,7 @@ Player::Player()
 	team = Team::Ally;
 
 	spr.LoadAll(L"Assets/Sprites/Unit/Player/Ship");
-	pos.y = -200;
+	pos.y = -400;
 
 	SetAbility(100, 300);
 	SetCollider(-50, -100, 50, 100, L"ally");
@@ -32,6 +32,9 @@ void Player::Update(float deltaTime)
 	ShootControll();
 	FirstSkillControll(deltaTime);
 	SecondSkillControll(deltaTime);
+
+	if (Input::GetInstance().KeyPress('G'))
+		ability.hp -= 10 * deltaTime;
 
 	spr.Update(deltaTime);
 }
@@ -158,17 +161,9 @@ void Player::CameraControll()
 
 	if (Input::GetInstance().KeyDown(VK_TAB))
 	{
-		static bool toggle = false;
+		zoom = !zoom;
 
-		toggle = !toggle;
-
-		if (toggle)
-		{
-			Camera::GetInstance().divideProj = 0.9f;
-		}
-		else
-			Camera::GetInstance().divideProj = 1.5f;
-
+		(zoom) ? Camera::GetInstance().divideProj = 1.0f : Camera::GetInstance().divideProj = 1.5f;
 
 		Camera::GetInstance().Init();
 	}
@@ -199,7 +194,9 @@ void Player::ShootControll()
 	if (Input::GetInstance().KeyDown('R'))
 	{
 		SetTarget(EnemyType::FlyingEnemy);
-		turret->Shoot();
+
+		if(target)
+			turret->Shoot();
 	}
 
 }

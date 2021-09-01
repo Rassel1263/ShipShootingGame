@@ -13,7 +13,7 @@ class Sprite
 public:
 	bool bAnimation = true;
 	bool bAniLoop = true;
-	bool bCamera = false;
+	bool bCamera = true;
 
 	int scene = 0;
 	int szScene = 0;

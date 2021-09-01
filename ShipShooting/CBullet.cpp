@@ -38,8 +38,9 @@ void CBullet::Render()
 
 void CBullet::OnCollision(Collider& coli)
 {
-	if (!target) return;
+	//if (!target) return;
 
+	if(target)
 	if ((target->team == Team::Enemy && coli.tag == L"enemy") || (target->team == Team::Ally && coli.tag == L"ally"))
 	{
 		CreateEffect();
