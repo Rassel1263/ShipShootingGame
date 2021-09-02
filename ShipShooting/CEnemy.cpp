@@ -1,6 +1,8 @@
 #include "Header.h"
 #include "CEnemy.h"
 #include "CBullet.h"
+#include "Item.h"
+#include "Effect.h"
 
 CEnemy::CEnemy()
 {
@@ -12,6 +14,8 @@ CEnemy::CEnemy()
 	colorShader = new ColorShader();
 
 	hitTime = 0.1f;
+
+	MiniMap::GetInstance().AddMiniObject(MINITAG::ENEMY, &pos, this);
 }
 
 void CEnemy::Update(float deltaTime)
@@ -32,7 +36,6 @@ void CEnemy::Update(float deltaTime)
 		}
 	}
 
-	//pos.y -= nowScene->player->ability.speed / 2* deltaTime;
 
 	spr.Update(deltaTime);
 }
@@ -65,16 +68,21 @@ void CEnemy::OnCollision(Collider& coli)
 
 void CEnemy::Destroy()
 {
+	nowScene->obm.AddObject(new Effect(L"Die/0", pos, D3DXVECTOR2(1, 1), D3DXVECTOR2(0.5f, 0.5f), 0.05f, 0));
+	nowScene->obm.AddObject(new Item(pos, nowScene->GetRandomNumber(0, 5)));
+	nowScene->enemyManager.SortEnemyGroups(this, type);
+	MiniMap::GetInstance().Term(this);
+
 	destroy = true;
 	
-	nowScene->enemyManager.SortEnemyGroups(this, type);
 }
 
 void CEnemy::CheckPos()
 {
-	if (pos.y <= -400)
+	if (pos.y <= -700)
 	{
 		nowScene->enemyManager.SortEnemyGroups(this, type);
+		MiniMap::GetInstance().Term(this);
 		destroy = true;
 	}
 }

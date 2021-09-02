@@ -17,6 +17,11 @@ public:
 	float screenWidth = 1920;
 	float screenHeight = 1080;
 
+	bool pause = false;
+
+	float timeScale = 1.0f;
+	float unScaleTime = 0.0f;
+
 	LPDIRECT3D9             pD3D = NULL; // Used to create the D3DDevice
 	LPDIRECT3DDEVICE9       pd3dDevice = NULL; // Our rendering device
 	LPDIRECT3DVERTEXBUFFER9 pVB = NULL; // Buffer to hold vertices

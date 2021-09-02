@@ -4,7 +4,7 @@
 
 FlyingEnemy::FlyingEnemy(D3DXVECTOR2 pos)
 {
-	type = EnemyType::FloatingEnemy;
+	type = EnemyType::FlyingEnemy;
 
 	spr.LoadAll(L"Assets/Sprites/Unit/Enemy/Fly");
 	SetCollider(-100, -30, 100, 30, L"enemy");

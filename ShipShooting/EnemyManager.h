@@ -21,7 +21,7 @@ public:
 
 	void Init(float floatSpawnTime, float airSpawnTime);
 	void SpawnEnemy(D3DXVECTOR2 pos, EnemyType enemyType);
-	void FloatSpawnManager(float deltaTime);
+	void SpawnManager(float deltaTime);
 	void SortEnemyGroups(CEnemy* enemy, EnemyType enemyType);
 };
 

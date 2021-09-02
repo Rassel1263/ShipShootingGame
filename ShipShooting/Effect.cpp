@@ -13,11 +13,13 @@ Effect::Effect(std::wstring eftName, D3DXVECTOR2 pos, D3DXVECTOR2 scale, D3DXVEC
 	ri.pivot = pivot;
 
 	this->index = 1;
+	layer = 8;
 }
 
-Effect::Effect(std::wstring eftName, D3DXVECTOR2 pos, D3DXVECTOR2 scale, float aniTime, float visibleTime, float rotate, std::function<void()> func)
+Effect::Effect(std::wstring eftName, D3DXVECTOR2 pos, D3DXVECTOR2 scale,float aniTime, float visibleTime,  bool bCamera, float rotate, std::function<void()> func)
 {
 	spr.LoadAll(L"Assets/Sprites/Effect/" + eftName, aniTime, false);
+	spr.bCamera = bCamera;
 	this->pos = pos;
 	ri.scale = scale;
 	this->visibleTime = visibleTime;
@@ -26,6 +28,8 @@ Effect::Effect(std::wstring eftName, D3DXVECTOR2 pos, D3DXVECTOR2 scale, float a
 	ri.rotate = rotate;
 
 	this->index = 2;
+
+	layer = 8;
 }
 
 void Effect::Update(float deltaTime)

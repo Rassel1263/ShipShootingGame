@@ -28,7 +28,6 @@ void MachineGun::Update(float deltaTime)
 		}
 	}
 
-	shootTimer += deltaTime;
 	CWeapon::Update(deltaTime);
 }
 
@@ -44,12 +43,14 @@ void MachineGun::Shoot()
 		if (shootTimer >= shootInterval)
 		{
 			shootTimer = 0.0f;
-			if(!nowScene->player->skill1)
+			if (!nowScene->player->skill1)
 				bulletAmount -= 2;
 
 			nowScene->obm.AddObject(new MachinegunBullet(D3DXVECTOR2(pos.x - 5, pos.y), owner->target, damage));
 			nowScene->obm.AddObject(new MachinegunBullet(D3DXVECTOR2(pos.x + 5, pos.y), owner->target, damage));
 		}
 	}
+	else
+		SpawnUI();
 
 }

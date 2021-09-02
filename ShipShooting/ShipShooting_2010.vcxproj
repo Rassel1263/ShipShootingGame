@@ -406,14 +406,17 @@
     <ClCompile Include="EnemyManager.cpp" />
     <ClCompile Include="FloatingEnemy.cpp" />
     <ClCompile Include="FlyingEnemy.cpp" />
-    <ClCompile Include="Font.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="HomingBullet.cpp" />
     <ClCompile Include="Input.cpp" />
+    <ClCompile Include="Item.cpp" />
     <ClCompile Include="MachineGun.cpp" />
     <ClCompile Include="MachinegunBullet.cpp" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="MainScene.cpp" />
     <ClCompile Include="Mine.cpp" />
+    <ClCompile Include="MiniMap.cpp" />
     <ClCompile Include="MissileTurret.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="Ocean.cpp" />
@@ -425,6 +428,8 @@
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Torpedo.cpp" />
+    <ClCompile Include="TorpedoLauncher.cpp" />
+    <ClCompile Include="Trash.cpp" />
     <ClCompile Include="Unit.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -446,9 +451,13 @@
     <ClInclude Include="Header.h" />
     <ClInclude Include="HomingBullet.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="Item.h" />
     <ClInclude Include="MachineGun.h" />
     <ClInclude Include="MachinegunBullet.h" />
+    <ClInclude Include="Main.h" />
+    <ClInclude Include="MainScene.h" />
     <ClInclude Include="Mine.h" />
+    <ClInclude Include="MiniMap.h" />
     <ClInclude Include="MissileTurret.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="Ocean.h" />
@@ -461,6 +470,8 @@
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Torpedo.h" />
+    <ClInclude Include="TorpedoLauncher.h" />
+    <ClInclude Include="Trash.h" />
     <ClInclude Include="Unit.h" />
     <ResourceCompile Include="ShipShooting.rc" />
   </ItemGroup>

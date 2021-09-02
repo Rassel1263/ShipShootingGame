@@ -3,6 +3,7 @@
 
 Unit::Unit()
 {
+	layer = 5;
 }
 
 void Unit::Update(float deltaTime)
@@ -19,6 +20,7 @@ void Unit::SetAbility(float hp, float speed)
 	this->ability.hp = hp;
 	this->ability.maxHp = hp;
 	this->ability.speed = speed;
+	this->ability.maxSpeed = speed;
 }
 
 void Unit::SetCollider(float left, float bottom, float right, float top, std::wstring tag)

@@ -5,6 +5,7 @@
 #include "Cannon.h"
 #include "MissileTurret.h"
 #include "Torpedo.h"
+#include "TorpedoLauncher.h"
 #include "EnemyManager.h"
 
 Player::Player()
@@ -16,11 +17,14 @@ Player::Player()
 
 	SetAbility(100, 300);
 	SetCollider(-50, -100, 50, 100, L"ally");
-	nowScene->obm.AddObject(machineGun = new MachineGun(this, D3DXVECTOR2(0, 26)));
-	nowScene->obm.AddObject(cannon = new Cannon(this, D3DXVECTOR2(0, -25)));
-	nowScene->obm.AddObject(turret = new MissileTurret(this, D3DXVECTOR2(2, 26)));
+	nowScene->obm.AddObject(machineGun = new MachineGun(this, D3DXVECTOR2(0, 38)));
+	nowScene->obm.AddObject(cannon = new Cannon(this, D3DXVECTOR2(0, -37)));
+	nowScene->obm.AddObject(turret = new MissileTurret(this, D3DXVECTOR2(2, 35)));
+	nowScene->obm.AddObject(torpedLauncher = new TorpedoLauncher(this));
 
-	
+	MiniMap::GetInstance().AddMiniObject(MINITAG::PLAYER, &pos, this);
+
+	skill2CoolTime = 0.0f;
 }
 
 void Player::Update(float deltaTime)
@@ -32,9 +36,24 @@ void Player::Update(float deltaTime)
 	ShootControll();
 	FirstSkillControll(deltaTime);
 	SecondSkillControll(deltaTime);
+	UpdateEffect(deltaTime);
+
+	if (uiTime > 0.0f)
+		uiTime -= deltaTime;
+
+	if (bHit)
+	{
+		hitTimer += deltaTime;
+
+		if (hitTimer >= hitTime)
+		{
+			hitTimer = 0.0f;
+			bHit = false;
+		}
+	}
 
 	if (Input::GetInstance().KeyPress('G'))
-		ability.hp -= 10 * deltaTime;
+		nowScene->AddScore(500);
 
 	spr.Update(deltaTime);
 }
@@ -50,8 +69,8 @@ void Player::Render()
 bool Player::Move(float deltaTime)
 {
 	D3DXVECTOR2 moveDir = { 0, 0 };
-
-	if (ability.speed < 300)
+	
+	if (ability.speed < ability.maxSpeed)
 		ability.speed += 150 * deltaTime;
 
 	if (Input::GetInstance().KeyPress(VK_DOWN))
@@ -75,7 +94,19 @@ bool Player::Move(float deltaTime)
 
 void Player::Hit(float damage)
 {
-	this->hitDamage = damage;
+	if (god || invincible) return;
+
+	bHit = true;
+	this->ability.hp -= damage;
+	nowScene->obm.AddObject(new Effect(L"ouch.png", D3DXVECTOR2(0, 0), D3DXVECTOR2(1, 1), 0, 1.0f, false));
+}
+
+void Player::OnCollision(Collider& coli)
+{
+	if (coli.tag == L"enemybullet")
+	{
+			Hit(static_cast<CBullet*>(coli.obj)->damage);
+	}
 }
 
 void Player::SetTarget(EnemyType enemyType)
@@ -188,17 +219,16 @@ void Player::ShootControll()
 		SetTarget(EnemyType::FloatingEnemy);
 
 		if (target)
-			nowScene->obm.AddObject(new Torpedo(pos, target, 5));
+			torpedLauncher->Shoot();
 	}
 
 	if (Input::GetInstance().KeyDown('R'))
 	{
 		SetTarget(EnemyType::FlyingEnemy);
 
-		if(target)
+		if (target)
 			turret->Shoot();
 	}
-
 }
 
 void Player::FirstSkillControll(float deltaTime)
@@ -211,8 +241,9 @@ void Player::FirstSkillControll(float deltaTime)
 			machineGun->shootInterval /= 4;
 			skill1 = true;
 		}
+		else if (skill1CoolTime > 0.0f)
+			SpawnUI();
 	}
-
 
 	if (skill1)
 	{
@@ -236,24 +267,102 @@ void Player::SecondSkillControll(float deltaTime)
 {
 	if (Input::GetInstance().KeyDown('S'))
 	{
-		if (!skill2)
+		if (skill2CoolTime <= 0.0f)
 		{
-			auto lambda = []{ nowScene->obm.AddObject(new Effect(L"AirBoom", D3DXVECTOR2(0, 0), D3DXVECTOR2(1, 1), D3DXVECTOR2(0.5, 0.5), 0.05f, 0)); };
+			auto lambda = [] 
+			{ 
+				nowScene->obm.AddObject(new Effect(L"AirBoom", D3DXVECTOR2(0, 0), D3DXVECTOR2(1, 1), D3DXVECTOR2(0.5, 0.5), 0.05f, 0));
+				for (auto& enemy : nowScene->enemyManager.allEnemys)
+					enemy->Hit(100);
+			};
 
-			nowScene->obm.AddObject(new Effect(L"AirSupport", pos, D3DXVECTOR2(1, 1), D3DXVECTOR2(0.5, 0.5), 0.1f, 0, lambda));
-			skill2 = true;
+			nowScene->obm.AddObject(new Effect(L"AirSupport", D3DXVECTOR2(0, 0), D3DXVECTOR2(1, 1), D3DXVECTOR2(0.5, 0.5), 0.1f, 0, lambda));
+			skill2CoolTime = 10.0f;
+		}
+		else if (skill2CoolTime > 0.0f)
+			SpawnUI();
+	}
+
+	if (skill2CoolTime > 0.0)
+		skill2CoolTime -= deltaTime;
+
+}
+
+void Player::UpdateEffect(float deltaTime)
+{
+	if (speedUp)
+	{
+		speedUpTime += deltaTime;
+
+		if (speedUpTime >= 5.0f)
+		{
+			speedUp = false;
+			speedUpTime = 0.0f;
+			ability.speed = 300;
+			ability.maxSpeed = 300;
 		}
 	}
 
 
-	if (skill2)
+	if (invincible)
 	{
-		skill2CoolTime -= deltaTime;
+		invincibleTime += deltaTime;
 
-		if (skill2CoolTime <= 0.0f)
+		if (invincibleTime >= 2.0f)
 		{
-			skill2 = false;
-			skill2CoolTime = 10.0f;
+			invincible = false;
+			invincibleTime = 0.0f;
 		}
+	}
+
+	if (speedDown)
+	{
+		speedDownTime += deltaTime;
+		ability.speed = ability.maxSpeed / 2;
+
+		if (speedDownTime >= 2.0f)
+		{
+			speedDown = false;
+			speedDownTime = 0.0f;
+		}
+	}
+}
+
+void Player::GetItemEffective(int index)
+{
+	switch (index)
+	{
+	case 0:
+		machineGun->bulletAmount += 30;
+		break;
+	case 1:
+		torpedLauncher->bulletAmount += 5;
+		break;
+	case 2:
+		torpedLauncher->bulletAmount += 3;
+		break;
+	case 3:
+		ability.maxSpeed = 500;
+		speedUp = true;
+		break;
+	case 4:
+		ability.hp += 20;
+		if (ability.hp > ability.maxHp)
+			ability.hp = ability.maxHp;
+		break;
+	case 5:
+		invincible = true;
+		break;
+	default:
+		break;
+	}
+}
+
+void Player::SpawnUI()
+{
+	if (uiTime <= 0.0f)
+	{
+		nowScene->obm.AddObject(new Effect(L"dontSkill.png", D3DXVECTOR2(610, -445), D3DXVECTOR2(1, 1), 0, 2.0f, false));
+		uiTime = 2.0f;
 	}
 }

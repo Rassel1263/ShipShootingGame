@@ -2,6 +2,9 @@
 #include "PlayerUI.h"
 #include "Player.h"
 #include "MachineGun.h"
+#include "Cannon.h"
+#include "MissileTurret.h"
+#include "TorpedoLauncher.h"
 
 PlayerUI::PlayerUI(Player* player)
 {
@@ -12,6 +15,29 @@ PlayerUI::PlayerUI(Player* player)
 
 	hp.bCamera = false;
 	hpBck.bCamera = false;
+
+	hpInfo.pos = { -650, -420 };
+
+	speed.LoadAll(L"Assets/Sprites/UI/speed.png");
+	speedBck.LoadAll(L"Assets/Sprites/UI/speedbck.png");
+
+	speed.bCamera = false;
+	speedBck.bCamera = false;
+
+	speedUp.LoadAll(L"Assets/Sprites/UI/speedUp.png");
+	invincible.LoadAll(L"Assets/Sprites/UI/invincible.png");
+	
+	speedDown.LoadAll(L"Assets/Sprites/UI/speedDown");
+
+	speedIcon.LoadAll(L"Assets/Sprites/UI/sIcon.png");
+	invincibleIcon.LoadAll(L"Assets/Sprites/UI/iIcon.png");
+	speedIcon.bCamera = false;
+	invincibleIcon.bCamera = false;
+
+	speedUp.bCamera = false;
+	invincible.bCamera = false;
+
+	speedInfo.pos = { -440, -410 };
 
 	weapon.LoadAll(L"Assets/Sprites/UI/weapon.png");
 	weapon.bCamera = false;
@@ -24,7 +50,7 @@ PlayerUI::PlayerUI(Player* player)
 
 	weaponInfo[0].pos = { 361, -445 };
 	weaponInfo[1].pos = { 530, -445 };
-	weaponInfo[2].pos = { 696, -445 };
+	weaponInfo[2].pos = { 695, -445 };
 	weaponInfo[3].pos = { 860, -445 };
 
 	for (int i = 0; i < 2; ++i)
@@ -33,20 +59,44 @@ PlayerUI::PlayerUI(Player* player)
 		skillCool[i].bCamera = false;
 	}
 
-	skillInfo[0].pos = { 452, -295 };
-	skillInfo[1].pos = { 782, -295 };
+	skillInfo[0].pos = { 451, -297 };
+	skillInfo[1].pos = { 782, -297};
 
-	hpInfo.pos = { -650, -420 };
+	fontInfo[0].pos = { 340, -484 };
+	fontInfo[1].pos = { 510, -484 };
+	fontInfo[2].pos = { 680, -484 };
+	fontInfo[3].pos = { 840, -481 };
+
+	layer = 10;
 }
 
 void PlayerUI::Update(float deltaTime)
 {
 	hp.heightRatio = 1 - player->ability.hp / player->ability.maxHp;
 
-	weaponCools[0].heightRatio = player->machineGun->reloadTimer / player->machineGun->reloadTime;
+	speed.heightRatio = 1 - player->ability.speed / player->ability.maxSpeed;
 
-	if(Input::GetInstance().KeyDown(VK_LBUTTON))
-		std::cout << Input::GetInstance().GetFixedMousePos().x << "       " << Input::GetInstance().GetFixedMousePos().y << std::endl;
+	weaponCools[0].heightRatio = 1- player->machineGun->reloadTimer / player->machineGun->reloadTime; 
+	weaponCools[1].heightRatio = 1 - player->cannon->reloadTimer / player->cannon->reloadTime;
+	weaponCools[2].heightRatio = player->torpedLauncher->shootTimer / player->torpedLauncher->shootInterval;
+	weaponCools[3].heightRatio = player->turret->shootTimer / player->turret->shootInterval;
+
+	skillCool[0].heightRatio = 1 - player->skill1CoolTime / 5.0f;
+	skillCool[1].heightRatio = 1 - player->skill2CoolTime / 10.0f;
+
+	speedUp.widthRatio = 1 - player->speedUpTime / 5.0f;
+	invincible.widthRatio = 1 - player->invincibleTime / 2.0f;
+	speedUp.heightRatio = hp.heightRatio;
+	invincible.heightRatio = hp.heightRatio;
+
+	FontUpdate(font[0], player->machineGun->bulletAmount);
+	FontUpdate(font[1], player->cannon->bulletAmount);
+	FontUpdate(font[2], player->torpedLauncher->bulletAmount);
+	FontUpdate(font[3], player->turret->bulletAmount);
+
+	
+
+	speedDown.Update(deltaTime);
 }
 
 void PlayerUI::Render()
@@ -54,7 +104,28 @@ void PlayerUI::Render()
 	hp.Render(hpInfo);
 	hpBck.Render(hpInfo);
 
+	if (player->speedUp)
+	{
+		speedIcon.Render(RenderInfo{D3DXVECTOR2(-920, -480)});
+		speedUp.Render(hpInfo);
+	}
+
+	if (player->invincible)
+	{
+		invincibleIcon.Render(RenderInfo{ D3DXVECTOR2(-850, -480) });
+		invincible.Render(hpInfo);
+	}
+
+	if (player->speedDown)
+		speedDown.Render(RenderInfo{ player->pos });
+
+	speedBck.Render(speedInfo);
+	speed.Render(speedInfo);
+
 	weapon.Render(RenderInfo{});
+
+	for (int i = 0; i < 4; ++i)
+		FontRender(font[i], fontInfo[i]);
 
 	for (int i = 0; i < 4; ++i)
 	{
@@ -62,8 +133,38 @@ void PlayerUI::Render()
 			skillCool[i].Render(skillInfo[i]);
 
 		weaponCools[i].Render(weaponInfo[i]);
-
 	}
-
 	
+
 }
+
+void PlayerUI::FontRender(std::vector<Sprite>& vec, RenderInfo& ri)
+{
+	int size = vec.size();
+
+	for (int i = size - 1; i >= 0; --i)
+	{
+		fontRI.pos = ri.pos + D3DXVECTOR2(-15 * i, 0);
+		vec[size - 1 - i].Render(fontRI);
+	}
+}
+
+void PlayerUI::FontUpdate(std::vector<Sprite>& vec, int& num)
+{
+	WCHAR temp[10];
+
+	wsprintf(temp, L"%02d", (int)num);
+
+	std::wstring str = temp;
+
+	vec.resize(str.size());
+	int count = 0;
+
+	for (auto s : str)
+	{
+		vec[count].LoadAll(L"Assets/Sprites/UI/Font/SNumber/" + std::to_wstring(s - '0') + L".png");
+		vec[count].bCamera = false;
+		count++;
+	}
+}
+ 

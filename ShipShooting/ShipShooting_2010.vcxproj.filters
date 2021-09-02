@@ -50,6 +50,9 @@
     <Filter Include="Object\Unit\Enemy\Boss">
       <UniqueIdentifier>{9d2e923c-168d-497f-82ad-4265b1755c79}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Object\Main">
+      <UniqueIdentifier>{ae3e2248-8b4e-4b34-87c0-ba37fa2180c1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="DXUT\Optional\directx.ico">
@@ -150,8 +153,21 @@
     <ClCompile Include="BigShip.cpp">
       <Filter>Object\Unit\Enemy\Boss</Filter>
     </ClCompile>
-    <ClCompile Include="Font.cpp" />
     <ClCompile Include="PlayerUI.cpp" />
+    <ClCompile Include="Item.cpp" />
+    <ClCompile Include="TorpedoLauncher.cpp">
+      <Filter>Object\Unit\Player\Waepon</Filter>
+    </ClCompile>
+    <ClCompile Include="MiniMap.cpp" />
+    <ClCompile Include="MainScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>Object\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Trash.cpp">
+      <Filter>Object\Obstacle</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h">
@@ -249,6 +265,20 @@
     </ClInclude>
     <ClInclude Include="Font.h" />
     <ClInclude Include="PlayerUI.h" />
+    <ClInclude Include="Item.h" />
+    <ClInclude Include="TorpedoLauncher.h">
+      <Filter>Object\Unit\Player\Waepon</Filter>
+    </ClInclude>
+    <ClInclude Include="MiniMap.h" />
+    <ClInclude Include="MainScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Main.h">
+      <Filter>Object\Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Trash.h">
+      <Filter>Object\Obstacle</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CLInclude Include="resource.h">

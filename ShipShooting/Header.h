@@ -29,9 +29,12 @@
 #include "Collider.h"
 #include "Object.h"
 
+#include "MiniMap.h"
+
 #include "Scene.h"
 extern Scene* nowScene;
 #include "GameScene.h"
+#include "MainScene.h"
 
 
 #include "Game.h"

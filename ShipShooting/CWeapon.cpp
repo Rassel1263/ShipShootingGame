@@ -6,12 +6,16 @@ CWeapon::CWeapon(Unit* owner, D3DXVECTOR2 offset)
 	this->owner = owner;
 	this->offset = offset;
 
-	layer = 1;
+	layer = owner->layer + 1;
 }
 
 void CWeapon::Update(float deltaTime)
 {
-	
+	if (shootTimer < shootInterval)
+		shootTimer += deltaTime;
+
+	if (uiTime > 0.0f)
+		uiTime -= deltaTime;
 }
 
 void CWeapon::Render()
@@ -24,4 +28,13 @@ void CWeapon::Render()
 
 void CWeapon::Shoot()
 {
+}
+
+void CWeapon::SpawnUI()
+{
+	if (uiTime <= 0.0f)
+	{
+		uiTime = 2.0f;
+		nowScene->obm.AddObject(new Effect(L"lackOfBullet.png", D3DXVECTOR2(0, 0), D3DXVECTOR2(1, 1), 0, 2.0f));
+	}
 }

@@ -35,3 +35,14 @@ void MachinegunBullet::CreateEffect()
 {
 	nowScene->obm.AddObject(new Effect(L"Machinegun", pos, D3DXVECTOR2(1, 1), D3DXVECTOR2(0.5f, 0.5f), 0.05f, 0));
 }
+
+void MachinegunBullet::OnCollision(Collider& coli)
+{
+	CBullet::OnCollision(coli);
+
+	if (coli.tag == L"obstacle")
+	{
+		CreateEffect();
+		destroy = true;
+	}
+}

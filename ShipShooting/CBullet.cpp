@@ -16,8 +16,8 @@ CBullet::CBullet(D3DXVECTOR2 pos, Unit* target, float damage)
 	}
 	else
 		team = L"ally";
-
-	spr.LoadAll(L"Assets/Sprites/a.png");
+	
+	layer = 5;
 }
 
 void CBullet::Update(float deltaTime)
@@ -40,12 +40,15 @@ void CBullet::OnCollision(Collider& coli)
 {
 	//if (!target) return;
 
-	if(target)
-	if ((target->team == Team::Enemy && coli.tag == L"enemy") || (target->team == Team::Ally && coli.tag == L"ally"))
+	if (target)
 	{
-		CreateEffect();
-		destroy = true;
+		if ((target->team == Team::Enemy && coli.tag == L"enemy") || (target->team == Team::Ally && coli.tag == L"ally"))
+		{
+			CreateEffect();
+			destroy = true;
+		}
 	}
+
 }
 
 void CBullet::SetCollider(float left, float bottom, float right, float top)

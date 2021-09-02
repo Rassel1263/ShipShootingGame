@@ -18,6 +18,7 @@ public:
 	
 	float damage = 0.0f;
 
+	float uiTime = 2.0f;
 	Unit* owner = NULL;
 	D3DXVECTOR2 offset;
 
@@ -29,5 +30,6 @@ public:
 	virtual void Update(float deltaTime) override;
 	virtual void Render() override;
 	virtual void Shoot();
+	void SpawnUI();
 };
 

@@ -25,8 +25,6 @@ Torpedo::Torpedo(D3DXVECTOR2 pos, Unit* target, float damage) : CBullet(pos, tar
 		ri.rotate = 90;
 	}
 
-	layer = 1;
-
 	SetCollider(-10, -10, 10, 10);
 }
 

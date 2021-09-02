@@ -10,13 +10,32 @@ Mine::Mine(D3DXVECTOR2 pos)
 	range.LoadAll(L"Assets/Sprites/Obstacle/mineRange.png");
 
 	Collider::AABB aabb;
-	aabb.min = { -10, -10 };
-	aabb.max = { 10, 10 };
-	bodies.push_back(Collider(L"mine", this, &aabb));
+	aabb.min = { -75, -75};
+	aabb.max = { 75, 75};
+	bodies.push_back(Collider(L"obstacle", this, &aabb));
+
+
+	hitTime = 0.1f;
+
+	layer = 6;
 }
 
 void Mine::Update(float deltaTime)
 {
+	if (hp <= 0)
+		Destroy();
+
+	if (bHit)
+	{
+		hitTimer += deltaTime;
+
+		if (hitTimer >= hitTime)
+		{
+			hitTimer = 0.0f;
+			bHit = false;
+		}
+	}
+
 	pos.y -= nowScene->player->ability.speed / 2 * deltaTime;
 }
 
@@ -32,9 +51,25 @@ void Mine::Render()
 
 void Mine::OnCollision(Collider& coli)
 {
+	if (coli.tag == L"allybullet")
+	{
+		if (!bHit)
+		{
+			hp--;
+			bHit = true;
+		}
+	}
+
 	if (coli.tag == L"ally")
 	{
-		nowScene->obm.AddObject(new Effect(L"MineBoom", pos, D3DXVECTOR2(1, 1), 0.0f, 1.0f));
-		destroy = true;
+		Destroy();
+		nowScene->player->Hit(30);
+		nowScene->player->speedDown = true;
 	}
+}
+
+void Mine::Destroy()
+{
+	nowScene->obm.AddObject(new Effect(L"MineBoom", pos, D3DXVECTOR2(1, 1), 0.0f, 1.0f));
+	destroy = true;
 }

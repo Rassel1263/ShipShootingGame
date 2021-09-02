@@ -7,7 +7,6 @@ void Game::Check()
 #ifdef _DEBUG
 	screenHeight = 1040;
 #endif // _DEBUG
-
 }
 
 Game::~Game()
@@ -85,7 +84,7 @@ HRESULT Game::Init(HWND hWnd)
 	pd3dDevice->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
 	pd3dDevice->SetTextureStageState(0, D3DTSS_COLORARG2, D3DTA_DIFFUSE);
 
-	ChangeScene(new GameScene());
+	ChangeScene(new MainScene());
 }
 
 void Game::Update(float deltaTime)
@@ -94,6 +93,9 @@ void Game::Update(float deltaTime)
 	{
 		PostQuitMessage(0);
 	}
+
+	if (Input::GetInstance().KeyDown(VK_F2))
+		pause = !pause;
 
 	if (nextScene)
 	{
@@ -104,8 +106,11 @@ void Game::Update(float deltaTime)
 		nextScene = NULL;
 	}
 
+	if(!pause)
 	if (nowScene)
-		nowScene->Update(deltaTime);
+		nowScene->Update(deltaTime * timeScale);
+
+	unScaleTime = deltaTime;
 
 	Input::GetInstance().Update();
 	Camera::GetInstance().Update(deltaTime);
@@ -134,6 +139,10 @@ void Game::Render()
 void Game::ChangeScene(Scene* nextScene)
 {
 	this->nextScene = nextScene;
+
+	MiniMap::GetInstance().ChangeScene();
+	Camera::GetInstance().destCameraPos = { 0, 0 };
+	Camera::GetInstance().cameraPos= { 0, 0 };
 }
 
 void Game::DrawLine(D3DXVECTOR2 p1, D3DXVECTOR2 p2, D3DXMATRIX matrix, D3DCOLOR color)
