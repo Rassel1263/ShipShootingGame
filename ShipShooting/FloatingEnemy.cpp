@@ -8,7 +8,7 @@ FloatingEnemy::FloatingEnemy(D3DXVECTOR2 pos)
 	type = EnemyType::FloatingEnemy;
 
 	spr.LoadAll(L"Assets/Sprites/Unit/Enemy/Float");
-	SetCollider(-30, -100, 30, 100, L"obstacle");
+	SetCollider(-30, -100, 30, 100, L"enemy");
 	this->pos = pos;
 
 	attackTime = 3.0f;
@@ -22,7 +22,7 @@ void FloatingEnemy::Update(float deltaTime)
 	{
 		attackTimer = 0.0f;
 
-		nowScene->obm.AddObject(new Torpedo(pos, nowScene->player, 30));
+		nowScene->obm.AddObject(new Torpedo(pos, nowScene->player, 10));
 	}
 
 	pos.y -= nowScene->player->ability.speed / 2* deltaTime;

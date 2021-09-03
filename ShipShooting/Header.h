@@ -35,6 +35,7 @@
 extern Scene* nowScene;
 #include "GameScene.h"
 #include "MainScene.h"
+#include "RankingScene.h"
 
 
 #include "Game.h"

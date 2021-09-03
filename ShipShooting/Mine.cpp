@@ -1,6 +1,7 @@
 #include "Header.h"
 #include "Mine.h"
 #include "Effect.h"
+#include "CBullet.h"
 
 Mine::Mine(D3DXVECTOR2 pos)
 {
@@ -53,6 +54,8 @@ void Mine::OnCollision(Collider& coli)
 {
 	if (coli.tag == L"allybullet")
 	{
+		if (static_cast<CBullet*>(coli.obj)->type != CBullet::BulletType::Machinegun) return;
+
 		if (!bHit)
 		{
 			hp--;
@@ -65,6 +68,7 @@ void Mine::OnCollision(Collider& coli)
 		Destroy();
 		nowScene->player->Hit(30);
 		nowScene->player->speedDown = true;
+		nowScene->player->prevSpeed = nowScene->player->ability.speed;
 	}
 }
 

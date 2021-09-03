@@ -1,5 +1,6 @@
 #include "Header.h"
 #include "Trash.h"
+#include "CBullet.h"
 
 Trash::Trash(D3DXVECTOR2 pos)
 {
@@ -47,6 +48,8 @@ void Trash::OnCollision(Collider& coli)
 {
 	if (coli.tag == L"allybullet")
 	{
+		if (static_cast<CBullet*>(coli.obj)->type == CBullet::BulletType::Missile) return;
+
 		if (!bHit)
 		{
 			hp--;
@@ -55,5 +58,11 @@ void Trash::OnCollision(Collider& coli)
 	}
 
 	if (coli.tag == L"ally")
-		nowScene->player->speedDown = true;
+	{
+		if (!nowScene->player->speedDown)
+		{
+			nowScene->player->prevSpeed = nowScene->player->ability.speed;
+			nowScene->player->speedDown = true;
+		}
+	}
 }

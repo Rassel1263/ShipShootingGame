@@ -391,10 +391,12 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <None Include="cpp.hint" />
     <None Include="DXUT\Optional\directx.ico" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BigShip.cpp" />
+    <ClCompile Include="BossIntro.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Cannon.cpp" />
     <ClCompile Include="CBullet.cpp" />
@@ -403,11 +405,14 @@
     <ClCompile Include="ColorShader.cpp" />
     <ClCompile Include="CWeapon.cpp" />
     <ClCompile Include="Effect.cpp" />
+    <ClCompile Include="BossBullet.cpp" />
     <ClCompile Include="EnemyManager.cpp" />
     <ClCompile Include="FloatingEnemy.cpp" />
     <ClCompile Include="FlyingEnemy.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameScene.cpp" />
+    <ClCompile Include="Help.cpp" />
+    <ClCompile Include="HitBox.cpp" />
     <ClCompile Include="HomingBullet.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Item.cpp" />
@@ -422,6 +427,9 @@
     <ClCompile Include="Ocean.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerUI.cpp" />
+    <ClCompile Include="Rank.cpp" />
+    <ClCompile Include="Ranking.cpp" />
+    <ClCompile Include="RankingScene.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="ShaderManager.cpp" />
     <ClCompile Include="ShipShooting.cpp" />
@@ -431,9 +439,11 @@
     <ClCompile Include="TorpedoLauncher.cpp" />
     <ClCompile Include="Trash.cpp" />
     <ClCompile Include="Unit.cpp" />
+    <ClCompile Include="YouDie.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BigShip.h" />
+    <ClInclude Include="BossIntro.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Cannon.h" />
     <ClInclude Include="CBullet.h" />
@@ -442,6 +452,7 @@
     <ClInclude Include="ColorShader.h" />
     <ClInclude Include="CWeapon.h" />
     <ClInclude Include="Effect.h" />
+    <ClInclude Include="BossBullet.h" />
     <ClInclude Include="EnemyManager.h" />
     <ClInclude Include="FloatingEnemy.h" />
     <ClInclude Include="FlyingEnemy.h" />
@@ -449,6 +460,8 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="Header.h" />
+    <ClInclude Include="Help.h" />
+    <ClInclude Include="HitBox.h" />
     <ClInclude Include="HomingBullet.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="Item.h" />
@@ -463,6 +476,9 @@
     <ClInclude Include="Ocean.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerUI.h" />
+    <ClInclude Include="Rank.h" />
+    <ClInclude Include="Ranking.h" />
+    <ClInclude Include="RankingScene.h" />
     <CLInclude Include="resource.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="ShaderManager.h" />
@@ -473,6 +489,7 @@
     <ClInclude Include="TorpedoLauncher.h" />
     <ClInclude Include="Trash.h" />
     <ClInclude Include="Unit.h" />
+    <ClInclude Include="YouDie.h" />
     <ResourceCompile Include="ShipShooting.rc" />
   </ItemGroup>
   <ItemGroup>

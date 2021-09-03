@@ -30,6 +30,8 @@ public:
 	float skill2CoolTime = 10.0f;
 
 	float speedUpTime = 0.0f;
+	float prevSpeed = 0.0f;
+	float minSpeed = 0.0f;
 	float invincibleTime = 0.0f;
 
 	float speedDownTime = 0.0f;

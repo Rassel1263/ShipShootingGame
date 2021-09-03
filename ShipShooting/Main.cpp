@@ -1,5 +1,7 @@
 #include "Header.h"
 #include "Main.h"
+#include "Help.h"
+#include "Rank.h"
 
 Main::Main()
 {
@@ -44,8 +46,10 @@ void Main::Update(float deltaTime)
 			Game::GetInstance().ChangeScene(new GameScene());
 			break;
 		case 1:
+			nowScene->obm.AddObject(new Help());
 			break;
 		case 2:
+			nowScene->obm.AddObject(new Rank());
 			break;
 		case 3:
 			PostQuitMessage(0);

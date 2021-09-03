@@ -18,6 +18,8 @@ public:
 	float attackTime = 0.0f;
 	float attackTimer = 0.0f;
 
+	int cannonIndex = 0;
+
 	ColorShader* colorShader = NULL;
 
 	CEnemy();

@@ -2,8 +2,9 @@
 #include "HomingBullet.h"
 #include "Effect.h"
 
-HomingBullet::HomingBullet(D3DXVECTOR2 pos, Unit* target, float damage, float angle) : CBullet(pos, target, damage)
+HomingBullet::HomingBullet(D3DXVECTOR2 pos, Unit* target, float damage, float angle, float startTime) : CBullet(pos, target, damage)
 {
+	type = BulletType::Missile;
 	this->pos = pos;
 
 	if (target->team == Team::Enemy)
@@ -12,7 +13,7 @@ HomingBullet::HomingBullet(D3DXVECTOR2 pos, Unit* target, float damage, float an
 		spr.LoadAll(L"Assets/Sprites/Unit/Bullet/Missile2.png");
 
 	turnSpeed = D3DXToRadian(10);
-	startTime = 0.5f;
+	this->startTime = startTime;
 
 	this->angle = D3DXToRadian(angle);
 	ri.rotate = -angle;

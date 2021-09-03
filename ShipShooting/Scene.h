@@ -15,6 +15,7 @@ public:
 	float miniSecond = 0.0f;
 
 	bool stopTime = false;
+	bool spawnBoss = false;
 
 	int curStage = 0;
 	Scene* nextScene = NULL;

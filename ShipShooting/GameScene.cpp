@@ -8,6 +8,7 @@
 #include "PlayerUI.h"
 #include "Font.h"
 #include "Item.h"
+#include "BossIntro.h"
 
 void GameScene::Init()
 {
@@ -20,8 +21,7 @@ void GameScene::Init()
 	obm.AddObject(new Ocean());
 	obm.AddObject(new Mine(D3DXVECTOR2(0, -100)));
 	obm.AddObject(new Trash(D3DXVECTOR2(0, 200)));
-	enemyManager.Init(10.0f, 10.0f);
-	enemyManager.SpawnEnemy(D3DXVECTOR2(0, 200), EnemyType::FlyingEnemy);
+	enemyManager.Init(5.0f, 7.0f);
 
 	obm.AddObject(new Font(L"Number/", minute, D3DXVECTOR2(-120, 450), D3DXVECTOR2(2, 2), 60, 0));
 	obm.AddObject(new Font(L"Number/", second, D3DXVECTOR2(40, 435), D3DXVECTOR2(1, 1), 30, 1));
@@ -30,7 +30,6 @@ void GameScene::Init()
 	obm.AddObject(new Font(L"Number/", score, D3DXVECTOR2(-600, 450), D3DXVECTOR2(2, 2), 60, 3));
 
 	MiniMap::GetInstance().Init();
-	//enemyManager.SpawnEnemy(D3DXVECTOR2(0, 300), EnemyType::BigShip);
 
 	//enemyManager.SpawnEnemy(D3DXVECTOR2(0, 200), EnemyType::FloatingEnemy);
 	//enemyManager.SpawnEnemy(D3DXVECTOR2(200, 200), EnemyType::FlyingEnemy);
@@ -39,7 +38,13 @@ void GameScene::Init()
 void GameScene::Update(float deltaTime)
 {
 	if (Input::GetInstance().KeyDown('H'))
-		obm.AddObject(new Item(D3DXVECTOR2(), GetRandomNumber(0, 5)));
+	{
+		spawnBoss = true;
+		enemyManager.SpawnEnemy(D3DXVECTOR2(0, 500), EnemyType::BigShip);
+	}
+
+	if (Input::GetInstance().KeyDown(VK_LBUTTON))
+		std::cout << Input::GetInstance().GetFixedMousePos().x << "      " << Input::GetInstance().GetFixedMousePos().y << std::endl;
 
 	if(!stopTime)
 		gameTime -= deltaTime;
@@ -53,7 +58,8 @@ void GameScene::Update(float deltaTime)
 
 	MiniMap::GetInstance().Update(deltaTime);
 
-	enemyManager.SpawnManager(deltaTime);
+	if(!spawnBoss)
+		enemyManager.SpawnManager(deltaTime);
 
 	Scene::Update(deltaTime);
 }

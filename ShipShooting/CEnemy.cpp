@@ -61,6 +61,9 @@ void CEnemy::OnCollision(Collider& coli)
 {
 	if (coli.tag == L"allybullet")
 	{
+		if (type == EnemyType::FloatingEnemy && static_cast<CBullet*>(coli.obj)->type == CBullet::BulletType::Missile) return;
+		if (type == EnemyType::FlyingEnemy && static_cast<CBullet*>(coli.obj)->type == CBullet::BulletType::Torpedo) return;
+
 		if(!bHit)
 			Hit(static_cast<CBullet*>(coli.obj)->damage);
 	}
@@ -70,6 +73,7 @@ void CEnemy::Destroy()
 {
 	nowScene->obm.AddObject(new Effect(L"Die/0", pos, D3DXVECTOR2(1, 1), D3DXVECTOR2(0.5f, 0.5f), 0.05f, 0));
 	nowScene->obm.AddObject(new Item(pos, nowScene->GetRandomNumber(0, 5)));
+	nowScene->AddScore(nowScene->GetRandomNumber(500, 1000));
 	nowScene->enemyManager.SortEnemyGroups(this, type);
 	MiniMap::GetInstance().Term(this);
 

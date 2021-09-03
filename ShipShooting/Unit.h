@@ -15,7 +15,6 @@ public:
 		float hp = 0.0f;
 		float maxHp = 0.0f;
 		float speed = 0.0f;
-		float maxSpeed = 0.0f;
 	} ability;
 
 	Team team = Team::Ally;
@@ -26,6 +25,9 @@ public:
 	Unit* target = NULL;
 
 	bool bHit = false;
+
+	float maxSpeed = 0.0f;
+	float minSpeed = 0.0f;
 
 	float hitTimer = 0.0f;
 	float hitTime = 0.0f;

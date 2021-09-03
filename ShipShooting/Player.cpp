@@ -7,6 +7,8 @@
 #include "Torpedo.h"
 #include "TorpedoLauncher.h"
 #include "EnemyManager.h"
+#include "YouDie.h"
+#include "HitBox.h"
 
 Player::Player()
 {
@@ -24,11 +26,17 @@ Player::Player()
 
 	MiniMap::GetInstance().AddMiniObject(MINITAG::PLAYER, &pos, this);
 
+	hitTime = 1.0f;
 	skill2CoolTime = 0.0f;
+
+	maxSpeed = 300;
+	minSpeed = 100;
 }
 
 void Player::Update(float deltaTime)
 {
+	if (ability.hp <= 0) return;
+
 	CameraControll();
 
 	Move(deltaTime);
@@ -52,8 +60,10 @@ void Player::Update(float deltaTime)
 		}
 	}
 
-	if (Input::GetInstance().KeyPress('G'))
-		nowScene->AddScore(500);
+	
+
+	if (Input::GetInstance().KeyPress('H'))
+		Hit(20);
 
 	spr.Update(deltaTime);
 }
@@ -70,18 +80,22 @@ bool Player::Move(float deltaTime)
 {
 	D3DXVECTOR2 moveDir = { 0, 0 };
 	
-	if (ability.speed < ability.maxSpeed)
+	if (ability.speed < maxSpeed)
 		ability.speed += 150 * deltaTime;
 
 	if (Input::GetInstance().KeyPress(VK_DOWN))
 	{
-		if (ability.speed > 100)
+		if (ability.speed > minSpeed)
 			ability.speed -= 200 * deltaTime;
 	}
 	if (Input::GetInstance().KeyPress(VK_RIGHT))
+	{
 		moveDir.x = 1;
+	}
 	if (Input::GetInstance().KeyPress(VK_LEFT))
+	{
 		moveDir.x = -1;
+	}
 
 	D3DXVec2Normalize(&moveDir, &moveDir);
 
@@ -95,17 +109,21 @@ bool Player::Move(float deltaTime)
 void Player::Hit(float damage)
 {
 	if (god || invincible) return;
+	if (bHit) return;
 
 	bHit = true;
 	this->ability.hp -= damage;
 	nowScene->obm.AddObject(new Effect(L"ouch.png", D3DXVECTOR2(0, 0), D3DXVECTOR2(1, 1), 0, 1.0f, false));
+	
+	if (ability.hp <= 0)
+		nowScene->obm.AddObject(new YouDie());
 }
 
 void Player::OnCollision(Collider& coli)
 {
 	if (coli.tag == L"enemybullet")
 	{
-			Hit(static_cast<CBullet*>(coli.obj)->damage);
+		Hit(static_cast<CBullet*>(coli.obj)->damage);
 	}
 }
 
@@ -299,7 +317,7 @@ void Player::UpdateEffect(float deltaTime)
 			speedUp = false;
 			speedUpTime = 0.0f;
 			ability.speed = 300;
-			ability.maxSpeed = 300;
+			maxSpeed = 300;
 		}
 	}
 
@@ -318,7 +336,10 @@ void Player::UpdateEffect(float deltaTime)
 	if (speedDown)
 	{
 		speedDownTime += deltaTime;
-		ability.speed = ability.maxSpeed / 2;
+		ability.speed = prevSpeed / 2;
+
+		if (ability.speed < minSpeed)
+			ability.speed = minSpeed;
 
 		if (speedDownTime >= 2.0f)
 		{
@@ -342,7 +363,7 @@ void Player::GetItemEffective(int index)
 		torpedLauncher->bulletAmount += 3;
 		break;
 	case 3:
-		ability.maxSpeed = 500;
+		maxSpeed = 500;
 		speedUp = true;
 		break;
 	case 4:

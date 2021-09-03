@@ -4,6 +4,8 @@
 
 MachinegunBullet::MachinegunBullet(D3DXVECTOR2 pos, Unit* target, float damage) : CBullet(pos, target, damage)
 {
+	type = BulletType::Machinegun;
+
 	spr.LoadAll(L"Assets/Sprites/Unit/Bullet/machine.png");
 
 	if (target)

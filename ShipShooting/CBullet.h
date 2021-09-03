@@ -2,6 +2,14 @@
 class CBullet : public Object
 {
 public:
+	enum class BulletType
+	{
+		Machinegun,
+		Cannon,
+		Torpedo,
+		Missile,
+	} type;
+
 	float angle = 0.0f;
 
 	Sprite spr;

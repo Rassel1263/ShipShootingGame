@@ -30,9 +30,11 @@ void FlyingEnemy::Update(float deltaTime)
 			else
 				fixRotate = 270 + nowScene->GetRandomNumber(0, 45);
 
-			nowScene->obm.AddObject(new HomingBullet(pos + D3DXVECTOR2(20 - 20 * i, 0), nowScene->player, 30, fixRotate));
+			nowScene->obm.AddObject(new HomingBullet(pos + D3DXVECTOR2(20 - 20 * i, 0), nowScene->player, 10, fixRotate, false));
 		}
 	}
+
+	pos.y -= nowScene->player->ability.speed / 2 * deltaTime;
 
 	CEnemy::Update(deltaTime);
 }
@@ -45,4 +47,9 @@ void FlyingEnemy::Render()
 void FlyingEnemy::Destroy()
 {
 	CEnemy::Destroy();
+}
+
+void FlyingEnemy::OnCollision(Collider& coli)
+{
+	CEnemy::OnCollision(coli);
 }

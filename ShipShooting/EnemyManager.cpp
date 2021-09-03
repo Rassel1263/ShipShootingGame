@@ -85,7 +85,7 @@ void EnemyManager::SpawnManager(float deltaTime)
 		nowScene->obm.AddObject(new Effect(L"enemyPos.png", randPos, D3DXVECTOR2(1, 1), 0, 1.0f, true, 0, lambda));
 	}
 
-	/*if (airSpawnTimer >= airSpawnTime)
+	if (airSpawnTimer >= airSpawnTime)
 	{
 		airSpawnTimer = 0.0f;
 
@@ -94,6 +94,6 @@ void EnemyManager::SpawnManager(float deltaTime)
 		auto lambda = [=] {SpawnEnemy(randPos + D3DXVECTOR2(0, 300), EnemyType::FlyingEnemy); };
 
 
-		nowScene->obm.AddObject(new Effect(L"enemyPos.png", randPos, D3DXVECTOR2(1, 1), 0, 1.0f, 0, lambda));
-	}*/
+		nowScene->obm.AddObject(new Effect(L"enemyPos.png", randPos, D3DXVECTOR2(1, 1), 0, 1.0f, true, 0, lambda));
+	}
 }

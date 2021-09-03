@@ -74,7 +74,7 @@ void PlayerUI::Update(float deltaTime)
 {
 	hp.heightRatio = 1 - player->ability.hp / player->ability.maxHp;
 
-	speed.heightRatio = 1 - player->ability.speed / player->ability.maxSpeed;
+	speed.heightRatio = 1 - player->ability.speed / player->maxSpeed;
 
 	weaponCools[0].heightRatio = 1- player->machineGun->reloadTimer / player->machineGun->reloadTime; 
 	weaponCools[1].heightRatio = 1 - player->cannon->reloadTimer / player->cannon->reloadTime;

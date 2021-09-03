@@ -22,7 +22,7 @@ CBullet::CBullet(D3DXVECTOR2 pos, Unit* target, float damage)
 
 void CBullet::Update(float deltaTime)
 {
-	if (pos.x <= -900 || pos.x >= 900 || pos.y <= -600 || pos.y >= 600)
+	if (pos.x <= -1200 || pos.x >= 1200 || pos.y <= -600 || pos.y >= 600)
 		destroy = true;
 
 	spr.Update(deltaTime);
@@ -42,6 +42,12 @@ void CBullet::OnCollision(Collider& coli)
 
 	if (target)
 	{
+		if (team == L"ally")
+		{
+			if (type == BulletType::Torpedo && static_cast<CEnemy*>(coli.obj)->type != EnemyType::FloatingEnemy) return;
+			if (type == BulletType::Missile && static_cast<CEnemy*>(coli.obj)->type != EnemyType::FlyingEnemy) return;
+		}
+
 		if ((target->team == Team::Enemy && coli.tag == L"enemy") || (target->team == Team::Ally && coli.tag == L"ally"))
 		{
 			CreateEffect();

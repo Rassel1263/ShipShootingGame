@@ -11,7 +11,8 @@ Ocean::Ocean()
 
 void Ocean::Update(float deltaTime)
 {
-	pos.y -= deltaTime* nowScene->player->ability.speed;
+	if(!nowScene->spawnBoss)
+		pos.y -= deltaTime* nowScene->player->ability.speed;
 
 	if (pos.y <= -1080)
 		pos.y = 0;

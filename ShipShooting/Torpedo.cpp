@@ -5,6 +5,7 @@
 Torpedo::Torpedo(D3DXVECTOR2 pos, Unit* target, float damage) : CBullet(pos, target, damage)
 {
 	this->pos = pos;
+	this->type = BulletType::Torpedo;
 
 	startTime = 0.5f;
 
