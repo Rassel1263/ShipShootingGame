@@ -5,6 +5,7 @@
 TorpedoLauncher::TorpedoLauncher(Unit* owner) : CWeapon(owner, D3DXVECTOR2(0, 0))
 {
 	shootInterval = 0.3f;
+	bulletMaxAmount = 15;
 	bulletAmount = 15;
 	damage = 10;
 }

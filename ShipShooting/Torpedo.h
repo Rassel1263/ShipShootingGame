@@ -4,6 +4,8 @@
 class Torpedo : public CBullet
 {
 public:
+	bool homing = true;
+
 	float startTime = 0.0f;
 	float turnSpeed = 0.0f;
 	float turnTime = 0.0f;

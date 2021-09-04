@@ -34,7 +34,7 @@ void FlyingEnemy::Update(float deltaTime)
 		}
 	}
 
-	pos.y -= nowScene->player->ability.speed / 2 * deltaTime;
+	pos.y -= nowScene->player->ability.speed / 1.5 * deltaTime;
 
 	CEnemy::Update(deltaTime);
 }

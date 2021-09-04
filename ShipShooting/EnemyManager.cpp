@@ -2,6 +2,7 @@
 #include "EnemyManager.h"
 #include "Effect.h"
 #include "BigShip.h"
+#include "BigPlane.h"
 
 void EnemyManager::Init(float floatSpawnTime, float airSpawnTime)
 {
@@ -37,8 +38,19 @@ void EnemyManager::SpawnEnemy(D3DXVECTOR2 pos, EnemyType enemyType)
 		FloatingEnemy* floatingEnemy;
 		nowScene->obm.AddObject(floatingEnemy = new BigShip(pos));
 		floatingEnemys.push_back(floatingEnemy);
+		boss = floatingEnemy;
 		enemy = floatingEnemy;
 	}
+
+	if (enemyType == EnemyType::BigShip)
+	{
+		FlyingEnemy *flyingEnemy;
+		nowScene->obm.AddObject(flyingEnemy = new BigPlane(pos));
+		flyingEnemys.push_back(flyingEnemy);
+		boss = flyingEnemy;
+		enemy = flyingEnemy;
+	}
+
 
 	allEnemys.push_back(enemy);
 }
@@ -89,7 +101,7 @@ void EnemyManager::SpawnManager(float deltaTime)
 	{
 		airSpawnTimer = 0.0f;
 
-		D3DXVECTOR2 randPos = D3DXVECTOR2(nowScene->GetRandomNumber(-300, 300), 300);
+		D3DXVECTOR2 randPos = D3DXVECTOR2(nowScene->GetRandomNumber(-300, 300), 450);
 
 		auto lambda = [=] {SpawnEnemy(randPos + D3DXVECTOR2(0, 300), EnemyType::FlyingEnemy); };
 

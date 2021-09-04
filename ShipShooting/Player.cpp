@@ -9,6 +9,7 @@
 #include "EnemyManager.h"
 #include "YouDie.h"
 #include "HitBox.h"
+#include "Item.h"
 
 Player::Player()
 {
@@ -36,15 +37,17 @@ Player::Player()
 void Player::Update(float deltaTime)
 {
 	if (ability.hp <= 0) return;
+	if (!stop)
+	{
+		CameraControll();
+		Move(deltaTime);
 
-	CameraControll();
-
-	Move(deltaTime);
-	SetWeaponPos();
-	ShootControll();
-	FirstSkillControll(deltaTime);
-	SecondSkillControll(deltaTime);
-	UpdateEffect(deltaTime);
+		SetWeaponPos();
+		ShootControll();
+		FirstSkillControll(deltaTime);
+		SecondSkillControll(deltaTime);
+		UpdateEffect(deltaTime);
+	}
 
 	if (uiTime > 0.0f)
 		uiTime -= deltaTime;
@@ -59,11 +62,6 @@ void Player::Update(float deltaTime)
 			bHit = false;
 		}
 	}
-
-	
-
-	if (Input::GetInstance().KeyPress('H'))
-		Hit(20);
 
 	spr.Update(deltaTime);
 }
@@ -114,6 +112,7 @@ void Player::Hit(float damage)
 	bHit = true;
 	this->ability.hp -= damage;
 	nowScene->obm.AddObject(new Effect(L"ouch.png", D3DXVECTOR2(0, 0), D3DXVECTOR2(1, 1), 0, 1.0f, false));
+	Camera::GetInstance().cameraQuaken = { 10, 10 };
 	
 	if (ability.hp <= 0)
 		nowScene->obm.AddObject(new YouDie());
@@ -228,6 +227,7 @@ void Player::ShootControll()
 
 	if (Input::GetInstance().KeyDown('W'))
 	{
+		
 		SetTarget(EnemyType::None);
 		cannon->Shoot();
 	}
@@ -358,9 +358,15 @@ void Player::GetItemEffective(int index)
 		break;
 	case 1:
 		torpedLauncher->bulletAmount += 5;
+
+		if(torpedLauncher->bulletAmount >= torpedLauncher->bulletMaxAmount)
+			torpedLauncher->bulletAmount = torpedLauncher->bulletMaxAmount;
 		break;
 	case 2:
-		torpedLauncher->bulletAmount += 3;
+		turret->bulletAmount += 3;
+
+		if (turret->bulletAmount >= turret->bulletMaxAmount)
+			turret->bulletAmount = turret->bulletMaxAmount;
 		break;
 	case 3:
 		maxSpeed = 500;

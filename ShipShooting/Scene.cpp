@@ -12,7 +12,7 @@ void Scene::Update(float deltaTime)
 	if (destScore > 0.0f)
 	{
 		float tempScore = destScore;
-		destScore -= 500 * deltaTime;
+		destScore -= 1000 * deltaTime;
 		score += tempScore - destScore;
 	}
 
@@ -37,6 +37,9 @@ void Scene::Update(float deltaTime)
 		Game::GetInstance().ChangeScene(new GameScene());
 
 	if (Input::GetInstance().KeyDown(VK_F6))
+		Game::GetInstance().ChangeScene(new GameScene2());
+
+	if (Input::GetInstance().KeyDown(VK_F7))
 		Game::GetInstance().ChangeScene(new RankingScene());
 
 	obm.Collision();

@@ -4,12 +4,17 @@
 
 void RankingScene::Init()
 {
+	Camera::GetInstance().destCameraPos = { 0, 0 };
+	Camera::GetInstance().cameraPos = { 0, 0 };
+
 	nowScene->obm.AddObject(new Ranking());
 }
 
 void RankingScene::Update(float deltaTime)
 {
 	obm.Update(deltaTime);
+
+	Scene::Update(deltaTime);
 }
 
 void RankingScene::Render()

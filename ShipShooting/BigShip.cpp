@@ -4,6 +4,7 @@
 #include "HitBox.h"
 #include "BossBullet.h"
 #include "BossIntro.h"
+#include "CalcPage.h"
 
 BigShip::BigShip(D3DXVECTOR2 pos) : FloatingEnemy(pos)
 {
@@ -12,7 +13,7 @@ BigShip::BigShip(D3DXVECTOR2 pos) : FloatingEnemy(pos)
 	spr.LoadAll(L"Assets/Sprites/Unit/Boss/boss1.png");
 
 	SetCollider(-900, -100, 900, 100, L"enemy");
-	SetAbility(1000, 0);
+	SetAbility(100, 0);
 
 	cannon.LoadAll(L"Assets/Sprites/Unit/Boss/Weapon/cannon.png");
 	cannonInfo.resize(4);
@@ -39,12 +40,15 @@ BigShip::BigShip(D3DXVECTOR2 pos) : FloatingEnemy(pos)
 
 	nowScene->obm.AddObject(new BossIntro(intro));
 
+	outroTime = 10.0f;
+	effectTime = 1.0f;
 	restTime = 1.0f;
 }
 
 void BigShip::Update(float deltaTime)
 {
 	if (Intro(deltaTime)) return;
+	if (Outro(deltaTime)) return;
 
 	UpdatePattern(deltaTime);
 
@@ -135,7 +139,10 @@ void BigShip::WeaponRender(Sprite weapon, std::vector<RenderInfo> weaponInfo)
 
 	int size = weaponInfo.size();
 	for (int i = 0; i < size; ++i)
+	{
+		weapon.color.a = spr.color.a;
 		weapon.Render(weaponInfo[i]);
+	}
 }
 
 void BigShip::WeaponRotate(std::vector<RenderInfo>& weaponInfo)
@@ -168,8 +175,53 @@ bool BigShip::Intro(float deltaTime)
 		return false;
 	}
 
-
 	return true;
+}
+
+bool BigShip::Outro(float deltaTime)
+{
+	if (ability.hp <= 0)
+	{
+		Camera::GetInstance().destCameraPos = pos;
+		nowScene->player->stop = true;
+
+		bHit = false;
+		nowScene->stopTime = true;
+
+		outroTime -= deltaTime;
+		effectTimer += deltaTime;
+
+		if (outroTime <= 0.0f)
+		{
+			spr.color.a -= deltaTime;
+
+			if (spr.color.a < 0.0f)
+			{
+				nowScene->obm.AddObject(new CalcPage());
+				destroy = true;
+			}
+		}
+		else
+		{
+			if (effectTimer >= effectTime)
+			{
+				for (int i = 0; i < effectAmount; ++i)
+					nowScene->obm.AddObject(new Effect(L"ECannon", pos + D3DXVECTOR2(nowScene->GetRandomNumber(-800, 800), nowScene->GetRandomNumber(-80, 80)), D3DXVECTOR2(2, 2), D3DXVECTOR2(0.5, 0.5), 0.05f, 0));
+
+				effectTimer = 0.0f;
+				effectTime -= 0.05f;
+
+				Camera::GetInstance().cameraQuaken = D3DXVECTOR2( 10 - outroTime, 10 - outroTime ) * 2;
+
+				effectAmount++;
+			}
+		}
+		
+
+		return true;
+	}
+
+	return false;
 }
 
 bool BigShip::Pattern1(float deltaTime)

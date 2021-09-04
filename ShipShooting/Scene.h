@@ -13,6 +13,8 @@ public:
 	float minute = 0.0f;
 	float second = 0.0f;
 	float miniSecond = 0.0f;
+	float progress = 0.0f;
+	float maxProgress = 0.0f;
 
 	bool stopTime = false;
 	bool spawnBoss = false;

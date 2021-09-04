@@ -2,12 +2,13 @@
 #include "Mine.h"
 #include "Effect.h"
 #include "CBullet.h"
+#include "Item.h"
 
 Mine::Mine(D3DXVECTOR2 pos)
 {
 	this->pos = pos;
 
-	spr.LoadAll(L"Assets/Sprites/Obstacle/mine.png");
+	spr.LoadAll(L"Assets/Sprites/Obstacle/Mine");
 	range.LoadAll(L"Assets/Sprites/Obstacle/mineRange.png");
 
 	Collider::AABB aabb;
@@ -24,7 +25,7 @@ Mine::Mine(D3DXVECTOR2 pos)
 void Mine::Update(float deltaTime)
 {
 	if (hp <= 0)
-		Destroy();
+		Destroy(false);
 
 	if (bHit)
 	{
@@ -37,7 +38,10 @@ void Mine::Update(float deltaTime)
 		}
 	}
 
-	pos.y -= nowScene->player->ability.speed / 2 * deltaTime;
+	pos.y -= nowScene->player->ability.speed / 2.5 * deltaTime;
+
+	spr.Update(deltaTime);
+
 }
 
 void Mine::Render()
@@ -65,15 +69,19 @@ void Mine::OnCollision(Collider& coli)
 
 	if (coli.tag == L"ally")
 	{
-		Destroy();
+		Destroy(true);
 		nowScene->player->Hit(30);
 		nowScene->player->speedDown = true;
 		nowScene->player->prevSpeed = nowScene->player->ability.speed;
 	}
+
 }
 
-void Mine::Destroy()
+void Mine::Destroy(bool explosion)
 {
-	nowScene->obm.AddObject(new Effect(L"MineBoom", pos, D3DXVECTOR2(1, 1), 0.0f, 1.0f));
+	if(!explosion)
+		nowScene->obm.AddObject(new Item(pos, nowScene->GetRandomNumber(0, 5)));
+
+	nowScene->obm.AddObject(new Effect(L"Mine", pos, D3DXVECTOR2(1, 1), D3DXVECTOR2(0.5, 0.5), 0.05f, 0));
 	destroy = true;
 }

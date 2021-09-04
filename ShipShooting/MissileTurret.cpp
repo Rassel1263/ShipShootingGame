@@ -7,6 +7,7 @@ MissileTurret::MissileTurret(Unit* owner, D3DXVECTOR2 offset) : CWeapon(owner, o
 	spr.LoadAll(L"Assets/Sprites/Unit/Player/Weapon/MissileTurret.png");
 
 	shootInterval = 0.3f;
+	bulletMaxAmount = 10;
 	bulletAmount = 10;
 	damage = 15;
 }

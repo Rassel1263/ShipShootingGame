@@ -1,6 +1,14 @@
 #include "Header.h"
 #include "Object.h"
 
+inline bool Check(Object* obj)
+{
+	if (obj->destroy)
+		return true;
+	else
+		return false;
+}
+
 void Object::Update(float deltaTime)
 {
 }
@@ -89,17 +97,10 @@ void ObjectManager::Update(float deltaTime)
 
 	std::sort(objects.begin(), objects.end(), [](const Object* rhs, const Object* lhs) { return rhs->layer < lhs->layer; });
 
-	for (auto it = objects.begin(); it != objects.end(); )
-	{
-		(*it)->Update(deltaTime);
-		if ((*it)->destroy)
-		{
-			SAFE_DELETE((*it));
-			it = objects.erase(it);
-		}
-		else
-			++it;
-	}
+	for (auto& object : objects)
+		object->Update(deltaTime);
+
+	objects.erase(std::remove_if(objects.begin(), objects.end(), Check), objects.end());
 }
 
 void ObjectManager::Render()

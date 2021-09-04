@@ -13,10 +13,9 @@
 #include <fstream>
 #include <random>
 
-#include "Header.h"
-
 #include "Singleton.h"
 #include "Input.h"
+#include "Time.h"
 
 #include "Texture.h"
 #include "Sprite.h"
@@ -34,6 +33,7 @@
 #include "Scene.h"
 extern Scene* nowScene;
 #include "GameScene.h"
+#include "GameScene2.h"
 #include "MainScene.h"
 #include "RankingScene.h"
 

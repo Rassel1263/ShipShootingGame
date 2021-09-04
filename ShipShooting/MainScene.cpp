@@ -4,6 +4,8 @@
 
 void MainScene::Init()
 {
+	score = 0.0f;
+
 	obm.AddObject(new Main());
 }
 

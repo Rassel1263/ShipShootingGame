@@ -108,9 +108,8 @@ void Game::Update(float deltaTime)
 
 	if(!pause)
 	if (nowScene)
-		nowScene->Update(deltaTime * timeScale);
+		nowScene->Update(deltaTime * Time::GetInstance().timeScale);
 
-	unScaleTime = deltaTime;
 
 	Input::GetInstance().Update();
 	Camera::GetInstance().Update(deltaTime);

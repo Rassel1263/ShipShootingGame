@@ -8,11 +8,12 @@
 #include "PlayerUI.h"
 #include "Font.h"
 #include "Item.h"
-#include "BossIntro.h"
+#include "YouDie.h"
 
 void GameScene::Init()
 {
 	curStage = 1;
+	nextScene = new GameScene2();
 
 	ShaderManager::GetInstance().CreateEffect("Color", L"Assets/Shader/colorShader.fx", 1);
 
@@ -31,23 +32,46 @@ void GameScene::Init()
 
 	MiniMap::GetInstance().Init();
 
+	maxProgress = 27000;
+
+
 	//enemyManager.SpawnEnemy(D3DXVECTOR2(0, 200), EnemyType::FloatingEnemy);
 	//enemyManager.SpawnEnemy(D3DXVECTOR2(200, 200), EnemyType::FlyingEnemy);
 }
 
 void GameScene::Update(float deltaTime)
 {
-	if (Input::GetInstance().KeyDown('H'))
+	if (Input::GetInstance().KeyDown('J'))
 	{
+		progress = maxProgress;
 		spawnBoss = true;
 		enemyManager.SpawnEnemy(D3DXVECTOR2(0, 500), EnemyType::BigShip);
 	}
 
-	if (Input::GetInstance().KeyDown(VK_LBUTTON))
-		std::cout << Input::GetInstance().GetFixedMousePos().x << "      " << Input::GetInstance().GetFixedMousePos().y << std::endl;
+	if (Input::GetInstance().KeyDown('Y'))
+		AddScore(1000);
 
-	if(!stopTime)
+	if (Input::GetInstance().KeyDown(VK_CONTROL))
+		Time::GetInstance().timeScale = 10.0f;
+
+	if(Input::GetInstance().KeyUp(VK_CONTROL))
+		Time::GetInstance().timeScale = 1.0f;
+
+	if (!stopTime)
 		gameTime -= deltaTime;
+
+	if (gameTime <= 0.0f)
+		obm.AddObject(new YouDie());
+
+	if (progress >= maxProgress && !spawnBoss)
+	{
+		progress = maxProgress;
+		spawnBoss = true;
+		enemyManager.SpawnEnemy(D3DXVECTOR2(0, 500), EnemyType::BigShip);
+	}
+	
+	if(progress < maxProgress)
+		progress += player->ability.speed * deltaTime;
 
 	trashSpawnTime += deltaTime;
 	if (trashSpawnTime >= 3.0f)
@@ -67,5 +91,7 @@ void GameScene::Update(float deltaTime)
 void GameScene::Render()
 {
 	Scene::Render();
-	MiniMap::GetInstance().Render();
+
+	if(Time::GetInstance().timeScale != 0.0f)
+		MiniMap::GetInstance().Render();
 }

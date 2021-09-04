@@ -395,8 +395,10 @@
     <None Include="DXUT\Optional\directx.ico" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BigPlane.cpp" />
     <ClCompile Include="BigShip.cpp" />
     <ClCompile Include="BossIntro.cpp" />
+    <ClCompile Include="CalcPage.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Cannon.cpp" />
     <ClCompile Include="CBullet.cpp" />
@@ -411,6 +413,7 @@
     <ClCompile Include="FlyingEnemy.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameScene.cpp" />
+    <ClCompile Include="GameScene2.cpp" />
     <ClCompile Include="Help.cpp" />
     <ClCompile Include="HitBox.cpp" />
     <ClCompile Include="HomingBullet.cpp" />
@@ -442,8 +445,10 @@
     <ClCompile Include="YouDie.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BigPlane.h" />
     <ClInclude Include="BigShip.h" />
     <ClInclude Include="BossIntro.h" />
+    <ClInclude Include="CalcPage.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Cannon.h" />
     <ClInclude Include="CBullet.h" />
@@ -459,6 +464,7 @@
     <ClInclude Include="Font.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameScene.h" />
+    <ClInclude Include="GameScene2.h" />
     <ClInclude Include="Header.h" />
     <ClInclude Include="Help.h" />
     <ClInclude Include="HitBox.h" />
@@ -485,6 +491,7 @@
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Texture.h" />
+    <ClInclude Include="Time.h" />
     <ClInclude Include="Torpedo.h" />
     <ClInclude Include="TorpedoLauncher.h" />
     <ClInclude Include="Trash.h" />

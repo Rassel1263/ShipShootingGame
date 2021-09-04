@@ -67,6 +67,14 @@ PlayerUI::PlayerUI(Player* player)
 	fontInfo[2].pos = { 680, -484 };
 	fontInfo[3].pos = { 840, -481 };
 
+	progressBck.LoadAll(L"Assets/Sprites/UI/progressBck.png");
+	progressBck.bCamera = false;
+	progress.LoadAll(L"Assets/Sprites/UI/progress.png");
+	progress.bCamera = false;
+
+	progressObj.LoadAll(L"Assets/Sprites/UI/progressObj.png");
+	progressObj.bCamera = false;
+
 	layer = 10;
 }
 
@@ -94,7 +102,7 @@ void PlayerUI::Update(float deltaTime)
 	FontUpdate(font[2], player->torpedLauncher->bulletAmount);
 	FontUpdate(font[3], player->turret->bulletAmount);
 
-	
+	progress.heightRatio = 1 - nowScene->progress / nowScene->maxProgress;
 
 	speedDown.Update(deltaTime);
 }
@@ -119,6 +127,10 @@ void PlayerUI::Render()
 	if (player->speedDown)
 		speedDown.Render(RenderInfo{ player->pos });
 
+	progressBck.Render(RenderInfo{ D3DXVECTOR2(-860, 0) });
+	progress.Render(RenderInfo{ D3DXVECTOR2(-860, 0) });
+	progressObj.Render(RenderInfo{D3DXVECTOR2(-860, -340 + (nowScene->progress / nowScene->maxProgress) * 675)});
+
 	speedBck.Render(speedInfo);
 	speed.Render(speedInfo);
 
@@ -134,7 +146,6 @@ void PlayerUI::Render()
 
 		weaponCools[i].Render(weaponInfo[i]);
 	}
-	
 
 }
 

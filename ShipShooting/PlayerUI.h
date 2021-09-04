@@ -30,6 +30,10 @@ public:
 	RenderInfo fontInfo[4];
 	RenderInfo fontRI;
 
+	Sprite progress;
+	Sprite progressBck;
+	Sprite progressObj;
+
 	Player* player = NULL;
 
 	PlayerUI(Player* player);

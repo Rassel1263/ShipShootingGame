@@ -34,7 +34,7 @@ void Torpedo::Update(float deltaTime)
 	if(target->team == Team::Enemy)
 		HomingSystem(deltaTime);
 
-	pos += D3DXVECTOR2(cos(angle), sinf(angle)) * 300 * deltaTime;
+	pos += D3DXVECTOR2(cos(angle), sinf(angle)) * 500 * deltaTime;
 
 	CBullet::Update(deltaTime);
 }
@@ -51,6 +51,11 @@ void Torpedo::CreateEffect()
 
 void Torpedo::HomingSystem(float deltaTime)
 {
+	if (target->destroy)
+		homing = false;
+
+	if (!homing) return;
+
 	if (startTime > 0.0f)
 		startTime -= deltaTime;
 	else

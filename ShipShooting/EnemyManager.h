@@ -11,6 +11,8 @@ public:
 	std::vector<FloatingEnemy*> floatingEnemys;
 	std::vector<FlyingEnemy*> flyingEnemys;
 
+	CEnemy* boss = NULL;
+
 public:
 	float floatSpawnTimer = 0.0f;
 	float floatSpawnTime = 3.0f;

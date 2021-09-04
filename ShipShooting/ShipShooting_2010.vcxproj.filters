@@ -11,9 +11,6 @@
     <Filter Include="Core">
       <UniqueIdentifier>{d0b12a70-6541-469f-8574-2b36ce9c1781}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scene">
-      <UniqueIdentifier>{09b2564c-6a09-4ffc-b380-b8fe7ce670f9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Object">
       <UniqueIdentifier>{a00788b1-c775-43e7-a46d-10f37d85e94d}</UniqueIdentifier>
     </Filter>
@@ -56,6 +53,9 @@
     <Filter Include="Object\UI">
       <UniqueIdentifier>{83385319-d1f1-4c11-8370-5a60c25c02d0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Scene">
+      <UniqueIdentifier>{09b2564c-6a09-4ffc-b380-b8fe7ce670f9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="DXUT\Optional\directx.ico">
@@ -95,10 +95,10 @@
       <Filter>Object\Unit</Filter>
     </ClCompile>
     <ClCompile Include="GameScene.cpp">
-      <Filter>Scene</Filter>
+      <Filter>Resource Files\Scene</Filter>
     </ClCompile>
     <ClCompile Include="Scene.cpp">
-      <Filter>Scene</Filter>
+      <Filter>Resource Files\Scene</Filter>
     </ClCompile>
     <ClCompile Include="Ocean.cpp">
       <Filter>Object</Filter>
@@ -161,7 +161,7 @@
       <Filter>Object\Unit\Player\Waepon</Filter>
     </ClCompile>
     <ClCompile Include="MainScene.cpp">
-      <Filter>Scene</Filter>
+      <Filter>Resource Files\Scene</Filter>
     </ClCompile>
     <ClCompile Include="Main.cpp">
       <Filter>Object\Main</Filter>
@@ -197,10 +197,17 @@
       <Filter>Object\UI</Filter>
     </ClCompile>
     <ClCompile Include="RankingScene.cpp">
-      <Filter>Scene</Filter>
+      <Filter>Resource Files\Scene</Filter>
     </ClCompile>
     <ClCompile Include="Ranking.cpp">
       <Filter>Object\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcPage.cpp" />
+    <ClCompile Include="GameScene2.cpp">
+      <Filter>Resource Files\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="BigPlane.cpp">
+      <Filter>Object\Unit\Enemy\Boss</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -235,10 +242,10 @@
       <Filter>Object\Unit</Filter>
     </ClInclude>
     <ClInclude Include="GameScene.h">
-      <Filter>Scene</Filter>
+      <Filter>Resource Files\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Scene.h">
-      <Filter>Scene</Filter>
+      <Filter>Resource Files\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Ocean.h">
       <Filter>Object</Filter>
@@ -301,7 +308,7 @@
       <Filter>Object\Unit\Player\Waepon</Filter>
     </ClInclude>
     <ClInclude Include="MainScene.h">
-      <Filter>Scene</Filter>
+      <Filter>Resource Files\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Main.h">
       <Filter>Object\Main</Filter>
@@ -340,10 +347,18 @@
       <Filter>Object\UI</Filter>
     </ClInclude>
     <ClInclude Include="RankingScene.h">
-      <Filter>Scene</Filter>
+      <Filter>Resource Files\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Ranking.h">
       <Filter>Object\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcPage.h" />
+    <ClInclude Include="Time.h" />
+    <ClInclude Include="GameScene2.h">
+      <Filter>Resource Files\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="BigPlane.h">
+      <Filter>Object\Unit\Enemy\Boss</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

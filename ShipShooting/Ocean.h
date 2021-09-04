@@ -5,6 +5,8 @@ public:
 	Sprite spr;
 	RenderInfo ri;
 
+	float speed = 0.0f;
+
 	Ocean();
 
 	virtual void Update(float deltaTime) override;

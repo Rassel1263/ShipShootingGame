@@ -19,7 +19,7 @@ Item::Item(D3DXVECTOR2 pos, int index)
 
 void Item::Update(float deltaTime)
 {
-	pos.y -= 100 * deltaTime;
+	pos.y -= 200 * deltaTime;
 }
 
 void Item::Render()

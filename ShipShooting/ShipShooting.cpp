@@ -131,7 +131,8 @@ INT WINAPI wWinMain(HINSTANCE hInst, HINSTANCE, LPWSTR, INT)
 			}
 			else
 			{
-				Game::GetInstance().Update(1 / 60.0f);
+				Time::GetInstance().Update();
+				Game::GetInstance().Update(Time::GetInstance().fdeltaTime);
 				Game::GetInstance().Render();
 			}
 		}

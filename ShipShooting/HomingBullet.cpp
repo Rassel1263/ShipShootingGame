@@ -23,7 +23,7 @@ HomingBullet::HomingBullet(D3DXVECTOR2 pos, Unit* target, float damage, float an
 
 void HomingBullet::Update(float deltaTime)
 {
-	if (target->team == Team::Enemy)
+	if (team  == L"ally")
 		HomingSystem(deltaTime);
 
 	pos += D3DXVECTOR2(cos(angle), sinf(angle)) * 300 * deltaTime;
@@ -44,6 +44,11 @@ void HomingBullet::CreateEffect()
 
 void HomingBullet::HomingSystem(float deltaTime)
 {
+	if (target->destroy)
+		homing = false;
+
+	if (!homing) return;
+
 	if (startTime < 0.0f)
 	{
 		startTime -= deltaTime;

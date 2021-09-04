@@ -1,6 +1,7 @@
 #include "Header.h"
 #include "Trash.h"
 #include "CBullet.h"
+#include "Item.h"
 
 Trash::Trash(D3DXVECTOR2 pos)
 {
@@ -18,7 +19,10 @@ Trash::Trash(D3DXVECTOR2 pos)
 void Trash::Update(float deltaTime)
 {
 	if (hp <= 0)
+	{
+		nowScene->obm.AddObject(new Item(pos, nowScene->GetRandomNumber(0, 5)));
 		destroy = true;
+	}
 
 	if (bHit)
 	{

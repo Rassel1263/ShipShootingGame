@@ -36,7 +36,6 @@ void Cannon::Update(float deltaTime)
 		}
 	}
 
-
 	CWeapon::Update(deltaTime);
 }
 
@@ -51,6 +50,8 @@ void Cannon::Shoot()
 	{
 		if (shootTimer >= shootInterval)
 		{
+			Camera::GetInstance().cameraQuaken = { 5, 5 };
+
 			shootTimer = 0.0f;
 			bulletAmount--;
 			float radian = D3DXToRadian(-ri.rotate + 80);

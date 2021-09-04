@@ -18,6 +18,7 @@ public:
 	TorpedoLauncher* torpedLauncher = NULL;
 
 	bool zoom = false;
+	bool stop = false;
 	bool skill1 = false;
 	bool skill2 = false;
 	bool speedUp = false;
