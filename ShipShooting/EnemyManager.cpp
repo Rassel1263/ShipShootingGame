@@ -3,6 +3,7 @@
 #include "Effect.h"
 #include "BigShip.h"
 #include "BigPlane.h"
+#include "SubFlyingEnemy.h"
 
 void EnemyManager::Init(float floatSpawnTime, float airSpawnTime)
 {
@@ -42,7 +43,7 @@ void EnemyManager::SpawnEnemy(D3DXVECTOR2 pos, EnemyType enemyType)
 		enemy = floatingEnemy;
 	}
 
-	if (enemyType == EnemyType::BigShip)
+	if (enemyType == EnemyType::BigPlane)
 	{
 		FlyingEnemy *flyingEnemy;
 		nowScene->obm.AddObject(flyingEnemy = new BigPlane(pos));
@@ -53,6 +54,14 @@ void EnemyManager::SpawnEnemy(D3DXVECTOR2 pos, EnemyType enemyType)
 
 
 	allEnemys.push_back(enemy);
+}
+
+void EnemyManager::SpawnSubEnemy(D3DXVECTOR2 pos, float speed, float angle)
+{
+	FlyingEnemy* flyingEnemy;
+	nowScene->obm.AddObject(flyingEnemy = new SubFlyingEnemy(pos));
+	flyingEnemys.push_back(flyingEnemy);
+	allEnemys.push_back(flyingEnemy);
 }
 
 
@@ -84,6 +93,7 @@ void EnemyManager::SpawnManager(float deltaTime)
 {
 	floatSpawnTimer += deltaTime;
 	airSpawnTimer += deltaTime;
+	//subSpawnTimer += deltaTime;
 
 	if (floatSpawnTimer >= floatSpawnTime)
 	{
@@ -108,4 +118,12 @@ void EnemyManager::SpawnManager(float deltaTime)
 
 		nowScene->obm.AddObject(new Effect(L"enemyPos.png", randPos, D3DXVECTOR2(1, 1), 0, 1.0f, true, 0, lambda));
 	}
+
+	//if (subSpawnTimer >= subSpawnTime)
+	//{
+	//	subSpawnTime = 0.0f;
+
+	//	SpawnSubEnemy(D3DXVECTOR2(0, 0), 300, 30);
+	//}
+	
 }

@@ -22,7 +22,7 @@ void FloatingEnemy::Update(float deltaTime)
 	{
 		attackTimer = 0.0f;
 
-		nowScene->obm.AddObject(new Torpedo(pos, nowScene->player, 10));
+		nowScene->obm.AddObject(new Torpedo(pos, nowScene->player, 20));
 	}
 
 	pos.y -= nowScene->player->ability.speed / 2* deltaTime;
@@ -41,6 +41,16 @@ void FloatingEnemy::Destroy()
 	if (!n) nowScene->obm.AddObject(new Mine(pos));
 
 	CEnemy::Destroy();
+}
 
+void FloatingEnemy::OnCollision(Collider& coli)
+{
+	if (coli.tag == L"ally")
+	{
+		nowScene->player->Hit(30);
+		CEnemy::Destroy();
+	}
+
+	CEnemy::OnCollision(coli);
 }
 

@@ -8,7 +8,6 @@ MissileTurret::MissileTurret(Unit* owner, D3DXVECTOR2 offset) : CWeapon(owner, o
 
 	shootInterval = 0.3f;
 	bulletMaxAmount = 10;
-	bulletAmount = 10;
 	damage = 15;
 }
 

@@ -17,13 +17,14 @@ MachineGun::MachineGun(Unit* owner, D3DXVECTOR2 offset) : CWeapon(owner, offset)
 
 void MachineGun::Update(float deltaTime)
 {
-	if (bulletAmount <= 0)
+	if (reload)
 	{
 		reloadTimer += deltaTime;
 
 		if (reloadTimer >= reloadTime)
 		{
-			bulletAmount = bulletMaxAmount;
+			bulletAmount += bulletMaxAmount;
+			reload = false;
 			reloadTimer = 0.0f;
 		}
 	}
@@ -38,7 +39,7 @@ void MachineGun::Render()
 
 void MachineGun::Shoot()
 {
-	if (bulletAmount > 0)
+	if (bulletAmount > 0 && !reload)
 	{
 		if (shootTimer >= shootInterval)
 		{
@@ -51,6 +52,9 @@ void MachineGun::Shoot()
 		}
 	}
 	else
+	{
+		reload = true;
 		SpawnUI();
+	}
 
 }

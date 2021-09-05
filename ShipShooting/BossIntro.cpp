@@ -12,20 +12,16 @@ BossIntro::BossIntro(bool& intro) : bossIntro(intro)
 
 void BossIntro::Update(float deltaTime)
 {
-	if (bossIntro)
-	{
-		if (spr.color.a < 0.0f || spr.color.a > 1.0f)
-			destColor = -destColor;
-
-		spr.color.a += deltaTime * destColor;
-	}
-	else
-	{
-		spr.color.a -= deltaTime;
-
+	if (!bossIntro)
 		if (spr.color.a <= 0.0f)
 			destroy = true;
-	}
+
+	if (spr.color.a <= 0.0f || spr.color.a >= 1.0f)
+		destColor = -destColor;
+
+	spr.color.a += deltaTime * destColor;
+	spr.color.a = std::clamp(spr.color.a, 0.0f, 1.0f);
+
 }
 
 void BossIntro::Render()

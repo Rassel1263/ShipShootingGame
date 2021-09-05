@@ -12,8 +12,6 @@ void RankingScene::Init()
 
 void RankingScene::Update(float deltaTime)
 {
-	obm.Update(deltaTime);
-
 	Scene::Update(deltaTime);
 }
 

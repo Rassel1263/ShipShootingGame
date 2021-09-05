@@ -11,6 +11,8 @@ FlyingEnemy::FlyingEnemy(D3DXVECTOR2 pos)
 	this->pos = pos;
 
 	attackTime = 3.0f;
+
+	layer = 6;
 }
 
 void FlyingEnemy::Update(float deltaTime)
@@ -30,7 +32,7 @@ void FlyingEnemy::Update(float deltaTime)
 			else
 				fixRotate = 270 + nowScene->GetRandomNumber(0, 45);
 
-			nowScene->obm.AddObject(new HomingBullet(pos + D3DXVECTOR2(20 - 20 * i, 0), nowScene->player, 10, fixRotate, false));
+			nowScene->obm.AddObject(new HomingBullet(pos + D3DXVECTOR2(20 - 20 * i, 0), nowScene->player, 15, fixRotate, false));
 		}
 	}
 

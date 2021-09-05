@@ -37,17 +37,16 @@ Player::Player()
 void Player::Update(float deltaTime)
 {
 	if (ability.hp <= 0) return;
-	if (!stop)
-	{
-		CameraControll();
-		Move(deltaTime);
+	if (stop) return;
 
-		SetWeaponPos();
-		ShootControll();
-		FirstSkillControll(deltaTime);
-		SecondSkillControll(deltaTime);
-		UpdateEffect(deltaTime);
-	}
+	CameraControll();
+	Move(deltaTime);
+
+	SetWeaponPos();
+	ShootControll();
+	FirstSkillControll(deltaTime);
+	SecondSkillControll(deltaTime);
+	UpdateEffect(deltaTime);
 
 	if (uiTime > 0.0f)
 		uiTime -= deltaTime;
@@ -77,7 +76,7 @@ void Player::Render()
 bool Player::Move(float deltaTime)
 {
 	D3DXVECTOR2 moveDir = { 0, 0 };
-	
+
 	if (ability.speed < maxSpeed)
 		ability.speed += 150 * deltaTime;
 
@@ -113,7 +112,7 @@ void Player::Hit(float damage)
 	this->ability.hp -= damage;
 	nowScene->obm.AddObject(new Effect(L"ouch.png", D3DXVECTOR2(0, 0), D3DXVECTOR2(1, 1), 0, 1.0f, false));
 	Camera::GetInstance().cameraQuaken = { 10, 10 };
-	
+
 	if (ability.hp <= 0)
 		nowScene->obm.AddObject(new YouDie());
 }
@@ -227,7 +226,7 @@ void Player::ShootControll()
 
 	if (Input::GetInstance().KeyDown('W'))
 	{
-		
+
 		SetTarget(EnemyType::None);
 		cannon->Shoot();
 	}
@@ -287,8 +286,8 @@ void Player::SecondSkillControll(float deltaTime)
 	{
 		if (skill2CoolTime <= 0.0f)
 		{
-			auto lambda = [] 
-			{ 
+			auto lambda = []
+			{
 				nowScene->obm.AddObject(new Effect(L"AirBoom", D3DXVECTOR2(0, 0), D3DXVECTOR2(1, 1), D3DXVECTOR2(0.5, 0.5), 0.05f, 0));
 				for (auto& enemy : nowScene->enemyManager.allEnemys)
 					enemy->Hit(100);
@@ -359,7 +358,7 @@ void Player::GetItemEffective(int index)
 	case 1:
 		torpedLauncher->bulletAmount += 5;
 
-		if(torpedLauncher->bulletAmount >= torpedLauncher->bulletMaxAmount)
+		if (torpedLauncher->bulletAmount >= torpedLauncher->bulletMaxAmount)
 			torpedLauncher->bulletAmount = torpedLauncher->bulletMaxAmount;
 		break;
 	case 2:
@@ -373,9 +372,12 @@ void Player::GetItemEffective(int index)
 		speedUp = true;
 		break;
 	case 4:
-		ability.hp += 20;
+		ability.hp += 10;
 		if (ability.hp > ability.maxHp)
+		{
+			nowScene->AddScore(1000);
 			ability.hp = ability.maxHp;
+		}
 		break;
 	case 5:
 		invincible = true;
@@ -389,7 +391,8 @@ void Player::SpawnUI()
 {
 	if (uiTime <= 0.0f)
 	{
-		nowScene->obm.AddObject(new Effect(L"dontSkill.png", D3DXVECTOR2(610, -445), D3DXVECTOR2(1, 1), 0, 2.0f, false));
 		uiTime = 2.0f;
+		Camera::GetInstance().cameraQuaken = { 4, 4 };
+		nowScene->obm.AddObject(new Effect(L"dontSkill.png", D3DXVECTOR2(0, -445), D3DXVECTOR2(2, 2), 0, 2.0f, false));
 	}
 }

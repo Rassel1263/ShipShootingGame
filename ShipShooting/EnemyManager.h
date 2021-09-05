@@ -20,9 +20,12 @@ public:
 	float airSpawnTimer = 0.0f;
 	float airSpawnTime = 5.0f;
 
+	float subSpawnTimer = 0.0f;
+	float subSpawnTime = 3.0f;
 
 	void Init(float floatSpawnTime, float airSpawnTime);
 	void SpawnEnemy(D3DXVECTOR2 pos, EnemyType enemyType);
+	void SpawnSubEnemy(D3DXVECTOR2 pos, float speed, float angle);
 	void SpawnManager(float deltaTime);
 	void SortEnemyGroups(CEnemy* enemy, EnemyType enemyType);
 };

@@ -437,6 +437,7 @@
     <ClCompile Include="ShaderManager.cpp" />
     <ClCompile Include="ShipShooting.cpp" />
     <ClCompile Include="Sprite.cpp" />
+    <ClCompile Include="SubFlyingEnemy.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Torpedo.cpp" />
     <ClCompile Include="TorpedoLauncher.cpp" />
@@ -490,6 +491,7 @@
     <ClInclude Include="ShaderManager.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="Sprite.h" />
+    <ClInclude Include="SubFlyingEnemy.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Time.h" />
     <ClInclude Include="Torpedo.h" />

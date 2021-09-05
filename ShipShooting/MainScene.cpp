@@ -11,6 +11,7 @@ void MainScene::Init()
 
 void MainScene::Update(float deltaTime)
 {
+
 	Scene::Update(deltaTime);
 }
 

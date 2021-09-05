@@ -20,9 +20,7 @@ void GameScene::Init()
 	obm.AddObject(player = new Player());
 	obm.AddObject(new PlayerUI(player));
 	obm.AddObject(new Ocean());
-	obm.AddObject(new Mine(D3DXVECTOR2(0, -100)));
-	obm.AddObject(new Trash(D3DXVECTOR2(0, 200)));
-	enemyManager.Init(5.0f, 7.0f);
+	enemyManager.Init(4.0f, 6.0f);
 
 	obm.AddObject(new Font(L"Number/", minute, D3DXVECTOR2(-120, 450), D3DXVECTOR2(2, 2), 60, 0));
 	obm.AddObject(new Font(L"Number/", second, D3DXVECTOR2(40, 435), D3DXVECTOR2(1, 1), 30, 1));
@@ -33,30 +31,10 @@ void GameScene::Init()
 	MiniMap::GetInstance().Init();
 
 	maxProgress = 27000;
-
-
-	//enemyManager.SpawnEnemy(D3DXVECTOR2(0, 200), EnemyType::FloatingEnemy);
-	//enemyManager.SpawnEnemy(D3DXVECTOR2(200, 200), EnemyType::FlyingEnemy);
 }
 
 void GameScene::Update(float deltaTime)
 {
-	if (Input::GetInstance().KeyDown('J'))
-	{
-		progress = maxProgress;
-		spawnBoss = true;
-		enemyManager.SpawnEnemy(D3DXVECTOR2(0, 500), EnemyType::BigShip);
-	}
-
-	if (Input::GetInstance().KeyDown('Y'))
-		AddScore(1000);
-
-	if (Input::GetInstance().KeyDown(VK_CONTROL))
-		Time::GetInstance().timeScale = 10.0f;
-
-	if(Input::GetInstance().KeyUp(VK_CONTROL))
-		Time::GetInstance().timeScale = 1.0f;
-
 	if (!stopTime)
 		gameTime -= deltaTime;
 

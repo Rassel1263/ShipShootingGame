@@ -35,6 +35,7 @@ void CWeapon::SpawnUI()
 	if (uiTime <= 0.0f)
 	{
 		uiTime = 2.0f;
-		nowScene->obm.AddObject(new Effect(L"lackOfBullet.png", D3DXVECTOR2(0, 0), D3DXVECTOR2(1, 1), 0, 2.0f));
+		Camera::GetInstance().cameraQuaken = { 4, 4 };
+		nowScene->obm.AddObject(new Effect(L"lackOfBullet.png", D3DXVECTOR2(0, -445), D3DXVECTOR2(2, 2), 0, 2.0f, false));
 	}
 }

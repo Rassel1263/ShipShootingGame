@@ -19,6 +19,8 @@ HomingBullet::HomingBullet(D3DXVECTOR2 pos, Unit* target, float damage, float an
 	ri.rotate = -angle;
 
 	SetCollider(-10, -10, 10, 10);
+
+	layer = 6;
 }
 
 void HomingBullet::Update(float deltaTime)

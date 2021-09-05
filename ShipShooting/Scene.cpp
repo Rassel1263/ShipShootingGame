@@ -25,6 +25,15 @@ void Scene::Update(float deltaTime)
 			stopTime = !stopTime;
 	}
 
+	
+
+
+	if (Input::GetInstance().KeyDown(VK_CONTROL))
+		Time::GetInstance().timeScale = 30.0f;
+
+	if (Input::GetInstance().KeyUp(VK_CONTROL))
+		Time::GetInstance().timeScale = 1.0f;
+
 
 	minute = gameTime / 60;
 	second = (int)gameTime % 60;

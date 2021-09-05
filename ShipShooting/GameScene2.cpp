@@ -22,7 +22,7 @@ void GameScene2::Init()
 	obm.AddObject(new Ocean());
 	obm.AddObject(new Mine(D3DXVECTOR2(0, -100)));
 	obm.AddObject(new Trash(D3DXVECTOR2(0, 200)));
-	enemyManager.Init(5.0f, 7.0f);
+	enemyManager.Init(3.5f, 5.0f);
 
 	obm.AddObject(new Font(L"Number/", minute, D3DXVECTOR2(-120, 450), D3DXVECTOR2(2, 2), 60, 0));
 	obm.AddObject(new Font(L"Number/", second, D3DXVECTOR2(40, 435), D3DXVECTOR2(1, 1), 30, 1));
@@ -37,11 +37,6 @@ void GameScene2::Init()
 
 void GameScene2::Update(float deltaTime)
 {
-	if (Input::GetInstance().KeyDown('J'))
-		nowScene->obm.AddObject(new Item(player->pos + D3DXVECTOR2(0, 200), GetRandomNumber(0, 5)));
-
-	if (Input::GetInstance().KeyDown('Y'))
-		AddScore(1000);
 
 	if (!stopTime)
 		gameTime -= deltaTime;
@@ -77,4 +72,7 @@ void GameScene2::Update(float deltaTime)
 void GameScene2::Render()
 {
 	Scene::Render();
+
+	if (Time::GetInstance().timeScale != 0.0f)
+		MiniMap::GetInstance().Render();
 }

@@ -209,6 +209,9 @@
     <ClCompile Include="BigPlane.cpp">
       <Filter>Object\Unit\Enemy\Boss</Filter>
     </ClCompile>
+    <ClCompile Include="SubFlyingEnemy.cpp">
+      <Filter>Object\Unit\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h">
@@ -359,6 +362,9 @@
     </ClInclude>
     <ClInclude Include="BigPlane.h">
       <Filter>Object\Unit\Enemy\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="SubFlyingEnemy.h">
+      <Filter>Object\Unit\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

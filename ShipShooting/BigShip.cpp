@@ -50,6 +50,7 @@ void BigShip::Update(float deltaTime)
 	if (Intro(deltaTime)) return;
 	if (Outro(deltaTime)) return;
 
+
 	UpdatePattern(deltaTime);
 
 	WeaponRotate(cannonInfo);
@@ -193,6 +194,9 @@ bool BigShip::Outro(float deltaTime)
 
 		if (outroTime <= 0.0f)
 		{
+			
+			Camera::GetInstance().destCameraPos = { nowScene->player->pos.x, 0.0f};
+
 			spr.color.a -= deltaTime;
 
 			if (spr.color.a < 0.0f)
