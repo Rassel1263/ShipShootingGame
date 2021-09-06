@@ -40,6 +40,12 @@ BigShip::BigShip(D3DXVECTOR2 pos) : FloatingEnemy(pos)
 
 	nowScene->obm.AddObject(new BossIntro(intro));
 
+	for (auto& enemy : nowScene->enemyManager.allEnemys)
+	{
+		if(enemy != this)
+			enemy->Hit(100);
+	}
+
 	outroTime = 10.0f;
 	effectTime = 1.0f;
 	restTime = 1.0f;

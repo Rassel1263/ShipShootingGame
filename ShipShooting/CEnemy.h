@@ -10,6 +10,12 @@ enum class EnemyType
 	BigPlane,
 };
 
+enum class subFormation
+{
+	Circle,
+	V,
+};
+
 class CEnemy : public Unit
 {
 public:

@@ -14,7 +14,7 @@ Item::Item(D3DXVECTOR2 pos, int index)
 
 	bodies.push_back(Collider(L"item", this, &aabb));
 
-	layer = 6;
+	layer = 7;
 }
 
 void Item::Update(float deltaTime)

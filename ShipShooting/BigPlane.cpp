@@ -14,7 +14,7 @@ BigPlane::BigPlane(D3DXVECTOR2 pos) : FlyingEnemy(pos)
 	spr.LoadAll(L"Assets/Sprites/Unit/Boss/boss1.png");
 
 	SetCollider(-900, -100, 900, 100, L"enemy");
-	SetAbility(10, 0);
+	SetAbility(100, 0);
 
 	cannon.LoadAll(L"Assets/Sprites/Unit/Boss/Weapon/cannon.png");
 	cannonInfo.resize(4);
@@ -40,6 +40,12 @@ BigPlane::BigPlane(D3DXVECTOR2 pos) : FlyingEnemy(pos)
 	machinegunInfo[3].pos = pos + D3DXVECTOR2(115, 104);
 
 	nowScene->obm.AddObject(new BossIntro(intro));
+
+	for (auto& enemy : nowScene->enemyManager.allEnemys)
+	{
+		if (enemy != this)
+			enemy->Hit(100);
+	}
 
 	outroTime = 10.0f;
 	effectTime = 1.0f;
@@ -419,7 +425,7 @@ bool BigPlane::Pattern3(float deltatime)
 
 			if (transform)
 			{
-				nowScene->obm.AddObject(new Effect(L"CannonShot", fixPos, D3DXVECTOR2(1, 1), D3DXVECTOR2(0.5f, 0.0f), 0.05f, machinegunInfo[i].rotate));
+				nowScene->obm.AddObject(new Effect(L"CannonShot", fixPos, D3DXVECTOR2(1, 1), D3DXVECTOR2(0.5f, 0.0f), 0.05f, 180));
 				nowScene->obm.AddObject(new BossBullet(fixPos, D3DXToDegree(angle) + nowScene->GetRandomNumber(-20, 20), 5, BossBullet::Type::Machinegun));
 			}
 			else

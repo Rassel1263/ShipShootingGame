@@ -369,6 +369,7 @@ void Player::GetItemEffective(int index)
 		break;
 	case 3:
 		maxSpeed = 500;
+		speedUpTime = 0.0f;
 		speedUp = true;
 		break;
 	case 4:

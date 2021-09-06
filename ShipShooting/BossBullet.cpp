@@ -17,6 +17,8 @@ BossBullet::BossBullet(D3DXVECTOR2 pos, float angle, float damage, Type type) : 
 	this->angle = D3DXToRadian(angle);
 
 	SetCollider(-5, -5, -5, -5);
+
+	layer = 6;
 }
 
 BossBullet::BossBullet(D3DXVECTOR2 pos, float angle, float startTime, float homingTime, float damage) : CBullet(pos, nowScene->player, damage)

@@ -22,7 +22,7 @@ void GameScene2::Init()
 	obm.AddObject(new Ocean());
 	obm.AddObject(new Mine(D3DXVECTOR2(0, -100)));
 	obm.AddObject(new Trash(D3DXVECTOR2(0, 200)));
-	enemyManager.Init(3.5f, 5.0f);
+	enemyManager.Init(3.5f, 5.0f, 7.0f);
 
 	obm.AddObject(new Font(L"Number/", minute, D3DXVECTOR2(-120, 450), D3DXVECTOR2(2, 2), 60, 0));
 	obm.AddObject(new Font(L"Number/", second, D3DXVECTOR2(40, 435), D3DXVECTOR2(1, 1), 30, 1));

@@ -23,7 +23,7 @@ MachinegunBullet::MachinegunBullet(D3DXVECTOR2 pos, Unit* target, float damage) 
 
 void MachinegunBullet::Update(float deltaTime)
 {
-	pos += D3DXVECTOR2(cosf(angle), sinf(angle)) * 1000 * deltaTime;
+	pos += D3DXVECTOR2(cosf(angle), sinf(angle)) * 1500 * deltaTime;
 
 	CBullet::Update(deltaTime);
 }
