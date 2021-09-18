@@ -77,6 +77,7 @@ void CEnemy::Destroy()
 	nowScene->enemyManager.SortEnemyGroups(this, type);
 	MiniMap::GetInstance().Term(this);
 
+	SoundManager::GetInstance().Play(L"Assets/Sound/explosion.mp3", false);
 	destroy = true;
 	
 }

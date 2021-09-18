@@ -41,6 +41,7 @@ void MachineGun::Shoot()
 {
 	if (bulletAmount > 0 && !reload)
 	{
+
 		if (shootTimer >= shootInterval)
 		{
 			shootTimer = 0.0f;
@@ -49,6 +50,8 @@ void MachineGun::Shoot()
 
 			nowScene->obm.AddObject(new MachinegunBullet(D3DXVECTOR2(pos.x - 5, pos.y), owner->target, damage));
 			nowScene->obm.AddObject(new MachinegunBullet(D3DXVECTOR2(pos.x + 5, pos.y), owner->target, damage));
+
+			SoundManager::GetInstance().Play(L"Assets/Sound/Machine.mp3", false);
 		}
 	}
 	else

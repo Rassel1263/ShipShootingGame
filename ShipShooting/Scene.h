@@ -31,6 +31,7 @@ public:
 	virtual void Init();
 	virtual void Update(float deltaTime);
 	virtual void Render();
+	virtual void LoadFile();
 	void AddScore(int score);
 	int GetRandomNumber(int min, int max);
 };

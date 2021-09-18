@@ -22,6 +22,7 @@
 
 #include "Camera.h"
 
+#include "SoundManager.h"
 #include "ShaderManager.h"
 #include "ColorShader.h"
 

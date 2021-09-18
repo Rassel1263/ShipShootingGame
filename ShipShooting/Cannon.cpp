@@ -63,6 +63,7 @@ void Cannon::Shoot()
 			nowScene->obm.AddObject(new Effect(L"CannonBoom", targetPos + D3DXVECTOR2(nowScene->GetRandomNumber(-10, 10), nowScene->GetRandomNumber(-50, 50)),
 				D3DXVECTOR2(1, 1), D3DXVECTOR2(0.5, 0.0f), 0.05f, ri.rotate));
 
+			SoundManager::GetInstance().Play(L"Assets/Sound/Cannon.mp3", false);
 		}
 	}
 	else

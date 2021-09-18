@@ -28,6 +28,8 @@ void TorpedoLauncher::Shoot()
 			shootTimer = 0;
 
 			nowScene->obm.AddObject(new Torpedo(owner->pos, owner->target, damage));
+
+			SoundManager::GetInstance().Play(L"Assets/Sound/Homing.mp3", false);
 		}
 	}
 	else

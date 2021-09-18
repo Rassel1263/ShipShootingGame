@@ -15,7 +15,7 @@ void GameScene2::Init()
 	curStage = 2;
 	nextScene = new RankingScene();
 
-	ShaderManager::GetInstance().CreateEffect("Color", L"Assets/Shader/colorShader.fx", 1);
+	LoadFile();
 
 	obm.AddObject(player = new Player());
 	obm.AddObject(new PlayerUI(player));

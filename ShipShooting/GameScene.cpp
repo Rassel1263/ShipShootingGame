@@ -12,10 +12,11 @@
 
 void GameScene::Init()
 {
+	LoadFile();
+
 	curStage = 1;
 	nextScene = new GameScene2();
 
-	ShaderManager::GetInstance().CreateEffect("Color", L"Assets/Shader/colorShader.fx", 1);
 
 	obm.AddObject(player = new Player());
 	obm.AddObject(new PlayerUI(player));

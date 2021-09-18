@@ -72,3 +72,15 @@ void Scene::AddScore(int score)
 {
 	destScore += score;
 }
+
+void Scene::LoadFile()
+{
+	ShaderManager::GetInstance().CreateEffect("Color", L"Assets/Shader/colorShader.fx", 1);
+
+	SoundManager::GetInstance().Create(L"Assets/Sound/Game.mp3", 1);
+	SoundManager::GetInstance().Create(L"Assets/Sound/Machine.mp3", 1);
+	SoundManager::GetInstance().Create(L"Assets/Sound/Cannon.mp3", 1);
+	SoundManager::GetInstance().Create(L"Assets/Sound/Homing.mp3", 1);
+	SoundManager::GetInstance().Create(L"Assets/Sound/explosion.mp3", 1);
+	SoundManager::GetInstance().Play(L"Assets/Sound/Game.mp3", true);
+}
