@@ -40,6 +40,7 @@ bool CALLBACK ModifyDeviceSettings( DXUTDeviceSettings* pDeviceSettings, void* p
 HRESULT CALLBACK OnD3D9CreateDevice( IDirect3DDevice9* pd3dDevice, const D3DSURFACE_DESC* pBackBufferSurfaceDesc,
                                      void* pUserContext )
 {
+    Game::GetInstance().Init();
     return S_OK;
 }
 
@@ -60,6 +61,7 @@ HRESULT CALLBACK OnD3D9ResetDevice( IDirect3DDevice9* pd3dDevice, const D3DSURFA
 //--------------------------------------------------------------------------------------
 void CALLBACK OnFrameMove( double fTime, float fElapsedTime, void* pUserContext )
 {
+    Game::GetInstance().Update(fElapsedTime);
 }
 
 
@@ -76,6 +78,7 @@ void CALLBACK OnD3D9FrameRender( IDirect3DDevice9* pd3dDevice, double fTime, flo
     // Render the scene
     if( SUCCEEDED( pd3dDevice->BeginScene() ) )
     {
+        Game::GetInstance().Render();
         V( pd3dDevice->EndScene() );
     }
 }
@@ -135,7 +138,10 @@ INT main( HINSTANCE, HINSTANCE, LPWSTR, int )
     DXUTSetHotkeyHandling( true, true, true );  // handle the default hotkeys
     DXUTSetCursorSettings( true, true ); // Show the cursor and clip it when in full screen
     DXUTCreateWindow( L"ShipShooting2" );
-    DXUTCreateDevice( true, 640, 480 );
+
+    Game::GetInstance().Check();
+
+    DXUTCreateDevice( true, Game::GetInstance().screenWidth, Game::GetInstance().screenHeight);
 
     // Start the render loop
     DXUTMainLoop();
