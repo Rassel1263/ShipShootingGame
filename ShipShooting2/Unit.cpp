@@ -4,6 +4,8 @@
 Unit::Unit()
 {
     colorShader = new ColorShader();
+
+    layer = 5;
 }
 
 void Unit::Update(float deltaTime)

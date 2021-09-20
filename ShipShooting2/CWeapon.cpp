@@ -73,7 +73,7 @@ NavalGun::NavalGun(Unit* owner) : CWeapon(owner)
 	bulletMaxAmount = 5;
 	shootInterval = 0.5f;
 
-	reloadTime = 0.0f;
+	reloadTime = 1.0f;
 	reloadTimer = 0.0f;
 
 	damage = 5;
@@ -120,6 +120,7 @@ TorpedoLauncher::TorpedoLauncher(Unit* owner) : CWeapon(owner)
 {
 	shootInterval = 0.3f;
 	bulletMaxAmount = 15;
+	bulletAmount = 15;
 	damage = 10;
 }
 
@@ -131,6 +132,9 @@ void TorpedoLauncher::Shoot()
 		{
 			bulletAmount--;
 			shootTimer = 0.0f;
+
+			nowScene->obm.AddObject(new HomingBullet(owner->pos, owner->target, CBullet::BulletType::Torpedo, L"ally", damage,
+				owner->curRotate, 1.5f));
 		}
 	}
 }
@@ -143,6 +147,7 @@ MissileTurret::MissileTurret(Unit* owner) : CWeapon(owner)
 {
 	shootInterval = 0.3f;
 	bulletMaxAmount = 10;
+	bulletAmount = 10;
 	damage = 15;
 }
 
@@ -154,6 +159,11 @@ void MissileTurret::Shoot()
 		{
 			bulletAmount--;
 			shootTimer = 0.0f;
+
+			nowScene->obm.AddObject(new Effect(L"shoot_missile/", owner->pos, D3DXVECTOR2(1, 1), D3DXVECTOR2(0.5f, 0.0f), 1, true, 0.05f));
+
+			nowScene->obm.AddObject(new HomingBullet(owner->pos, owner->target, CBullet::BulletType::Missile, L"ally", damage,
+				owner->curRotate, 1.5f));
 		}
 	}
 }

@@ -10,6 +10,7 @@ void GameScene::Init()
 	obm.AddObject(new Player());
 
 	enemyManager.SpawnEnemy(D3DXVECTOR2(200, 400), EnemyType::FloatingEnemy);
+	enemyManager.SpawnEnemy(D3DXVECTOR2(-200, 400), EnemyType::FlyingEnemy);
 }
 
 void GameScene::Update(float deltaTime)

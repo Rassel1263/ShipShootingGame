@@ -170,6 +170,9 @@
     <ClCompile Include="HomingBullet.cpp">
       <Filter>Object\Bullet</Filter>
     </ClCompile>
+    <ClCompile Include="FlyingEnemy.cpp">
+      <Filter>Object\Unit\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Texture.h">
@@ -241,6 +244,9 @@
     </ClInclude>
     <ClInclude Include="HomingBullet.h">
       <Filter>Object\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="FlyingEnemy.h">
+      <Filter>Object\Unit\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

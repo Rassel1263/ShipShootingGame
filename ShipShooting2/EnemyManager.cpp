@@ -12,6 +12,13 @@ void EnemyManager::SpawnEnemy(D3DXVECTOR2 pos, EnemyType enemyType)
 		floatingEnemys.push_back(floatingEnemy);
 		enemy = floatingEnemy;
 	}
+	else if (enemyType == EnemyType::FlyingEnemy)
+	{
+		FlyingEnemy* flyingEnemy;
+		nowScene->obm.AddObject(flyingEnemy = new FlyingEnemy(pos));
+		flyingEnemys.push_back(flyingEnemy);
+		enemy = flyingEnemy;
+	}
 
 	allEnemys.push_back(enemy);
 }
@@ -29,5 +36,12 @@ void EnemyManager::SortEnemy(CEnemy* enemy, EnemyType enemyType)
 
 		if (ef != floatingEnemys.end())
 			floatingEnemys.erase(ef);
+	}
+	else if (enemyType == EnemyType::FlyingEnemy)
+	{
+		auto ef = std::find(flyingEnemys.begin(), flyingEnemys.end(), enemy);
+
+		if (ef != flyingEnemys.end())
+			flyingEnemys.erase(ef);
 	}
 }

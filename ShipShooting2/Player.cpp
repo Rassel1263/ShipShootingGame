@@ -147,6 +147,21 @@ void Player::SetTarget(EnemyType enemyType)
 			}
 		}
 	}
+
+	if (enemyType == EnemyType::FlyingEnemy)
+	{
+		for (auto& enemy : nowScene->enemyManager.flyingEnemys)
+		{
+			D3DXVECTOR2 distance = enemy->pos - pos;
+			float length = D3DXVec2Length(&distance);
+
+			if (length < minLength)
+			{
+				minLength = length;
+				target = enemy;
+			}
+		}
+	}
 }
 
 void Player::CameraControll()
@@ -171,6 +186,17 @@ void Player::WeaponControll(float deltaTime)
 		weapons[1]->Shoot();
 	}
 	
+	if (Input::GetInstance().KeyDown('E'))
+	{
+		SetTarget(EnemyType::FloatingEnemy);
+		weapons[2]->Shoot();
+	}
+
+	if (Input::GetInstance().KeyDown('R'))
+	{
+		SetTarget(EnemyType::FlyingEnemy);
+		weapons[3]->Shoot();
+	}
 
 	for (auto& weapon : weapons)
 		weapon->Update(deltaTime);

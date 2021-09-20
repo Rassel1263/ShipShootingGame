@@ -395,6 +395,7 @@
     <ClCompile Include="Effect.cpp" />
     <ClCompile Include="EnemyManager.cpp" />
     <ClCompile Include="FloatingEnemy.cpp" />
+    <ClCompile Include="FlyingEnemy.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="HomingBullet.cpp" />
     <ClCompile Include="MachinegunBullet.cpp" />
@@ -417,6 +418,7 @@
     <ClInclude Include="Effect.h" />
     <ClInclude Include="EnemyManager.h" />
     <ClInclude Include="FloatingEnemy.h" />
+    <ClInclude Include="FlyingEnemy.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="HomingBullet.h" />

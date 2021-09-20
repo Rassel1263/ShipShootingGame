@@ -34,6 +34,7 @@
 
 #include "CEnemy.h"
 #include "FloatingEnemy.h"
+#include "FlyingEnemy.h"
 #include "EnemyManager.h"
 
 #include "Player.h"
@@ -41,6 +42,7 @@
 
 #include "CBullet.h"
 #include "MachinegunBullet.h"
+#include "HomingBullet.h"
 
 #include "Effect.h"
 
