@@ -19,7 +19,5 @@ public:
 	virtual void OnCollision(Collider& coli);
 	virtual bool Move(float deltaTime) override;
 	virtual void Destroy() {};
-
-
 };
 

@@ -3,6 +3,14 @@ class PlayerUI : public ObjectUI
 {
 public:
 	Sprite base;
+	Sprite spdKey;
+	Sprite weapons;
+
+	Sprite hpBck;
+	Sprite hp;
+	RenderInfo hpInfo;
+
+	RenderInfo spdKeyInfo;
 
 	Player* player = NULL;
 

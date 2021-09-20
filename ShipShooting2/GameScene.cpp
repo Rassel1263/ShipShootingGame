@@ -3,9 +3,13 @@
 
 void GameScene::Init()
 {
+	Scene::LoadAll();
+
 	obm.AddObject(new Map());
+	obm.AddObject(miniMap = new MiniMap());
 	obm.AddObject(new Player());
-	obm.AddObject(new FloatingEnemy(D3DXVECTOR2(200, 200)));
+
+	enemyManager.SpawnEnemy(D3DXVECTOR2(200, 400), EnemyType::FloatingEnemy);
 }
 
 void GameScene::Update(float deltaTime)

@@ -9,7 +9,7 @@ Collider::Collider(Object* obj, const std::wstring& name, AABB* aabb, D3DXCOLOR 
         this->aabb = *aabb;
     }
 
-    this->tag = tag;
+    this->tag = name;
     this->obj = obj;
     this->color = color;
     this->obj->bCollider = true;

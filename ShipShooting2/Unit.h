@@ -24,26 +24,34 @@ public:
 		}
 	} ability;
 
+	Unit* target = NULL;
+	ColorShader* colorShader = NULL;
+
 	Team team = Team::None;
 
 	std::vector<Sprite> sprites;
 	RenderInfo ri;
 
-	int pastScene = 0;
-	int renderNum = 0;
-	int fixAni = 0;
+	bool hit = false;
+	float hitTimer = 0.0f;
+	float hitTime = 0.0f;
 
+	// ¹è È¸Àü 
 	float curRadian = 0.0f;
 	float curRotate = 0.0f;
 	float rotateSpd = 0.0f;
+
+	int pastScene = 0;
+	int renderNum = 0;
+	int fixAni = 0;
 
 	Unit();
 
 	virtual void Update(float deltaTime) override;
 	virtual void Render() override;
 	virtual bool Move(float deltaTime);
+	virtual void Hit(float damage);
 	void SetAni(float rotate);
-	
 
 	Sprite& GetNowSprite();
 
