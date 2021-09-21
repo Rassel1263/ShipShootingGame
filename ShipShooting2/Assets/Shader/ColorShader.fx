@@ -8,7 +8,7 @@ sampler2D InputSampler = sampler_state
 
 struct ShaderInput
 {
-    float uv : TEXCOORD0;
+    float2 uv : TEXCOORD0;
 };
 
 float4 main(ShaderInput input) : COLOR

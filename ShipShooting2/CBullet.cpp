@@ -10,10 +10,16 @@ CBullet::CBullet(D3DXVECTOR2 pos, Unit* target, std::wstring team, float damage)
 
 	spr.LoadAll(L"Assets/Sprites/bullet/machinegunBullet/");
 	CreateCollider(D3DXVECTOR2(-5, -5), D3DXVECTOR2(5, 5), team + L"bullet");
+
+	layer = 5;
 }
 
 void CBullet::Update(float deltaTime)
 {
+	if (pos.x > Camera::GetInstance().cameraPos.x + 1000 || pos.x < Camera::GetInstance().cameraPos.x - 1000 ||
+		pos.y > Camera::GetInstance().cameraPos.y + 600 || pos.y < Camera::GetInstance().cameraPos.y - 600)
+		destroy = true;
+
 	pos += D3DXVECTOR2(cosf(angle), sinf(angle)) * deltaTime * speed;
 
 	spr.Update(deltaTime);
@@ -31,6 +37,12 @@ void CBullet::OnCollision(Collider& coli)
 {
 	if (target)
 	{
+		if (coli.tag == L"obstacle")
+		{
+			CreateEffect();
+			destroy = true;
+		}
+
 		if ((team == L"ally" && coli.tag == L"enemy") || (team == L"enemy" && coli.tag == L"ally"))
 		{
 			if (team == L"ally")

@@ -9,12 +9,19 @@ public:
 
 	Sprite weapons;
 	Sprite weaponCools[4];
-	std::vector<Sprite> bulletFont[4];
-	RenderInfo fontInfo[4];
+	std::vector<Sprite> font[5];
+	RenderInfo fontInfo[5];
 
+	Sprite skills;
+	Sprite focusEft;
+	Sprite skillCools[2];
 
 	Sprite hpBck;
 	Sprite hp;
+
+	Sprite invincible;
+	Sprite speedUp;
+
 	RenderInfo hpInfo;
 
 	Player* player = NULL;
@@ -26,6 +33,6 @@ public:
 	void SetSprite(std::wstring name, Sprite& spr);
 
 	void FontUpdate(std::vector<Sprite>& vec, int& num);
-	void FontRender(std::vector<Sprite> vec, RenderInfo ri);
+	void FontRender(std::vector<Sprite> vec, RenderInfo ri, float kerning = 15);
 };
 

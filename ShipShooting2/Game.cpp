@@ -60,6 +60,8 @@ void Game::Update(float deltaTime)
 		nextScene = NULL;
 	}
 
+	unscaleTime = deltaTime;
+
 	if (Input::GetInstance().KeyDown(VK_F2))
 		pause = !pause;
 

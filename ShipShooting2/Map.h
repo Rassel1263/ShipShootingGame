@@ -5,6 +5,7 @@ public:
 	Sprite ocean;
 	Sprite shadow;
 
+	float cloudTimer = 0.0f;
 
 	Map();
 

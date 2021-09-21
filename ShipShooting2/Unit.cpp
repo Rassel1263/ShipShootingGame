@@ -36,6 +36,11 @@ void Unit::Render()
     Object::Render();
 }
 
+void Unit::OnCollision(Collider& coli)
+{
+ 
+}
+
 bool Unit::Move(float deltaTime)
 {
     return false;

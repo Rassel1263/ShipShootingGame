@@ -7,45 +7,104 @@ PlayerUI::PlayerUI(Player* player)
 
 	SetSprite(L"base.png", base);
 	SetSprite(L"speed.png", spdKey);
+	spdKeyInfo.pos = { -498, -422 };
 	SetSprite(L"weapon/allWeapon.png", weapons);
 
+	// 무기 
 	for (int i = 0; i < 4; ++i)
+	{
 		SetSprite(L"weapon/coolTime.png", weaponCools[i]);
+		fontInfo[i].scale = D3DXVECTOR2(0.5, 0.5);
+	}
 
 	fontInfo[0].pos = { -875, -288 };
 	fontInfo[1].pos = { -695, -288 };
 	fontInfo[2].pos = { -875, -458 };
 	fontInfo[3].pos = { -695, -458 };
 
+	fontInfo[4].scale = { 0.4 ,0.4 };
+
+	// 체력바
 	SetSprite(L"hp_outline.png", hpBck);
 	SetSprite(L"hp_ingage.png", hp);
-
-
-	spdKeyInfo.pos = { -498, -422 };
+	SetSprite(L"speedUp.png", speedUp);
+	SetSprite(L"invincible.png", invincible);
 	hpInfo.pos = { -470, -200 };
+
+	// 스킬
+
+	SetSprite(L"skills/skill.png", skills);
+
+	for (int i = 0; i < 2; ++i)
+		SetSprite(L"skills/skillCool.png", skillCools[i]);
 }
 
 void PlayerUI::Update(float deltaTime)
 {
 	hp.heightRatio = 1 - player->ability.hp / player->ability.maxHp;
+	speedUp.widthRatio = player->speedUpTime / 5.0f;
+	invincible.widthRatio = player->invincibleTime / 2.0f;
 
-	for (int i = 0; i < 4; ++i)
-		FontUpdate(bulletFont[i], player->weapons[i]->bulletAmount);
+	// 무기 총알 개수
+	for (int i = 0; i < 5; ++i)
+	{
+		if (i < 4)
+			FontUpdate(font[i], player->weapons[i]->bulletAmount);
+		else if (i == 4)
+		{
+			int speed = (int)player->ability.speed / 5;
+			FontUpdate(font[i], speed);
+		}
+	}
+
+	// 무기 장전 && 연사
+	weaponCools[0].heightRatio = 1 - static_cast<MachineGun*>(player->weapons[0])->reloadTimer / static_cast<MachineGun*>(player->weapons[0])->reloadTime;
+	weaponCools[1].heightRatio = 1 - static_cast<NavalGun*>(player->weapons[1])->reloadTimer / static_cast<NavalGun*>(player->weapons[1])->reloadTime;
+	weaponCools[2].heightRatio = player->weapons[2]->shootTimer / player->weapons[2]->shootInterval;
+	weaponCools[3].heightRatio = player->weapons[3]->shootTimer / player->weapons[3]->shootInterval;
+
+	// 스킬 쿨타임
+	skillCools[0].heightRatio = 1 - player->skill1CoolTime / 10.0f;
+	skillCools[1].heightRatio = 1 - player->skill2CoolTime / 20.0f;
 
 	D3DXVec2Lerp(&spdKeyInfo.pos, &spdKeyInfo.pos, &D3DXVECTOR2(-498, -464 + player->speedLevel * 42), 0.1f);
+	fontInfo[4].pos = D3DXVECTOR2(spdKeyInfo.pos.x + 40, spdKeyInfo.pos.y);
+
 }
 
 void PlayerUI::Render()
 {
 	base.Render(RenderInfo{});
 	spdKey.Render(spdKeyInfo);
+
+	// 무기
 	weapons.Render(RenderInfo{ D3DXVECTOR2(-770, -330) });
-	for (int i = 0; i < 4; ++i)
-		FontRender(bulletFont[i], fontInfo[i]);
+
+	for (int i = 0; i < 5; ++i)
+	{
+		if (i < 4)
+			FontRender(font[i], fontInfo[i]);
+		else
+			FontRender(font[i], fontInfo[i], 10);
+	}
+
+	weaponCools[0].Render(RenderInfo{ D3DXVECTOR2(-860, -247) });
+	weaponCools[1].Render(RenderInfo{ D3DXVECTOR2(-681, -247) });
+	weaponCools[2].Render(RenderInfo{ D3DXVECTOR2(-860, -417) });
+	weaponCools[3].Render(RenderInfo{ D3DXVECTOR2(-681, -417) });
+
+	// 스킬
+	skills.Render(RenderInfo{ D3DXVECTOR2(-700, -130) });
+
+	skillCools[0].Render(RenderInfo{ D3DXVECTOR2(-735, -130) });
+	skillCools[1].Render(RenderInfo{ D3DXVECTOR2(-665, -130) });
+
+
 
 	hpBck.Render(hpInfo);
 	hp.Render(hpInfo);
-
+	speedUp.Render(hpInfo);
+	invincible.Render(hpInfo);
 }
 
 void PlayerUI::SetSprite(std::wstring name, Sprite& spr)
@@ -71,15 +130,15 @@ void PlayerUI::FontUpdate(std::vector<Sprite>& vec, int& num)
 
 }
 
-void PlayerUI::FontRender(std::vector<Sprite> vec, RenderInfo ri)
+void PlayerUI::FontRender(std::vector<Sprite> vec, RenderInfo ri, float kerning)
 {
 	int size = vec.size();
 
 	for (int i = size - 1; i >= 0; --i)
 	{
 		RenderInfo tempInfo;
-		tempInfo.scale = { 0.5, 0.5 };
-		tempInfo.pos = ri.pos + D3DXVECTOR2(-15 * i, 0);
+		tempInfo.scale = ri.scale;
+		tempInfo.pos = ri.pos + D3DXVECTOR2(-kerning * i, 0);
 		vec[size - 1 - i].Render(tempInfo);
 	}
 }

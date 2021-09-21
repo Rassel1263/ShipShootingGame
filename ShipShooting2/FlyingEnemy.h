@@ -6,7 +6,6 @@ public:
 
 	virtual void Update(float deltaTime) override;
 	virtual void Render() override;
-	virtual void OnCollision(Collider& coli);
 	virtual void Destroy() override;
 };
 

@@ -39,12 +39,24 @@
 
 #include "Player.h"
 #include "PlayerUI.h"
+#include "MsgBox.h"
 
 #include "CBullet.h"
 #include "MachinegunBullet.h"
 #include "HomingBullet.h"
 
+#include "Obstacle.h"
+#include "ObstacleManager.h"
+#include "Cloud.h"
+
+#include "Item.h"
+#include "ItemUI.h"
+
+#include "Font.h"
 #include "Effect.h"
+#include "StageFont.h"
+#include "FocusedFire.h"
+#include "Airsupport.h"
 
 #include "MiniMap.h"
 #include "Map.h"

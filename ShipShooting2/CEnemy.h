@@ -16,8 +16,9 @@ public:
 
 	virtual void Update(float deltaTime) override;
 	virtual void Render() override;
-	virtual void OnCollision(Collider& coli);
+	virtual void OnCollision(Collider& coli) override;
 	virtual bool Move(float deltaTime) override;
-	virtual void Destroy() {};
+	virtual void Hit(float damage) override;
+	virtual void Destroy();
 };
 

@@ -24,7 +24,7 @@ void MiniMap::Update(float deltaTime)
 
 void MiniMap::Render()
 {
-	miniMap.Render(RenderInfo{ D3DXVECTOR2(700, -300) });
+	miniMap.Render(RenderInfo{ D3DXVECTOR2(735, -300) });
 	for (auto& obj : miniObjects)
 	{
 		RenderInfo ri;

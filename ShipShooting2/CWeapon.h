@@ -4,7 +4,6 @@ class Unit;
 class CWeapon
 {
 public:
-
 	int bulletAmount = 0;
 	int bulletMaxAmount = 0;
 
@@ -40,7 +39,6 @@ class NavalGun : public CWeapon
 public:
 	float reloadTime = 0.0f;
 	float reloadTimer = 0.0f;
-
 	NavalGun(Unit* owner);
 
 	virtual void Update(float deltaTime) override;

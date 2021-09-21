@@ -9,7 +9,12 @@ CWeapon::CWeapon(Unit* owner)
 void CWeapon::Update(float deltaTime)
 {
 	if (shootTimer < shootInterval)
+	{
 		shootTimer += deltaTime;
+
+		if (shootTimer >= shootInterval)
+			shootTimer = shootInterval;
+	}
 }
 
 ////////////////////////////////////
@@ -29,17 +34,15 @@ MachineGun::MachineGun(Unit* owner) : CWeapon(owner)
 
 void MachineGun::Update(float deltaTime)
 {
-	std::cout << owner->pos.x << std::endl;
-
 	if (reload)
 	{
 		reloadTimer += deltaTime;
-
 		if (reloadTimer >= reloadTime)
 		{
 			bulletAmount += bulletMaxAmount;
 			reload = false;
 			reloadTimer = 0.0f;
+			nowScene->msgBox->SpawnMsgBox(L"machinegunReady");
 		}
 	}
 
@@ -53,7 +56,9 @@ void MachineGun::Shoot()
 		if (shootTimer >= shootInterval)
 		{
 			shootTimer = 0.0f;
-			bulletAmount -= 2;
+
+			if(!nowScene->player->skill1)
+				bulletAmount--;
 
 			nowScene->obm.AddObject(new Effect(L"shoot_machinegun/", owner->pos, D3DXVECTOR2(1, 1), D3DXVECTOR2(0.5f, 0.5f), 1, true, 0.05f));
 			nowScene->obm.AddObject(new MachinegunBullet(owner->pos, owner->target, L"ally", 10));
@@ -88,6 +93,9 @@ void NavalGun::Update(float deltaTime)
 		{
 			bulletAmount++;
 			reloadTimer = 0.0f;
+
+			if (bulletAmount == bulletMaxAmount)
+				nowScene->msgBox->SpawnMsgBox(L"navagunReady");
 		}
 	}
 
@@ -104,10 +112,15 @@ void NavalGun::Shoot()
 			shootTimer = 0.0f;
 			bulletAmount--;
 
-			owner->target->Hit(damage);
-			
-			nowScene->obm.AddObject(new Effect(L"shoot_navalgun/", owner->pos, D3DXVECTOR2(1, 1), D3DXVECTOR2(0.5f, 0.5f), 1, true, 0.05f));
-			nowScene->obm.AddObject(new Effect(L"Hit_navalgun/", owner->target->pos + nowScene->GetRandomVector(-50, 50, -50, 50), D3DXVECTOR2(1, 1), D3DXVECTOR2(0.5f, 0.5f), 1, true, 0.03f, -nowScene->GetAngleFromTarget(owner->pos, owner->target->pos) + 90));
+			if (owner->target)
+			{
+				owner->target->Hit(damage);
+
+				nowScene->obm.AddObject(new Effect(L"shoot_navalgun/", owner->pos, D3DXVECTOR2(1, 1), D3DXVECTOR2(0.5f, 0.5f), 1, true, 0.05f));
+				nowScene->obm.AddObject(new Effect(L"Hit_navalgun/", owner->target->pos + nowScene->GetRandomVector(-50, 50, -50, 50), D3DXVECTOR2(1, 1), D3DXVECTOR2(0.5f, 0.5f), 1, true, 0.03f, -nowScene->GetAngleFromTarget(owner->pos, owner->target->pos) + 90));
+			}
+			else
+				nowScene->obm.AddObject(new Effect(L"Hit_navalgun/", owner->pos + nowScene->GetRandomVector(-800, 800, 500, 800), D3DXVECTOR2(1, 1), D3DXVECTOR2(0.5, 0.5), 1, true, 0.03f));
 		}
 	}
 }
@@ -134,7 +147,7 @@ void TorpedoLauncher::Shoot()
 			shootTimer = 0.0f;
 
 			nowScene->obm.AddObject(new HomingBullet(owner->pos, owner->target, CBullet::BulletType::Torpedo, L"ally", damage,
-				owner->curRotate, 1.5f));
+				owner->curRotate, 0.2f));
 		}
 	}
 }
@@ -163,7 +176,7 @@ void MissileTurret::Shoot()
 			nowScene->obm.AddObject(new Effect(L"shoot_missile/", owner->pos, D3DXVECTOR2(1, 1), D3DXVECTOR2(0.5f, 0.0f), 1, true, 0.05f));
 
 			nowScene->obm.AddObject(new HomingBullet(owner->pos, owner->target, CBullet::BulletType::Missile, L"ally", damage,
-				owner->curRotate, 1.5f));
+				owner->curRotate, 0.2f));
 		}
 	}
 }
