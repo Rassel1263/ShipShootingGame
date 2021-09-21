@@ -16,12 +16,13 @@ Player::Player()
 	Resize(24);
 
 	for (int i = 0; i < 24; ++i)
-		GetSprite(i).LoadAll(L"Assets/Sprites/player/move/" + std::to_wstring(i));
-		//GetSprite(i).LoadAll(L"a");
+		GetSprite(i).LoadAll(L"a");
+		//GetSprite(i).LoadAll(L"Assets/Sprites/player/move/" + std::to_wstring(i));
 
 	CreateCollider(D3DXVECTOR2(-100, -100), D3DXVECTOR2(100, 100), L"player");
 
 	nowScene->obm.AddObject(new PlayerUI(this));
+	nowScene->miniMap->AddMiniObj(MINITAG::PLAYER, &pos, this);
 }
 
 void Player::Update(float deltaTime)

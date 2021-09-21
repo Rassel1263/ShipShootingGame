@@ -45,6 +45,10 @@ public:
 	int renderNum = 0;
 	int fixAni = 0;
 
+	// ±ôºýÀÓ
+	int blinkCnt = 0;
+	float destColor = -1.0f;
+
 	Unit();
 
 	virtual void Update(float deltaTime) override;
@@ -52,6 +56,7 @@ public:
 	virtual void OnCollision(Collider& coli) override;
 	virtual bool Move(float deltaTime);
 	virtual void Hit(float damage);
+
 	void SetAni(float rotate);
 
 	Sprite& GetNowSprite();

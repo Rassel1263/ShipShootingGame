@@ -15,7 +15,7 @@ float4 main(ShaderInput input) : COLOR
 {
     float4 albedo = tex2D(InputSampler, input.uv);
     
-    if(albedo.a != 0)
+    if(albedo.a >= 0.8)
         albedo = color;
     
     return albedo;

@@ -14,6 +14,8 @@ void GameScene::Init()
 
 	obstacleManager.Init(500, 1000);
 
+	enemyManager.SetSpawnTime(3.0f, 5.0f);
+
 	enemyManager.SpawnEnemy(D3DXVECTOR2(200, 400), EnemyType::FloatingEnemy);
 	enemyManager.SpawnEnemy(D3DXVECTOR2(-200, 400), EnemyType::FlyingEnemy);
 
@@ -31,6 +33,8 @@ void GameScene::Update(float deltaTime)
 	miniSecond = (gameTime - (int)gameTime) * 100;
 
 	obstacleManager.Update(deltaTime);
+
+	enemyManager.Spawner(deltaTime);
 
 	Scene::Update(deltaTime);
 }

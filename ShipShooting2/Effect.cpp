@@ -18,7 +18,10 @@ Effect::Effect(std::wstring eftName, D3DXVECTOR2 pos, D3DXVECTOR2 scale, D3DXVEC
 	if (index == 1)
 		spr.aniMaxTime = aniTime;
 	else if (index == 2)
+	{
 		visibleTime = aniTime;
+		maxVisibleTime = visibleTime;
+	}
 
 	this->func = func;
 

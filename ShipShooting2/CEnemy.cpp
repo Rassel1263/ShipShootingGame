@@ -6,6 +6,7 @@ CEnemy::CEnemy(D3DXVECTOR2 pos)
 	team = Team::Enemy;
 	hitTime = 0.1f;
 	target = nowScene->player;
+	turnSpeed = D3DXToRadian(2);
 
 	this->pos = pos;
 }
@@ -14,6 +15,8 @@ void CEnemy::Update(float deltaTime)
 {
 	if (ability.hp <= 0)
 		Destroy();
+	else
+		Move(deltaTime);
 
 	Unit::Update(deltaTime);
 }
@@ -36,22 +39,41 @@ void CEnemy::OnCollision(Collider& coli)
 
 bool CEnemy::Move(float deltaTime)
 {
-	curRotate = -nowScene->GetAngleFromTarget(pos, target->pos) + 90;  // -90 ~ 270
-	
-	/*if (curRotate > 270)
-		curRotate = -90;
-	
-	if (curRotate < -90)
-		curRotate = 270;*/
+	float targetAngle = D3DXToRadian(nowScene->GetAngleFromTarget(pos, target->pos));  // -90 ~ 270 
+	float diff = targetAngle - curRadian;
 
-	std::cout << curRotate << std::endl;
-	
-	//SetAni(-curRotate + 90);
-	
-	curRadian = D3DXToRadian(curRotate);
-	//pos += D3DXVECTOR2(cosf(curRadian), sinf(curRadian)) * ability.speed * deltaTime;
 
-	//ri.rotate = -nowScene->GetAngleFromTarget(pos, target->pos) + 90;
+	if (type == EnemyType::FlyingEnemy)
+	{
+		if (attackTimer >= attackTime)
+			turnTime += deltaTime;
+	}
+	else
+		turnTime += deltaTime;
+
+	if (turnTime >= 0.01f)
+	{
+		if (diff > D3DX_PI)
+			diff -= D3DX_PI * 2;
+		else if (diff < -D3DX_PI)
+			diff += D3DX_PI * 2;
+
+		if (diff > turnSpeed)
+			curRadian += turnSpeed;
+		else if (diff < -turnSpeed)
+			curRadian -= turnSpeed;
+		else
+		{
+			Attack(deltaTime);
+			curRadian = targetAngle;
+		}
+
+		turnTime = 0.0f;
+	}
+
+	SetAni(D3DXToDegree(-curRadian) + 450);
+	
+	pos += D3DXVECTOR2(cosf(curRadian), sinf(curRadian)) * ability.speed * deltaTime;
 
 	return true;
 }
@@ -76,6 +98,10 @@ void CEnemy::Hit(float damage)
 		bCollider = false;
 		ability.hp = 0;
 	}
+}
+
+void CEnemy::Attack(float deltaTime)
+{
 }
 
 void CEnemy::Destroy()

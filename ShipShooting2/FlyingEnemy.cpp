@@ -5,6 +5,8 @@ FlyingEnemy::FlyingEnemy(D3DXVECTOR2 pos) : CEnemy(pos)
 {
 	type = EnemyType::FlyingEnemy;
 	ability.SetAbility(100, 200);
+	attackTime = 3.0f;
+	attackTimer = 3.0f;
 
 	Resize(24);
 
@@ -18,6 +20,8 @@ FlyingEnemy::FlyingEnemy(D3DXVECTOR2 pos) : CEnemy(pos)
 
 void FlyingEnemy::Update(float deltaTime)
 {
+	attackTimer += deltaTime;
+
 	CEnemy::Update(deltaTime);
 }
 
@@ -31,4 +35,17 @@ void FlyingEnemy::Destroy()
 	nowScene->obm.AddObject(new Item(pos, nowScene->GetRandomNumber(0, 5)));
 	nowScene->enemyManager.SortEnemy(this, type);
 	destroy = true;
+}
+
+void FlyingEnemy::Attack(float deltaTime)
+{
+	if (attackTimer >= attackTime)
+	{
+		int num = nowScene->GetRandomNumber(3, 4);
+		for (int i = 0; i < num; ++i)
+			nowScene->obm.AddObject(new HomingBullet(pos, target, CBullet::BulletType::Missile, L"enemy", 10,
+				D3DXToDegree(-curRadian) + 90 + nowScene->GetRandomNumber(-45, 45)));
+
+		attackTimer = 0.0f;
+	}
 }

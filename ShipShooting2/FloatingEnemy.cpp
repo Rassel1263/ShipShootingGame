@@ -3,6 +3,8 @@
 
 FloatingEnemy::FloatingEnemy(D3DXVECTOR2 pos) : CEnemy(pos)
 {
+	attackTime = 1.0f;
+
 	type = EnemyType::FloatingEnemy;
 	ability.SetAbility(50, 50);
 
@@ -17,9 +19,6 @@ FloatingEnemy::FloatingEnemy(D3DXVECTOR2 pos) : CEnemy(pos)
 
 void FloatingEnemy::Update(float deltaTime)
 {
-	Move(deltaTime);
-	/*float targetAngle = D3DXToRadian(nowScene->GetAngleFromTarget(pos, target->pos));
-	std::cout << targetAngle - curRadian << std::endl;*/
 
 	CEnemy::Update(deltaTime);
 }
@@ -37,6 +36,17 @@ void FloatingEnemy::Destroy()
 		nowScene->enemyManager.SortEnemy(this, type);
 
 		destroy = true;
+	}
+}
+
+void FloatingEnemy::Attack(float deltaTime)
+{
+	attackTimer += deltaTime;
+
+	if (attackTimer >= attackTime)
+	{
+		nowScene->obm.AddObject(new HomingBullet(pos, target, CBullet::BulletType::Torpedo, L"enemy", 10, D3DXToDegree(-curRadian) + 90));
+		attackTimer = 0.0f;
 	}
 }
 
