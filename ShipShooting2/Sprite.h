@@ -3,8 +3,8 @@
 struct RenderInfo
 {
 	D3DXVECTOR2 pos = { 0, 0 };
-	D3DXVECTOR2 pivot = { 0.5, 0.5 };
 	D3DXVECTOR2 scale = { 1, 1 };
+	D3DXVECTOR2 pivot = { 0.5, 0.5 };
 	float rotate = 0.0f;
 };
 

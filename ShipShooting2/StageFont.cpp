@@ -8,9 +8,19 @@ StageFont::StageFont(Type type)
 	bck.LoadAll(L"Assets/Sprites/black.png");
 	if (type == Type::START)
 	{
-		spr.LoadAll(L"Assets/Sprites/message/stageStart/" + std::to_wstring(nowScene->curStage), 0.03f,false);
+		spr.LoadAll(L"Assets/Sprites/message/stageStart/" + std::to_wstring(nowScene->curStage), 0.03f, false);
 		bck.color.a = 1.0f;
 		Game::GetInstance().timeScale = 0.0f;
+	}
+	if (type == Type::CLEAR)
+	{
+		spr.LoadAll(L"Assets/Sprites/message/stageClear/", 0.03f, false);
+		bck.color.a = 1.0f;
+	}
+	else if (type == Type::FAIL)
+	{
+		spr.LoadAll(L"Assets/Sprites/message/GameOver", 0.03f, false);
+		bck.color.a = 0.0f;
 	}
 
 	spr.bCamera = false;
@@ -28,10 +38,35 @@ void StageFont::Update(float deltaTime)
 		if (!spr.bAnimation)
 		{
 			bck.color.a -= deltaTime * 2;
-			Game::GetInstance().timeScale = 1.0f;
 
 			if (bck.color.a <= 0.0f)
 			{
+				destroy = true;
+				Game::GetInstance().timeScale = 1.0f;
+				nowScene->obm.AddObject(new StageHelp());
+			}
+		}
+	}
+	else if (type == Type::CLEAR)
+	{
+		if (!spr.bAnimation)
+		{
+			nowScene->obm.AddObject(new CalcPage());
+			destroy = true;
+		}
+	}
+
+	else if (type == Type::FAIL)
+	{
+		if (!spr.bAnimation)
+		{
+			bck.color.a += deltaTime * 0.5f;
+			spr.color.a -= deltaTime * 0.5f;
+
+			if (bck.color.a >= 1.0f)
+			{
+				Game::GetInstance().timeScale = 1.0f;
+				Game::GetInstance().ChangeScene(new MainScene());
 				destroy = true;
 			}
 		}

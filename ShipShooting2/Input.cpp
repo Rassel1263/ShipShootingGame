@@ -19,7 +19,6 @@ void Input::Update()
 
 	GetKeyboardState(curKey);
 
-
 	for (int i = 0; i < 256; ++i)
 	{
 		BYTE key = curKey[i] & 0x80;
@@ -33,6 +32,8 @@ void Input::Update()
 		else if (old == 1 && cur == 1) keyMap[i] = InputState::INPUT_PRESS;
 		else keyMap[i] = InputState::INPUT_NONE;
 	}
+
+	mWorldPos = D3DXVECTOR2(mousePos.x - 960, -mousePos.y + 540);
 }
 
 bool Input::KeyDown(int key)

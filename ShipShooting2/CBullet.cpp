@@ -16,8 +16,12 @@ CBullet::CBullet(D3DXVECTOR2 pos, Unit* target, std::wstring team, float damage)
 
 void CBullet::Update(float deltaTime)
 {
-	if (pos.x > Camera::GetInstance().cameraPos.x + 1000 || pos.x < Camera::GetInstance().cameraPos.x - 1000 ||
-		pos.y > Camera::GetInstance().cameraPos.y + 600 || pos.y < Camera::GetInstance().cameraPos.y - 600)
+	D3DXVECTOR2 asd = Camera::GetInstance().limitPos;
+
+	std::cout << asd.x << std::endl;
+
+	if (pos.x > Camera::GetInstance().limitPos.x || pos.x < -Camera::GetInstance().limitPos.x ||
+		pos.y > Camera::GetInstance().limitPos.y || pos.y < -Camera::GetInstance().limitPos.y)
 		destroy = true;
 
 	pos += D3DXVECTOR2(cosf(angle), sinf(angle)) * deltaTime * speed;
@@ -33,14 +37,17 @@ void CBullet::Render()
 	Object::Render();
 }
 
-void CBullet::OnCollision(Collider& coli)
+void CBullet::OnCollision(Collider& coli) 
 {
 	if (target)
 	{
 		if (coli.tag == L"obstacle")
 		{
-			CreateEffect();
-			destroy = true;
+			if (static_cast<Obstacle*>(coli.obj)->type == Obstacle::ObstalceType::ROCK)
+			{
+				CreateEffect();
+				destroy = true;
+			}
 		}
 
 		if ((team == L"ally" && coli.tag == L"enemy") || (team == L"enemy" && coli.tag == L"ally"))

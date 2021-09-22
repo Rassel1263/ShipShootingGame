@@ -1,11 +1,11 @@
 #include "DXUT.h"
 #include "MachinegunBullet.h"
 
-MachinegunBullet::MachinegunBullet(D3DXVECTOR2 pos, Unit* target, std::wstring tag, float damage)
+MachinegunBullet::MachinegunBullet(D3DXVECTOR2 pos, Unit* target, std::wstring tag, float damage, float speed)
 	:CBullet(pos, target, tag, damage)
 {
 	type = BulletType::Machinegun;
-	speed = 1500;
+	this->speed = speed;
 
 	spr.LoadAll(L"Assets/Sprites/bullet/machinegunBullet/");
 

@@ -20,6 +20,13 @@ void MiniMap::AddMiniObj(MINITAG tag, D3DXVECTOR2* pos, Unit* parent)
 
 void MiniMap::Update(float deltaTime)
 {
+	if (sprites[MINITAG::ENEMY].color.a >= 1.0f || sprites[MINITAG::ENEMY].color.a <= 0.0f)
+		destColor = -destColor;
+
+	sprites[MINITAG::ENEMY].color.a += deltaTime * destColor * 1.5f;
+	sprites[MINITAG::ENEMY].color.a = std::clamp(sprites[MINITAG::ENEMY].color.a, 0.0f, 1.0f);
+
+
 }
 
 void MiniMap::Render()
@@ -42,10 +49,16 @@ void MiniMap::Render()
 
 void MiniMap::SortObj(Unit* obj)
 {
-	auto lambda = [=](SpritePos temp)->bool { if (temp.parentUnit == obj) return true; };
+	auto lambda = [=](SpritePos temp)->bool { 
+		if (temp.parentUnit == obj)
+			return true;
 
-	auto mf = std::find(miniObjects.begin(), miniObjects.end(), SpritePos{});
+		return false;
+	};
+
+	auto mf = std::find_if(miniObjects.begin(), miniObjects.end(), lambda);
 
 	if(mf != miniObjects.end())
 		miniObjects.erase(mf);
 }
+

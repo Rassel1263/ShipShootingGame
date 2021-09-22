@@ -17,6 +17,7 @@ protected:
 
 public:
 	D3DXVECTOR2 mousePos = { 0, 0 };
+	D3DXVECTOR2 mWorldPos= { 0, 0 };
 
 	void Start();
 	void Update();
@@ -24,5 +25,6 @@ public:
 	bool KeyDown(int key);
 	bool KeyUp(int key);
 	bool KeyPress(int key);
+
 };
 

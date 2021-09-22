@@ -19,6 +19,11 @@ FloatingEnemy::FloatingEnemy(D3DXVECTOR2 pos) : CEnemy(pos)
 
 void FloatingEnemy::Update(float deltaTime)
 {
+	if (pos.y < Camera::GetInstance().cameraPos.y - 600)
+	{
+		nowScene->enemyManager.SortEnemy(this, type);
+		destroy = true;
+	}
 
 	CEnemy::Update(deltaTime);
 }
@@ -32,7 +37,11 @@ void FloatingEnemy::Destroy()
 {
 	if (!GetNowSprite().bAnimation)
 	{
-		nowScene->obm.AddObject(new Item(pos, nowScene->GetRandomNumber(0, 5)));
+		if(nowScene->GetRandomNumber(0, 3))
+			nowScene->obm.AddObject(new Item(pos, nowScene->GetRandomNumber(0, 5)));
+		else
+			nowScene->obm.AddObject(new Obstacle(pos, Obstacle::ObstalceType::MINE));
+
 		nowScene->enemyManager.SortEnemy(this, type);
 
 		destroy = true;

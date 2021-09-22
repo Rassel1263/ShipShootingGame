@@ -28,8 +28,12 @@ void EnemyManager::SetSpawnPos(EnemyType type)
 	else if (spawnIndex == 2)
 		spawnPos.x = 800;
 
-	nowScene->obm.AddObject(new Effect(L"arrow.png", spawnPos, D3DXVECTOR2(1, 1), D3DXVECTOR2(0.5, 0.5), 2, false, 1.0f,
-		spawnIndex * 90, lambda));
+	if (type == EnemyType::FloatingEnemy)
+		nowScene->obm.AddObject(new Effect(L"arrow.png", spawnPos, D3DXVECTOR2(1, 1), D3DXVECTOR2(0.5, 0.5), 2, false, 1.0f,
+			spawnIndex * 90, lambda));
+	else if(type == EnemyType::FlyingEnemy)
+		nowScene->obm.AddObject(new Effect(L"arrow2.png", spawnPos, D3DXVECTOR2(1, 1), D3DXVECTOR2(0.5, 0.5), 2, false, 1.0f,
+			spawnIndex * 90, lambda));
 }
 
 void EnemyManager::Spawner(float deltaTime)
@@ -46,7 +50,7 @@ void EnemyManager::Spawner(float deltaTime)
 
 	if (flySpawnTimer >= flySpawnTime)
 	{
-		SetSpawnPos(EnemyType::FloatingEnemy);
+		SetSpawnPos(EnemyType::FlyingEnemy);
 
 		flySpawnTimer = 0.0f;
 	}
@@ -70,6 +74,20 @@ void EnemyManager::SpawnEnemy(D3DXVECTOR2 pos, EnemyType enemyType)
 		flyingEnemys.push_back(flyingEnemy);
 		enemy = flyingEnemy;
 	}
+	else if (enemyType == EnemyType::BigShip)
+	{
+		FloatingEnemy* floatingEnemy;
+		nowScene->obm.AddObject(floatingEnemy = new BigShip(pos));
+		floatingEnemys.push_back(floatingEnemy);
+		enemy = floatingEnemy;
+	}
+	else if (enemyType == EnemyType::BigPlane)
+	{
+		FlyingEnemy* flyingEnemy;
+		nowScene->obm.AddObject(flyingEnemy = new BigPlane(pos));
+		flyingEnemys.push_back(flyingEnemy);
+		enemy = flyingEnemy;
+	}
 
 	nowScene->miniMap->AddMiniObj(MINITAG::ENEMY, &enemy->pos, enemy);
 	allEnemys.push_back(enemy);
@@ -84,18 +102,19 @@ void EnemyManager::SortEnemy(CEnemy* enemy, EnemyType enemyType)
 	if (ef != allEnemys.end())
 		allEnemys.erase(ef);
 
-	if (enemyType == EnemyType::FloatingEnemy)
+	if (enemyType == EnemyType::FloatingEnemy || enemyType == EnemyType::BigShip)
 	{
 		auto ef = std::find(floatingEnemys.begin(), floatingEnemys.end(), enemy);
 
 		if (ef != floatingEnemys.end())
 			floatingEnemys.erase(ef);
 	}
-	else if (enemyType == EnemyType::FlyingEnemy)
+	else if (enemyType == EnemyType::FlyingEnemy || enemyType == EnemyType::BigPlane)
 	{
 		auto ef = std::find(flyingEnemys.begin(), flyingEnemys.end(), enemy);
 
 		if (ef != flyingEnemys.end())
 			flyingEnemys.erase(ef);
 	}
+
 }

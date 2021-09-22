@@ -13,6 +13,8 @@ Player::Player()
 	weapons.push_back(new TorpedoLauncher(this));
 	weapons.push_back(new MissileTurret(this));
 
+	skill2CoolTime = 5.0f;
+
 	Resize(24);
 
 	for (int i = 0; i < 24; ++i)
@@ -23,25 +25,43 @@ Player::Player()
 
 	nowScene->obm.AddObject(new PlayerUI(this));
 	nowScene->miniMap->AddMiniObj(MINITAG::PLAYER, &pos, this);
+
 }
 
 void Player::Update(float deltaTime)
 {
 	if (Input::GetInstance().KeyDown('G'))
-		nowScene->obm.AddObject(new Item(D3DXVECTOR2(0, 400), nowScene->GetRandomNumber(0, 5)));
+		nowScene->enemyManager.SpawnEnemy(pos + D3DXVECTOR2(0, 400), EnemyType::BigPlane);
 
-	Move(deltaTime);
-	CameraControll();
-	WeaponControll(deltaTime);
-	UpdateItemEffect(deltaTime);
-	FirstSkillControll(deltaTime);
-	SecondSkillControll(deltaTime);
+	if (Input::GetInstance().KeyDown('F'))
+		nowScene->obm.AddObject(new CalcPage());
 
-	if (Input::GetInstance().KeyDown('S'))
+	if (ability.hp <= 0)
 	{
-		for (int i = 0; i < 24; ++i)
-			GetSprite(i).LoadAll(L"Assets/Sprites/player/move/" + std::to_wstring(i));
+		if (!GetNowSprite().bAnimation && !drawGameOver)
+		{
+			drawGameOver = true;
+			nowScene->obm.AddObject(new StageFont(StageFont::Type::FAIL));
+		}
+
+		GetNowSprite().Update(Game::GetInstance().unscaleTime);
+		return;
 	}
+
+	if(fallowCamera)
+		CameraControll();
+
+	if (!stop)
+	{
+		Move(deltaTime);
+		WeaponControll(deltaTime);
+		UpdateItemEffect(deltaTime);
+		FirstSkillControll(deltaTime);
+		SecondSkillControll(deltaTime);
+	}
+		
+	if(!nowScene->stageStart)
+		pos.y += 50 * Game::GetInstance().unscaleTime;
 
 	Unit::Update(deltaTime);
 }
@@ -57,6 +77,8 @@ void Player::OnCollision(Collider& coli)
 	{
 		auto obj = static_cast<Obstacle*>(coli.obj);
 
+		if (invincible || god) return;
+
 		if (obj->type == Obstacle::ObstalceType::GARBAGE)
 		{
 			if (!speedDown)
@@ -64,6 +86,12 @@ void Player::OnCollision(Collider& coli)
 				speedDownTime = 2.0f;
 				speedDown = true;
 			}
+		}
+
+		if (obj->type == Obstacle::ObstalceType::MINE)
+		{
+			Hit(20);
+			Camera::GetInstance().cameraQuaken = { 10, 10 };
 		}
 	}
 }
@@ -129,11 +157,37 @@ bool Player::Move(float deltaTime)
 
 	float prevPosY = pos.y;
 	pos += D3DXVECTOR2(cosf(curRadian), sinf(curRadian)) * ability.speed* deltaTime;
-	dps = pos.y - prevPosY;
+
+	if (!nowScene->spawnBoss)
+	{
+		dps = pos.y - prevPosY;
+		moveDistance += dps;
+	}
 
 	SetAni(curRotate);
 
 	return true;
+}
+
+void Player::Hit(float damage)
+{
+	if (hit) return;
+	if (god || invincible) return;
+
+	hit = true;
+	this->ability.hp -= damage;
+
+	if (ability.hp <= 0)
+	{
+		GetNowSprite().LoadAll(L"Assets/Sprites/player/sink/" + std::to_wstring(renderNum), 0.05f, false);
+		GetNowSprite().Reset();
+
+		nowScene->stopTime = true;
+		Game::GetInstance().timeScale = 0.2f;
+
+		bCollider = false;
+		ability.hp = 0;
+	}
 }
 
 void Player::SetTarget(EnemyType enemyType)
@@ -312,7 +366,7 @@ void Player::SecondSkillControll(float deltaTime)
 		{
 			nowScene->obm.AddObject(new Airsupport(pos.x));
 
-			skill2CoolTime = 20.0f;
+			skill2CoolTime = 5.0f;
 			skill2Msg = false;
 		}
 	}

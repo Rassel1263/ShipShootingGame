@@ -9,8 +9,8 @@ public:
 
 	Sprite weapons;
 	Sprite weaponCools[4];
-	std::vector<Sprite> font[5];
-	RenderInfo fontInfo[5];
+	std::vector<Sprite> font[6];
+	RenderInfo fontInfo[6];
 
 	Sprite skills;
 	Sprite focusEft;

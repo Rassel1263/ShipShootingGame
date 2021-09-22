@@ -17,6 +17,7 @@ public:
 	bool hitTime = 0.1f;
 
 	Sprite spr;
+	Sprite bck;
 	RenderInfo ri;
 
 	ColorShader* colorShader = NULL;
@@ -26,5 +27,6 @@ public:
 	virtual void Update(float deltaTime) override;
 	virtual void Render() override;
 	virtual void OnCollision(Collider& coli) override;
+	void Destroy();
 };
 

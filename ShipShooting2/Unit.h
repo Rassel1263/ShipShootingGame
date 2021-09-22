@@ -41,13 +41,11 @@ public:
 	float curRotate = 0.0f;
 	float rotateSpd = 0.0f;
 
-	int pastScene = 0;
 	int renderNum = 0;
 	int fixAni = 0;
 
 	// ±ôºýÀÓ
-	int blinkCnt = 0;
-	float destColor = -1.0f;
+
 
 	Unit();
 
@@ -57,7 +55,7 @@ public:
 	virtual bool Move(float deltaTime);
 	virtual void Hit(float damage);
 
-	void SetAni(float rotate);
+	void SetAni(float rotate, bool bigPlane = false);
 
 	Sprite& GetNowSprite();
 

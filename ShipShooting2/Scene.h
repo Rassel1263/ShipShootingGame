@@ -4,7 +4,12 @@ class Scene
 public:
 	ObjectManager obm;
 
+	static float score;
+	float destScore = 0.0f;
+	int destination = 18000;
+
 	int curStage = 0;
+
 	Scene* nextScene = NULL;
 
 	Player* player = NULL;
@@ -15,6 +20,8 @@ public:
 
 	float gameTime = 180.0f;
 
+	bool stopTime = true;
+	bool stageStart = false;
 	bool spawnBoss = false;
 
 	virtual void Init();
@@ -23,6 +30,7 @@ public:
 	virtual void UIRender();
 
 	void LoadAll();
+	void AddScore(int score);
 
 	int GetRandomNumber(int min, int max);
 	float GetAngleFromTarget(D3DXVECTOR2 pos, D3DXVECTOR2 targetPos);

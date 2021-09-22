@@ -1,12 +1,32 @@
 #include "DXUT.h"
 #include "Scene.h"
 
+float Scene::score = 0.0f;
+
 void Scene::Init()
 {
 }
 
 void Scene::Update(float deltaTime)
 {
+	if (Input::GetInstance().KeyDown(VK_F1))
+		player->god = !player->god;
+
+	if (Input::GetInstance().KeyDown(VK_F3))
+		stopTime = !stopTime;
+
+	if (Input::GetInstance().KeyDown(VK_F4))
+		Game::GetInstance().ChangeScene(new MainScene());
+
+	if (Input::GetInstance().KeyDown(VK_F5))
+		Game::GetInstance().ChangeScene(new GameScene());
+
+	if (Input::GetInstance().KeyDown(VK_F6))
+		Game::GetInstance().ChangeScene(new GameScene2());
+	
+	if(Input::GetInstance().KeyDown(VK_F7))
+		Game::GetInstance().ChangeScene(new RankingScene());
+
 	obm.Collision();
 	obm.Update(deltaTime);
 }
@@ -24,6 +44,11 @@ void Scene::UIRender()
 void Scene::LoadAll()
 {
 	ShaderManager::GetInstance().CreateEffect("Color", L"Assets/Shader/ColorShader.fx", 1);
+}
+
+void Scene::AddScore(int score)
+{
+	destScore += score;
 }
 
 int Scene::GetRandomNumber(int min, int max)

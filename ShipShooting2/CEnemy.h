@@ -5,6 +5,8 @@ enum class EnemyType
 	None,
 	FloatingEnemy,
 	FlyingEnemy,
+	BigShip,
+	BigPlane,
 };
 
 class CEnemy : public Unit

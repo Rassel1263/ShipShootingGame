@@ -41,7 +41,7 @@ HRESULT Game::Init()
 	DXUTGetD3D9Device()->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
 	DXUTGetD3D9Device()->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_DIFFUSE);
 
-	ChangeScene(new GameScene());
+	ChangeScene(new MainScene());
 
 	Camera::GetInstance().Init();
 	Input::GetInstance().Start();
@@ -61,6 +61,12 @@ void Game::Update(float deltaTime)
 	}
 
 	unscaleTime = deltaTime;
+
+	if (Input::GetInstance().KeyDown(VK_CONTROL))
+		timeScale = 10.0f;
+	if (Input::GetInstance().KeyUp(VK_CONTROL))
+		timeScale = 1.0f;
+
 
 	if (Input::GetInstance().KeyDown(VK_F2))
 		pause = !pause;
@@ -109,4 +115,5 @@ void Game::Term()
 void Game::ChangeScene(Scene* nextScene)
 {
 	this->nextScene = nextScene;
+	Camera::GetInstance().divideProj = 1.0f;
 }

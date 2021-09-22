@@ -16,6 +16,8 @@ struct SpritePos
 class MiniMap : public ObjectUI
 {
 public:
+	float destColor = -1.0f;
+
 	Sprite miniMap;
 
 	std::map<MINITAG, Sprite> sprites;

@@ -56,18 +56,17 @@ void Unit::Hit(float damage)
     if (ability.hp <= 0) ability.hp = 0;
 }
 
-void Unit::SetAni(float rotate)
+void Unit::SetAni(float rotate, bool bigPlane)
 {
-    int fixRotateScene = (int)((rotate / 15.0f)) % 24;
-
-    if (pastScene != fixRotateScene)
-    {
-        ri.rotate = 0;
-        pastScene = fixRotateScene;
-    }
+    int fixRotateScene = 0;
+    if(!bigPlane)
+        fixRotateScene = (int)((rotate / 15.0f)) % 24;
+    else
+        fixRotateScene = (int)((rotate / 45)) % 8;
 
     renderNum = (abs(fixRotateScene));
 }
+
 
 Sprite& Unit::GetNowSprite()
 {

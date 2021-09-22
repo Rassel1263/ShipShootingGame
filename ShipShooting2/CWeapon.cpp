@@ -61,7 +61,7 @@ void MachineGun::Shoot()
 				bulletAmount--;
 
 			nowScene->obm.AddObject(new Effect(L"shoot_machinegun/", owner->pos, D3DXVECTOR2(1, 1), D3DXVECTOR2(0.5f, 0.5f), 1, true, 0.05f));
-			nowScene->obm.AddObject(new MachinegunBullet(owner->pos, owner->target, L"ally", 10));
+			nowScene->obm.AddObject(new MachinegunBullet(owner->pos, owner->target, L"ally", 10, 1500));
 		}
 	}
 	else

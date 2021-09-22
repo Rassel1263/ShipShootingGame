@@ -40,8 +40,9 @@ public:
 
 		for (auto s : str)
 		{
-			sprites[cnt].LoadAll(L"Assets/Sprites/ui/ingame/font/" + str.substr(cnt, 1) + L".png");
+			sprites[cnt].LoadAll(L"Assets/Sprites/ui/Font/Number/" + str.substr(cnt, 1) + L".png");
 			sprites[cnt].bCamera = false;
+			if (color) sprites[cnt].color = *color;
 			cnt++;
 		}
 	}

@@ -17,12 +17,18 @@ PlayerUI::PlayerUI(Player* player)
 		fontInfo[i].scale = D3DXVECTOR2(0.5, 0.5);
 	}
 
+	// 총알 개수
 	fontInfo[0].pos = { -875, -288 };
 	fontInfo[1].pos = { -695, -288 };
 	fontInfo[2].pos = { -875, -458 };
 	fontInfo[3].pos = { -695, -458 };
 
+	// 이동속도
+	fontInfo[4].pos = D3DXVECTOR2(spdKeyInfo.pos.x + 40, spdKeyInfo.pos.y);
 	fontInfo[4].scale = { 0.4 ,0.4 };
+
+	// 이동 거리
+	fontInfo[5].pos = { -800, -50};
 
 	// 체력바
 	SetSprite(L"hp_outline.png", hpBck);
@@ -46,7 +52,7 @@ void PlayerUI::Update(float deltaTime)
 	invincible.widthRatio = player->invincibleTime / 2.0f;
 
 	// 무기 총알 개수
-	for (int i = 0; i < 5; ++i)
+	for (int i = 0; i < 6; ++i)
 	{
 		if (i < 4)
 			FontUpdate(font[i], player->weapons[i]->bulletAmount);
@@ -54,6 +60,11 @@ void PlayerUI::Update(float deltaTime)
 		{
 			int speed = (int)player->ability.speed / 5;
 			FontUpdate(font[i], speed);
+		}
+		else if (i == 5)
+		{
+			int remainDistance = nowScene->destination - (int)player->moveDistance;
+			FontUpdate(font[i], remainDistance);
 		}
 	}
 
@@ -80,12 +91,14 @@ void PlayerUI::Render()
 	// 무기
 	weapons.Render(RenderInfo{ D3DXVECTOR2(-770, -330) });
 
-	for (int i = 0; i < 5; ++i)
+	for (int i = 0; i < 6; ++i)
 	{
 		if (i < 4)
 			FontRender(font[i], fontInfo[i]);
-		else
+		else if (i == 4)
 			FontRender(font[i], fontInfo[i], 10);
+		else if (i == 5)
+			FontRender(font[i], fontInfo[i], 30);
 	}
 
 	weaponCools[0].Render(RenderInfo{ D3DXVECTOR2(-860, -247) });
@@ -98,7 +111,6 @@ void PlayerUI::Render()
 
 	skillCools[0].Render(RenderInfo{ D3DXVECTOR2(-735, -130) });
 	skillCools[1].Render(RenderInfo{ D3DXVECTOR2(-665, -130) });
-
 
 
 	hpBck.Render(hpInfo);
@@ -123,7 +135,7 @@ void PlayerUI::FontUpdate(std::vector<Sprite>& vec, int& num)
 	int cnt = 0;
 	for (auto s : str)
 	{
-		vec[cnt].LoadAll(L"Assets/Sprites/ui/ingame/font/" + str.substr(cnt, 1) + L".png");
+		vec[cnt].LoadAll(L"Assets/Sprites/ui/Font/Number/" + str.substr(cnt, 1) + L".png");
 		vec[cnt].bCamera = false;
 		cnt++;
 	}
