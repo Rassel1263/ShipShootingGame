@@ -26,6 +26,7 @@ void Item::OnCollision(Collider& coli)
 	if (coli.tag == L"player")
 	{
 		nowScene->player->SetItemEffective(index);
+		SoundManager::GetInstance().Play(L"item");
 		nowScene->obm.AddObject(new ItemUI(index, pos));
 		switch (index)
 		{

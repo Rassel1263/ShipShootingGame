@@ -13,8 +13,9 @@ CalcPage::CalcPage()
 
 	this->hp = nowScene->player->ability.hp;
 	this->time = nowScene->gameTime;
-	this->kills = 0;
+	this->kills = nowScene->player->kills;
 	nowScene->score = nowScene->score + nowScene->destScore;
+	nowScene->destScore = 0.0f;
 
 	fontColor.a = 0.0f;
 
@@ -57,9 +58,25 @@ void CalcPage::Update(float deltaTime)
 	}
 	else if (index == 1)
 	{
-		auto lambda = [] {Game::GetInstance().ChangeScene(nowScene->nextScene);  };
-		nowScene->obm.AddObject(new Fade(lambda));
-		index++;
+		if (nowScene->curStage == 1)
+		{
+			auto lambda = [] {Game::GetInstance().ChangeScene(nowScene->nextScene);  };
+			nowScene->obm.AddObject(new Fade(lambda));
+			index++;
+		}
+		else
+		{
+			bck.color.a -= deltaTime;
+			fontColor.a -= deltaTime;
+
+			if (bck.color.a <= 0.0f)
+			{
+				nowScene->obm.AddObject(new StageHelp(3));
+				index++;
+				destroy = true;
+			}
+		}
+
 	}
 
 }

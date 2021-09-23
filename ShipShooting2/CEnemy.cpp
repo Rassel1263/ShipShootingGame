@@ -6,7 +6,7 @@ CEnemy::CEnemy(D3DXVECTOR2 pos)
 	team = Team::Enemy;
 	hitTime = 0.1f;
 	target = nowScene->player;
-	turnSpeed = D3DXToRadian(2);
+	turnSpeed = D3DXToRadian(5);
 
 	this->pos = pos;
 }
@@ -17,6 +17,16 @@ void CEnemy::Update(float deltaTime)
 		Destroy();
 	else
 		Move(deltaTime);
+
+	if (nowScene->spawnBoss)
+	{
+		if (type == EnemyType::FloatingEnemy || type == EnemyType::FlyingEnemy)
+		{
+			nowScene->obm.AddObject(new Effect(L"onexplode", pos, D3DXVECTOR2(0.4, 0.4), D3DXVECTOR2(0.5, 0.5), 1, true, 0.05f));
+			nowScene->enemyManager.SortEnemy(this, type);
+			destroy = true;
+		}
+	}
 
 	Unit::Update(deltaTime);
 }
@@ -89,6 +99,7 @@ void CEnemy::Hit(float damage)
 	{
 		if (type == EnemyType::FloatingEnemy)
 		{
+			SoundManager::GetInstance().Play(L"explo");
 			nowScene->obm.AddObject(new Effect(L"onexplode", pos, D3DXVECTOR2(0.4, 0.4), D3DXVECTOR2(0.5, 0.5), 1, true, 0.05f));
 
 			GetNowSprite().LoadAll(L"Assets/Sprites/enemy/type1/sink/" + std::to_wstring(renderNum), 0.05f, false);
@@ -106,4 +117,6 @@ void CEnemy::Attack(float deltaTime)
 
 void CEnemy::Destroy()
 {
+	nowScene->enemyManager.SortEnemy(this, type);
+	destroy = true;
 }

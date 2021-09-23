@@ -14,23 +14,12 @@ public:
 	float outroTime = 0.0f;
 	float effectTime = 0.0f;
 	float effectTimer = 0.0f;
-	int effectAmount = 0;
 
-	int gunIndex = 0;
+
+	int effectAmount = 0;
 
 	int pattern = 0;
 
-	struct WeaponInfo
-	{
-		RenderInfo ri;
-		int gunRenderNum = 0;
-	};
-
-	std::vector<Sprite> bGun;
-	std::vector<WeaponInfo> bGunInfo;
-
-	std::vector<Sprite> sGun;
-	std::vector<WeaponInfo> sGunInfo;
 
 public:
 	BigPlane(D3DXVECTOR2 pos);
@@ -39,10 +28,9 @@ public:
 	virtual void Render() override;
 	virtual void Destroy() override;
 	virtual bool Move(float deltaTime) override;
+	virtual void Hit(float damage) override;
 	void ChoosePattern();
 	void UpdatePattern(float deltaTime);
-	void SetWeaponRotate(WeaponInfo& info, int rotate);
-	void WeaponRender(std::vector<Sprite>& weapon, std::vector<WeaponInfo>& weaponInfo);
 
 	bool Intro(float deltaTime);
 	bool Outro(float deltaTime);

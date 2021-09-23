@@ -115,5 +115,7 @@ void Game::Term()
 void Game::ChangeScene(Scene* nextScene)
 {
 	this->nextScene = nextScene;
+	SoundManager::GetInstance().StopAll();
+	Camera::GetInstance().destDivideProj = 1.0f;
 	Camera::GetInstance().divideProj = 1.0f;
 }

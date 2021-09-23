@@ -8,7 +8,7 @@ public:
 	float destColor = 1.0f;
 	int blink = 0;
 
-	BossIntro(float y);
+	BossIntro();
 
 	virtual void Update(float deltaTime) override;
 	virtual void Render() override;

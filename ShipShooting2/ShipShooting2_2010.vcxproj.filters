@@ -119,10 +119,10 @@
     <None Include="cpp.hint">
       <Filter>Core</Filter>
     </None>
-    <None Include="Assets\Shader\BlinkSahder.fx">
+    <None Include="Assets\Shader\ColorShader.fx">
       <Filter>Shaders\fx</Filter>
     </None>
-    <None Include="Assets\Shader\ColorShader.fx">
+    <None Include="Assets\Shader\BlinkShader.fx">
       <Filter>Shaders\fx</Filter>
     </None>
   </ItemGroup>
@@ -273,6 +273,9 @@
     <ClCompile Include="BigPlane.cpp">
       <Filter>Object\Unit\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="LoadSprite.cpp" />
+    <ClCompile Include="SoundManager.cpp" />
+    <ClCompile Include="AttackCollider.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Texture.h">
@@ -427,6 +430,9 @@
     <ClInclude Include="BigPlane.h">
       <Filter>Object\Unit\Enemy</Filter>
     </ClInclude>
+    <ClInclude Include="LoadSprite.h" />
+    <ClInclude Include="SoundManager.h" />
+    <ClInclude Include="AttackCollider.h" />
   </ItemGroup>
   <ItemGroup>
     <CLInclude Include="resource.h">

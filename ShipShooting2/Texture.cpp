@@ -5,7 +5,7 @@ namespace fs = std::filesystem;
 
 TextureManager::~TextureManager()
 {
-	for (auto&tex : textures)
+	for (auto tex : textures)
 	{
 		SAFE_RELEASE(tex.second->src);
 		SAFE_DELETE(tex.second);
@@ -45,6 +45,16 @@ void TextureManager::LoadTexture(int id)
 	++threadCnt;
 }
 
+int TextureManager::GetFilePathSize()
+{
+	return filePaths.size();
+}
+
+int TextureManager::GetThreadCount()
+{
+	return threadCnt;
+}
+
 const Texture* TextureManager::GetTexture(std::wstring filePath)
 {
 	filePath = fs::absolute(filePath);
@@ -75,6 +85,7 @@ const Texture* TextureManager::GetTexture(std::wstring filePath)
 		delete texture;
 		return nullptr;
 	}
+	std::lock_guard<std::mutex> guard(insertLock);
 
 	return textures.insert(std::make_pair(filePath, texture)).first->second;
 }

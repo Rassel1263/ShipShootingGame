@@ -3,7 +3,7 @@
 
 Help::Help()
 {
-	spr.LoadAll(L"Assets/Sprites/ui/outgame/help/a.png");
+	spr.LoadAll(L"Assets/Sprites/ui/outgame/help/b.png");
 	spr.color.a = 0.0f;
 }
 

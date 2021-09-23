@@ -1,52 +1,33 @@
 #include "DXUT.h"
 #include "BigPlane.h"
+#include "BossIntro.h"
 
 BigPlane::BigPlane(D3DXVECTOR2 pos) : FlyingEnemy(pos)
 {
-    Resize(8);
-
     type = EnemyType::BigPlane;
 
-	ability.SetAbility(100, 100);
+    this->airPos = this->pos.y;
+    this->pos.y += 1000;
 
-    nowScene->player->fallowCamera = false;
-    Camera::GetInstance().destCameraPos = pos;
-    Camera::GetInstance().destDivideProj = 0.5f;
+    Camera::GetInstance().destCameraPos = D3DXVECTOR2(pos.x, airPos);
+    Camera::GetInstance().destDivideProj = 0.7f;
 
     nowScene->spawnBoss = true;
+    nowScene->obm.AddObject(new BossIntro());
 
+    Resize(8);
     for(int i = 0; i < 8; ++i)
         GetSprite(i).LoadAll(L"Assets/Sprites/enemy/typeboss2/" + std::to_wstring(i), 0.05f, false);
 
+
     bodies.clear();
 
-    sGun.resize(24);
+	ability.SetAbility(1000, 100);
 
-    for (int i = 0; i < 24; ++i)
-        sGun[i].LoadAll(L"Assets/Sprites/enemy/Smallgun/" + std::to_wstring(i));
+    renderNum = 4;
 
-    bGun.resize(24);
-
-    for (int i = 0; i < 24; ++i)
-        bGun[i].LoadAll(L"Assets/Sprites/enemy/Biggun/" + std::to_wstring(i));
-
-    sGunInfo.resize(12);
-
-    int size = 48;
-    for (int i = 0; i < 3; ++i)
-        sGunInfo[i].ri.pos = pos + D3DXVECTOR2(-30 + i * size, 150);
-    for (int i = 3; i < 6; ++i)
-        sGunInfo[i].ri.pos = pos + D3DXVECTOR2(-30 + (i - 3) * size, -20);
-    for (int i = 6; i < 9; ++i)
-        sGunInfo[i].ri.pos = pos + D3DXVECTOR2(240 + (i - 6) * size, 150);
-    for (int i = 9; i < 12; ++i)
-        sGunInfo[i].ri.pos = pos + D3DXVECTOR2(240 + (i - 9) * size, -20);
-
-    bGunInfo.resize(2);
-
-    bGunInfo[0].ri.pos = pos + D3DXVECTOR2(460, 90);
-    bGunInfo[1].ri.pos = pos + D3DXVECTOR2(-200, 90);
-
+    attackTimer = 0.0f;
+    attackTime = 0.0f;
 
     outroTime = 10.0f;
     effectTime = 1.0f;
@@ -58,17 +39,10 @@ void BigPlane::Update(float deltaTime)
     if (Intro(deltaTime)) return;
     if (Outro(deltaTime)) return;
 
-	Move(deltaTime);
+    if (setAirPos)
+        pos.y = airPos;
+
     UpdatePattern(deltaTime);
-
-    for (int i = 0; i < 12; ++i)
-    {
-        if (i < 2)
-            SetWeaponRotate(bGunInfo[i], -nowScene->GetAngleFromTarget(bGunInfo[i].ri.pos, target->pos) + 450);
-
-        SetWeaponRotate(sGunInfo[i], -nowScene->GetAngleFromTarget(sGunInfo[i].ri.pos, target->pos) + 450);
-    }
-
 
     Unit::Update(deltaTime);
 }
@@ -86,16 +60,11 @@ void BigPlane::Destroy()
 
 bool BigPlane::Move(float deltaTime)
 {
-	float targetAngle = D3DXToRadian(nowScene->GetAngleFromTarget(pos, target->pos));  // -90 ~ 270 
+	float targetAngle = D3DXToRadian(nowScene->GetAngleFromTarget(D3DXVECTOR2(pos.x, airPos), target->pos));  // -90 ~ 270 
 	float diff = targetAngle - curRadian;
 
-	if (type == EnemyType::FlyingEnemy)
-	{
-		if (attackTimer >= attackTime)
-			turnTime += deltaTime;
-	}
-	else
-		turnTime += deltaTime;
+	
+	turnTime += deltaTime;
 
 	if (turnTime >= 0.01f)
 	{
@@ -109,41 +78,45 @@ bool BigPlane::Move(float deltaTime)
 		else if (diff < -turnSpeed)
 			curRadian -= turnSpeed;
 		else
-		{
-			Attack(deltaTime);
 			curRadian = targetAngle;
-		}
 
 		turnTime = 0.0f;
 	}
 
 	SetAni(D3DXToDegree(-curRadian) + 450, true);
 
-	pos += D3DXVECTOR2(cosf(curRadian), sinf(curRadian)) * ability.speed * deltaTime;
+	pos.x += cosf(curRadian) * ability.speed * deltaTime;
+    airPos += sinf(curRadian)* ability.speed * deltaTime;
 
     return true;
 }
 
+void BigPlane::Hit(float damage)
+{
+    if (intro) return;
+
+    CEnemy::Hit(damage);
+}
+
 void BigPlane::ChoosePattern()
 {
-    pattern = nowScene->GetRandomNumber(1, 3);
+    pattern = 3;
     shootInterval = 0.0f;
-    gunIndex = 0;
 
     if (pattern == 1)
     {
-        attackTime = 2.4f;
+        attackTime = 5.0f;
         attackSpeed = 0.2f;
     }
     else if (pattern == 2)
     {
         attackTime = 3.0f;
-        attackSpeed = 0.5f;
+        attackSpeed = 0.05f;
     }
     else if (pattern == 3)
     {
-        attackTime = 3.0f;
-        attackSpeed = 0.3f;
+        attackTime = 4.0f;
+        attackSpeed = 1.0f;
     }
 }
 
@@ -174,78 +147,145 @@ void BigPlane::UpdatePattern(float deltaTime)
         attackTimer += deltaTime;
 }
 
-void BigPlane::SetWeaponRotate(WeaponInfo& info, int rotate)
-{
-    int fixRotateScene = (int)((rotate / 15.0f)) % 24;
-    info.gunRenderNum = (abs(fixRotateScene));
-}
-
-void BigPlane::WeaponRender(std::vector<Sprite>& weapon, std::vector<WeaponInfo>& weaponInfo)
-{
-}
-
 bool BigPlane::Intro(float deltaTime)
 {
-	return false;
+    if (!intro) return false;
+
+    if (pos.y >= airPos)
+        pos.y -= 250 * deltaTime;
+    else
+    {
+        CreateCollider(D3DXVECTOR2(-300, -300), D3DXVECTOR2(300, 300), L"enemy");
+        intro = false;
+    }
+
+
+	return true;
 }
 
 bool BigPlane::Outro(float deltaTime)
 {
+
+    if (ability.hp <= 0)
+    {
+        Camera::GetInstance().destDivideProj = 1.5f;
+        Camera::GetInstance().destCameraPos = pos;
+
+        hit = false;
+        nowScene->player->stop = true;
+        nowScene->stopTime = true;
+
+        outroTime -= deltaTime;
+        effectTimer += deltaTime;
+
+        if (outroTime <= 0.0f)
+        {
+            Camera::GetInstance().destDivideProj = 1.0f;
+
+            GetNowSprite().color.a -= deltaTime;
+
+            if (GetNowSprite().color.a <= 0.0f)
+            {
+                nowScene->player->stop = false;
+                nowScene->player->fallowCamera = true;
+                nowScene->obm.AddObject(new StageFont(StageFont::Type::CLEAR));
+                Destroy();
+            }
+
+        }
+        else
+        {
+            if (effectTimer >= effectTime)
+            {
+                nowScene->obm.AddObject(new Effect(L"onexplode", pos + nowScene->GetRandomVector(-500, 500, -300, 300), D3DXVECTOR2(0.5, 0.5), D3DXVECTOR2(0.5, 0.5), 1, true, 0.05f));
+
+                effectTime -= 0.05f;
+                effectTimer = 0.0f;
+
+                Camera::GetInstance().cameraQuaken = D3DXVECTOR2(10, 10);
+            }
+        }
+
+        return true;
+    }
+
 	return false;
 }
 
 bool BigPlane::Pattern1(float deltaTime)
 {
-    if (attackTimer >= attackTime)
-        return false;
+    Move(deltaTime);
 
     shootInterval += deltaTime;
 
     if (shootInterval >= attackSpeed)
     {
+        int size = nowScene->GetRandomNumber(1, 4);
+        D3DXVECTOR2 targetPos = pos + nowScene->GetRandomVector(-1200, 1200, -700, 700);
+
+        auto lambda = [=] 
+        {
+            nowScene->obm.AddObject(new Effect(L"onexplode", targetPos, D3DXVECTOR2(0.3, 0.3) * size, D3DXVECTOR2(0.5, 0.5), 1, true, 0.05f));
+            nowScene->obm.AddObject(new AttackCollider(targetPos, D3DXVECTOR2(-50, -50), D3DXVECTOR2(50, 50), 20, 0.1f));  
+            Camera::GetInstance().cameraQuaken = D3DXVECTOR2(3, 3) * size;
+        };
+
+        nowScene->obm.AddObject(new AttackGuide(targetPos, D3DXVECTOR2(size, size), nowScene->GetRandomNumber(10, 20) * 0.1f, 1, lambda));
         shootInterval = 0.0f;
-
-        float angle = nowScene->GetAngleFromTarget(sGunInfo[gunIndex].ri.pos, target->pos);
-        D3DXVECTOR2 fixPos = sGunInfo[gunIndex].ri.pos + D3DXVECTOR2(cosf(angle), sinf(angle)) * 20;
-
-        nowScene->obm.AddObject(new MachinegunBullet(fixPos, target, L"enemy", 5, 1000));
-
-        gunIndex++;
     }
+
+    if (attackTimer >= attackTime)
+        return false;
 
     return true;
 }
 
 bool BigPlane::Pattern2(float deltaTime)
 {
-    if (attackTimer >= attackTime)
-        return false;
-
     shootInterval += deltaTime;
 
     if (shootInterval >= attackSpeed)
     {
-        nowScene->obm.AddObject(new AttackGuide(target->pos, D3DXVECTOR2(2, 2), 1.5f));
+        int index = nowScene->GetRandomNumber(1, 3);
+        
+        if (index == 1)
+            nowScene->obm.AddObject(new MachinegunBullet(pos, target, L"enemy", 5, nowScene->GetRandomNumber(4, 7) * 100));
+        else if(index == 2)
+            nowScene->obm.AddObject(new HomingBullet(pos, target, CBullet::BulletType::Torpedo, L"enemy", 5, nowScene->GetRandomNumber(0, 360), nowScene->GetRandomNumber(5, 10) * 100));
+        else if(index == 3)
+            nowScene->obm.AddObject(new HomingBullet(pos, target, CBullet::BulletType::Missile, L"enemy", 5, nowScene->GetRandomNumber(0, 360), nowScene->GetRandomNumber(5, 10) * 100));
+
         shootInterval = 0.0f;
     }
+
+    if (attackTimer >= attackTime)
+        return false;
 
     return true;
 }
 
 bool BigPlane::Pattern3(float deltaTime)
 {
-    if (attackTimer >= attackTime)
-        return false;
-
     shootInterval += deltaTime;
 
     if (shootInterval >= attackSpeed)
     {
-        D3DXVECTOR2 fixPos = pos + D3DXVECTOR2(nowScene->GetRandomNumber(-400, 400), 0);
-        nowScene->obm.AddObject(new HomingBullet(fixPos, target, CBullet::BulletType::Torpedo, L"enemy", 15, nowScene->GetRandomNumber(0, 360), 0.0f));
+        D3DXVECTOR2 targetPos = D3DXVECTOR2(Camera::GetInstance().cameraPos.x, target->pos.y + nowScene->GetRandomNumber(-200, 200));
+
+        auto lambda = [=]
+        {
+            nowScene->obm.AddObject(new AttackCollider(targetPos, D3DXVECTOR2(-1200, -90), D3DXVECTOR2(1200, 90), 20, 0.1f));
+            Camera::GetInstance().cameraQuaken = D3DXVECTOR2(8, 8);
+        };
+
+        nowScene->obm.AddObject(new AttackGuide(targetPos, D3DXVECTOR2(1, 1), 2.0f, 2, lambda));
 
         shootInterval = 0.0f;
     }
+
+    if (attackTimer >= attackTime)
+        return false;
+
 
     return true;
 }

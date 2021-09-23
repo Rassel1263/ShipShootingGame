@@ -12,14 +12,10 @@ void Camera::Init()
 
 	D3DXMatrixOrthoLH(&matProj, Game::GetInstance().screenWidth / divideProj, Game::GetInstance().screenHeight / divideProj, 0.01f, 1000.0f);
 	DXUTGetD3D9Device()->SetTransform(D3DTS_PROJECTION, &matProj);
-
-	limitPos = { cameraPos.x + 960 * (2 - divideProj), cameraPos.y + 540 * (2 - divideProj) };
-
 }
 
 void Camera::Update()
 {
-	limitPos = { cameraPos.x + 960 * (2 - divideProj), cameraPos.y + 540 * (2 - divideProj) };
 
 	D3DXVec2Lerp(&cameraPos, &cameraPos, &destCameraPos, 0.1f);
 	D3DXVec2Lerp(&cameraScale, &cameraScale, &destCameraScale, 0.1f);
@@ -31,7 +27,6 @@ void Camera::Update()
 	D3DXMatrixTranslation(&matPos, (rand() % 2 ? 1 : -1) * cameraQuaken.x - cameraPos.x, (rand() % 2 ? 1 : -1) * cameraQuaken.y - cameraPos.y, 0.0f);
 	matWorld = matScale * matPos;
 	DXUTGetD3D9Device()->SetTransform(D3DTS_WORLD, &matWorld);
-
 }
 
 void Camera::Render()

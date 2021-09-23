@@ -13,11 +13,11 @@ void EnemyManager::SetSpawnPos(EnemyType type)
 
 	D3DXVECTOR2 spawnPos = { 0, 0 };
 	if (spawnIndex == 0) // аб
-		spawnPos = D3DXVECTOR2(-1500, nowScene->GetRandomNumber(-100, 400));
+		spawnPos = D3DXVECTOR2(-1000, nowScene->GetRandomNumber(200, 500));
 	else if (spawnIndex == 1) // ╩С
 		spawnPos = D3DXVECTOR2(nowScene->GetRandomNumber(-1200, 1200), 600);
 	else if (spawnIndex == 2) // ©Л
-		spawnPos = D3DXVECTOR2(1500, nowScene->GetRandomNumber(-100, 400));
+		spawnPos = D3DXVECTOR2(1000, nowScene->GetRandomNumber(200, 400));
 
 	auto lambda = [=] {	SpawnEnemy(Camera::GetInstance().cameraPos + spawnPos, type); };
 

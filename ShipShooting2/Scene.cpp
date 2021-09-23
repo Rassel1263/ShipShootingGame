@@ -44,6 +44,35 @@ void Scene::UIRender()
 void Scene::LoadAll()
 {
 	ShaderManager::GetInstance().CreateEffect("Color", L"Assets/Shader/ColorShader.fx", 1);
+	ShaderManager::GetInstance().CreateEffect("Blink", L"Assets/Shader/BlinkShader.fx", 1);
+
+	// BGM
+	SoundManager::GetInstance().Create(L"main", L"Assets/Sound/BGM/main.mp3", 1);
+	SoundManager::GetInstance().Create(L"stage1", L"Assets/Sound/BGM/stage1.mp3", 1);
+	SoundManager::GetInstance().Create(L"stage2", L"Assets/Sound/BGM/stage2.mp3", 1);
+	SoundManager::GetInstance().Create(L"boss", L"Assets/Sound/BGM/boss.mp3", 1);
+	SoundManager::GetInstance().Create(L"win", L"Assets/Sound/BGM/win.mp3", 1);
+
+	// UI
+	SoundManager::GetInstance().Create(L"clickBtn", L"Assets/Sound/Btn/ClickBtn.mp3", 1);
+	SoundManager::GetInstance().Create(L"moveBtn", L"Assets/Sound/Btn/MoveBtn.mp3", 1);
+
+	// Enemy
+	SoundManager::GetInstance().Create(L"explo", L"Assets/Sound/Enemy/explo.mp3", 1);
+	SoundManager::GetInstance().Create(L"bossIntro", L"Assets/Sound/Enemy/bossIntro.mp3", 1);
+
+	// Player
+	SoundManager::GetInstance().Create(L"machinegun", L"Assets/Sound/Player/gun.mp3", 5);
+	SoundManager::GetInstance().Create(L"navalgun", L"Assets/Sound/Player/navalgun.mp3", 5);
+	SoundManager::GetInstance().SetVolume(L"navalgun", 300);
+	SoundManager::GetInstance().Create(L"missile", L"Assets/Sound/Player/missile.mp3", 5);
+	SoundManager::GetInstance().Create(L"airVoi", L"Assets/Sound/Player/airStart.mp3", 5);
+	SoundManager::GetInstance().Create(L"airMove", L"Assets/Sound/Player/airMove.mp3", 5);
+	SoundManager::GetInstance().Create(L"airBoom", L"Assets/Sound/Player/airBoom.mp3", 5);
+
+	// Effect
+	SoundManager::GetInstance().Create(L"item", L"Assets/Sound/Effect/Item.mp3", 1);
+	SoundManager::GetInstance().Create(L"reload", L"Assets/Sound/Effect/reload.mp3", 1);
 }
 
 void Scene::AddScore(int score)

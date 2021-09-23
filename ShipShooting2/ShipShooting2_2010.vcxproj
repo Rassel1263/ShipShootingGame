@@ -388,6 +388,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Airsupport.cpp" />
+    <ClCompile Include="AttackCollider.cpp" />
     <ClCompile Include="AttackGuide.cpp" />
     <ClCompile Include="BigPlane.cpp" />
     <ClCompile Include="BigShip.cpp" />
@@ -412,6 +413,7 @@
     <ClCompile Include="HomingBullet.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="ItemUI.cpp" />
+    <ClCompile Include="LoadSprite.cpp" />
     <ClCompile Include="MachinegunBullet.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MainScene.cpp" />
@@ -427,6 +429,7 @@
     <ClCompile Include="RankingScene.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="ShaderManager.cpp" />
+    <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="StageFont.cpp" />
     <ClCompile Include="StageHelp.cpp" />
@@ -434,6 +437,7 @@
     <ClCompile Include="Unit.cpp" />
     <ClCompile Include="WriteRank.cpp" />
     <ClInclude Include="Airsupport.h" />
+    <ClInclude Include="AttackCollider.h" />
     <ClInclude Include="AttackGuide.h" />
     <ClInclude Include="BigPlane.h" />
     <ClInclude Include="BigShip.h" />
@@ -462,6 +466,7 @@
     <ClInclude Include="Input.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="ItemUI.h" />
+    <ClInclude Include="LoadSprite.h" />
     <ClInclude Include="MachinegunBullet.h" />
     <ClInclude Include="Main.h" />
     <ClInclude Include="MainScene.h" />
@@ -478,6 +483,7 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="ShaderManager.h" />
     <ClInclude Include="Singleton.h" />
+    <ClInclude Include="SoundManager.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="StageFont.h" />
     <ClInclude Include="StageHelp.h" />
@@ -514,11 +520,6 @@
     <ClCompile Include="ShipShooting2.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\Shader\BlinkSahder.fx">
-      <FileType>Document</FileType>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="Header.h" />
     <CLInclude Include="resource.h" />
     <ResourceCompile Include="ShipShooting2.rc" />
@@ -529,6 +530,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Shader\BlinkShader.fx">
+      <FileType>Document</FileType>
+    </None>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

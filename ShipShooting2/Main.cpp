@@ -20,15 +20,25 @@ Main::Main()
 	ui[5].LoadAll(filePath + L"gamehelp.png");
 	ui[6].LoadAll(filePath + L"gameexit.png");
 	ui[7].LoadAll(filePath + L"menuselect.png");
+
 }
 
 void Main::Update(float deltaTime)
 {
 	ChoiceBtn();
 
+	if(alpha < 1.0f)
+		alpha += deltaTime;
+
+	for (int i = 1; i < 8; ++i)
+	{
+		ui[i].color.a = alpha;
+	}
+
 	if (Input::GetInstance().KeyDown(VK_RETURN) && !static_cast<MainScene*>(nowScene)->input)
 	{
 		static_cast<MainScene*>(nowScene)->input = true;
+		SoundManager::GetInstance().Play(L"clickBtn");
 
 		switch (cNum)
 		{
@@ -61,6 +71,7 @@ void Main::Update(float deltaTime)
 		}
 	}
 
+
 	ui[0].Update(deltaTime);
 }
 
@@ -92,4 +103,7 @@ void Main::ChoiceBtn()
 		cNum--;
 
 	cNum = std::clamp(cNum, 0, 3);
+
+	if (cNum != pNum)
+		SoundManager::GetInstance().Play(L"moveBtn");
 }

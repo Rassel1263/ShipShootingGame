@@ -3,9 +3,9 @@
 
 Player::Player()
 {
-	ability.SetAbility(100, 100);
+	ability.SetAbility(100, 200);
 
-	hitTime = 1.0f;
+	hitTime = 3.0f;
 
 	// ¹«±âµé¤©¤©¤©¤©
 	weapons.push_back(new MachineGun(this));
@@ -18,14 +18,17 @@ Player::Player()
 	Resize(24);
 
 	for (int i = 0; i < 24; ++i)
-		GetSprite(i).LoadAll(L"a");
-		//GetSprite(i).LoadAll(L"Assets/Sprites/player/move/" + std::to_wstring(i));
+		GetSprite(i).LoadAll(L"Assets/Sprites/player/move/" + std::to_wstring(i));
+	//	GetSprite(i).LoadAll(L"a" + std::to_wstring(i));
 
-	CreateCollider(D3DXVECTOR2(-100, -100), D3DXVECTOR2(100, 100), L"player");
+	CreateCollider(D3DXVECTOR2(-70, -70), D3DXVECTOR2(70, 70), L"player");
 
 	nowScene->obm.AddObject(new PlayerUI(this));
 	nowScene->miniMap->AddMiniObj(MINITAG::PLAYER, &pos, this);
 
+	blinkShader = new BlinkShader();
+
+	limitPos = { 1500, 600 };
 }
 
 void Player::Update(float deltaTime)
@@ -34,7 +37,10 @@ void Player::Update(float deltaTime)
 		nowScene->enemyManager.SpawnEnemy(pos + D3DXVECTOR2(0, 400), EnemyType::BigPlane);
 
 	if (Input::GetInstance().KeyDown('F'))
-		nowScene->obm.AddObject(new CalcPage());
+	{
+		speedDown = true;
+		speedDownTime = 2.0f;
+	}
 
 	if (ability.hp <= 0)
 	{
@@ -48,7 +54,7 @@ void Player::Update(float deltaTime)
 		return;
 	}
 
-	if(fallowCamera)
+	if (fallowCamera)
 		CameraControll();
 
 	if (!stop)
@@ -59,45 +65,79 @@ void Player::Update(float deltaTime)
 		FirstSkillControll(deltaTime);
 		SecondSkillControll(deltaTime);
 	}
-		
-	if(!nowScene->stageStart)
+
+	if (!nowScene->stageStart)
 		pos.y += 50 * Game::GetInstance().unscaleTime;
 
+	Blink(deltaTime);
 	Unit::Update(deltaTime);
 }
 
 void Player::Render()
 {
-	Unit::Render();
+	ri.pos = pos;
+
+	if (invincible || god)
+	{
+		colorShader->Render(colorShader, GetNowSprite(), ri, D3DXVECTOR4(1.0f, 0.7f, 0, 0.0f), true);
+	}
+	else if (blink)
+	{
+		blinkShader->Render(blinkShader, GetNowSprite(), ri, blinkTimer, blinkTime);
+	}
+	else if (speedDown)
+	{
+		colorShader->Render(colorShader, GetNowSprite(), ri, D3DXVECTOR4(0, 0.5, 0, 0), true);
+	}
+	else
+		GetNowSprite().Render(ri);
+
+	Object::Render();
 }
 
 void Player::OnCollision(Collider& coli)
 {
+
 	if (coli.tag == L"obstacle")
 	{
+		if (invincible || god) return;
 		auto obj = static_cast<Obstacle*>(coli.obj);
 
-		if (invincible || god) return;
-
-		if (obj->type == Obstacle::ObstalceType::GARBAGE)
-		{
-			if (!speedDown)
-			{
-				speedDownTime = 2.0f;
-				speedDown = true;
-			}
-		}
 
 		if (obj->type == Obstacle::ObstalceType::MINE)
 		{
 			Hit(20);
 			Camera::GetInstance().cameraQuaken = { 10, 10 };
 		}
+
+		if (obj->type == Obstacle::ObstalceType::ROCK)
+		{
+			Hit(20);
+			pos = D3DXVECTOR2(pos.x, pos.y - 300);
+		}
+
+		if (!speedDown)
+		{
+			speedDownTime = 2.0f;
+			speedDown = true;
+		}
+	}
+
+	if (coli.tag == L"hitBox")
+	{
+		Hit(static_cast<AttackCollider*>(coli.obj)->damage);
+	}
+
+	if (coli.tag == L"enemybullet")
+	{
+		Hit(static_cast<CBullet*>(coli.obj)->damage);
 	}
 }
 
 bool Player::Move(float deltaTime)
 {
+	std::cout << pos.x << "     " << pos.y << std::endl;
+
 	if (Input::GetInstance().KeyDown(VK_UP))
 	{
 		if (speedLevel < 4)
@@ -112,8 +152,7 @@ bool Player::Move(float deltaTime)
 
 	if (Input::GetInstance().KeyPress(VK_RIGHT))
 	{
-		curRotate += deltaTime * 40 * 2.5f;
-		ri.rotate += deltaTime * 40;
+		curRotate += deltaTime * 200;
 	}
 
 	if (Input::GetInstance().KeyUp(VK_RIGHT))
@@ -121,21 +160,20 @@ bool Player::Move(float deltaTime)
 
 	if (Input::GetInstance().KeyPress(VK_LEFT))
 	{
-		curRotate -= deltaTime * 40 * 2.5f;
-		ri.rotate -= deltaTime * 40;
+		curRotate -= deltaTime * 200;
 	}
-	 
+
 	if (Input::GetInstance().KeyUp(VK_LEFT))
 		rotateSpd = 0;
 
 
 	/*if (nowScene->spawnBoss)
 	{*/
-		if (curRotate > 360)
-			curRotate = 0;
+	if (curRotate > 360)
+		curRotate = 0;
 
-		if (curRotate < 0)
-			curRotate = 360;
+	if (curRotate < 0)
+		curRotate = 360;
 	/*}
 	else
 	{
@@ -146,25 +184,45 @@ bool Player::Move(float deltaTime)
 			curRotate = 450;
 	}*/
 
+
 	/*if (pos.x < -1000)
 		curRotate += (360 - curRotate) * 0.1f;*/
 
-	destSpeed = speedLevel * ((speedUp) ? 100.0f : 50.0f);
+	destSpeed = speedLevel * ((speedUp) ? 200.0f : 100.0f);
 	if (speedDown) destSpeed *= 0.5f;
 	ability.speed += std::ceil(destSpeed - ability.speed) * 0.1f;
-	
+
 	curRadian = D3DXToRadian(-curRotate + 90);
 
-	float prevPosY = pos.y;
-	pos += D3DXVECTOR2(cosf(curRadian), sinf(curRadian)) * ability.speed* deltaTime;
+	D3DXVECTOR2 prevPos = pos;
+
+	pos += D3DXVECTOR2(cosf(curRadian), sinf(curRadian)) * ability.speed * deltaTime;
 
 	if (!nowScene->spawnBoss)
 	{
-		dps = pos.y - prevPosY;
+		dps = pos.y - prevPos.y;
 		moveDistance += dps;
 	}
 
 	SetAni(curRotate);
+
+	if (nowScene->spawnBoss)
+	{
+		if (pos.x > Camera::GetInstance().cameraPos.x + 1300 || pos.x < Camera::GetInstance().cameraPos.x - 1300 ||
+			pos.y > Camera::GetInstance().cameraPos.y + 700 || pos.y < Camera::GetInstance().cameraPos.y - 700)
+		{
+			pos = prevPos;
+			return false;
+		}
+	}
+	else
+	{
+		if (pos.x > limitPos.x + 1 || pos.x < -limitPos.x - 1)
+		{
+			pos = prevPos;
+			return false;
+		}
+	}
 
 	return true;
 }
@@ -174,8 +232,11 @@ void Player::Hit(float damage)
 	if (hit) return;
 	if (god || invincible) return;
 
+	Camera::GetInstance().cameraQuaken = { 15, 15 };
 	hit = true;
+	blink = true;
 	this->ability.hp -= damage;
+	nowScene->msgBox->SpawnMsgBox(L"Hit.png");
 
 	if (ability.hp <= 0)
 	{
@@ -187,6 +248,30 @@ void Player::Hit(float damage)
 
 		bCollider = false;
 		ability.hp = 0;
+	}
+}
+
+void Player::Blink(float deltaTime)
+{
+	if (blink)
+	{
+		blinkTimer += deltaTime * destBlink;
+
+		blinkTimer = std::clamp(blinkTimer, 0.0f, blinkTime);
+
+		if (blinkTimer >= blinkTime || blinkTimer <= 0.0f)
+		{
+			destBlink = -destBlink;
+			blinkAmount++;
+		}
+
+		if (blinkAmount > 6)
+		{
+			blink = false;
+			destBlink = -1.0f;
+			blinkAmount = 0;
+			blinkTimer = 0.0f;
+		}
 	}
 }
 
@@ -202,7 +287,7 @@ void Player::SetTarget(EnemyType enemyType)
 	{
 		for (auto& enemy : nowScene->enemyManager.allEnemys)
 		{
-			if (enemy->ability.hp <= 0) 
+			if (enemy->ability.hp <= 0)
 				continue;
 
 			D3DXVECTOR2 distance = enemy->pos - pos;
@@ -257,16 +342,19 @@ void Player::SetItemEffective(int index)
 	switch (index)
 	{
 	case 0:
+		SoundManager::GetInstance().Play(L"realod");
 		weapons[0]->bulletAmount += 30;
 		if (weapons[0]->bulletAmount >= 180)
 			weapons[0]->bulletAmount = 180;
 		break;
 	case 1:
+		SoundManager::GetInstance().Play(L"realod");
 		weapons[2]->bulletAmount += 5;
 		if (weapons[2]->bulletAmount >= weapons[2]->bulletMaxAmount)
 			weapons[2]->bulletAmount = weapons[2]->bulletMaxAmount;
 		break;
 	case 2:
+		SoundManager::GetInstance().Play(L"realod");
 		weapons[3]->bulletAmount += 3;
 		if (weapons[3]->bulletAmount >= weapons[3]->bulletMaxAmount)
 			weapons[3]->bulletAmount = weapons[3]->bulletMaxAmount;
@@ -331,6 +419,8 @@ void Player::FirstSkillControll(float deltaTime)
 			skill1 = true;
 			nowScene->obm.AddObject(new FocusedFire());
 		}
+		else
+			nowScene->msgBox->SpawnMsgBox2(L"obtainSkill");
 	}
 
 	if (skill1)
@@ -364,11 +454,15 @@ void Player::SecondSkillControll(float deltaTime)
 	{
 		if (skill2CoolTime <= 0.0f)
 		{
+			SoundManager::GetInstance().Play(L"airVoi");
 			nowScene->obm.AddObject(new Airsupport(pos.x));
 
 			skill2CoolTime = 5.0f;
 			skill2Msg = false;
 		}
+		else
+			nowScene->msgBox->SpawnMsgBox2(L"obtainSkill");
+
 	}
 
 	if (skill2CoolTime > 0.0f)
@@ -388,7 +482,7 @@ void Player::CameraControll()
 	if (pos.x > -960 && pos.x < 960)
 		Camera::GetInstance().destCameraPos.x = pos.x;
 
-	Camera::GetInstance().destCameraPos.y = pos.y + 300;
+	Camera::GetInstance().destCameraPos.y = pos.y + 200;
 }
 
 void Player::WeaponControll(float deltaTime)
@@ -404,12 +498,12 @@ void Player::WeaponControll(float deltaTime)
 		SetTarget(EnemyType::None);
 		weapons[1]->Shoot();
 	}
-	
+
 	if (Input::GetInstance().KeyDown('E'))
 	{
 		SetTarget(EnemyType::FloatingEnemy);
 
-		if(target)
+		if (target)
 			weapons[2]->Shoot();
 	}
 
@@ -417,7 +511,7 @@ void Player::WeaponControll(float deltaTime)
 	{
 		SetTarget(EnemyType::FlyingEnemy);
 
-		if(target)
+		if (target)
 			weapons[3]->Shoot();
 	}
 

@@ -148,11 +148,18 @@ INT main( HINSTANCE, HINSTANCE, LPWSTR, int )
 
     Game::GetInstance().Check();
 
+    DXUTDeviceSettings settings;
+    DXUTFindValidDeviceSettings(&settings, &settings);
+    settings.d3d9.pp.BackBufferWidth = Game::GetInstance().screenWidth;
+    settings.d3d9.pp.BackBufferHeight = Game::GetInstance().screenHeight;
+    settings.d3d9.BehaviorFlags |= D3DCREATE_MULTITHREADED;
+
 #ifdef _DEBUG
-    DXUTCreateDevice( true, Game::GetInstance().screenWidth, Game::GetInstance().screenHeight);
+    settings.d3d9.pp.Windowed = true;
 #else 
-    DXUTCreateDevice( false, Game::GetInstance().screenWidth, Game::GetInstance().screenHeight);
+    settings.d3d9.pp.Windowed = false;
 #endif
+    DXUTCreateDeviceFromSettings(&settings);
 
     // Start the render loop
     DXUTMainLoop();

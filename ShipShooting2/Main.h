@@ -7,6 +7,8 @@ public:
 	bool fade = false;
 	std::vector<Sprite> ui;
 
+	float alpha = 0.0f;
+
 	int cNum = 0;
 	int pNum = 0;
 

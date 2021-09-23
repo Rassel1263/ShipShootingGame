@@ -12,8 +12,8 @@ public:
 	HRESULT Begin();
 	HRESULT End();
 	HRESULT SetTexture(const Texture* texture);
-	HRESULT SetColor(D3DXVECTOR4 color);
+	HRESULT SetColor(D3DXVECTOR4 color, bool plus);
 
-	void Render(ColorShader* shader, Sprite& sprite, RenderInfo& ri, D3DXVECTOR4 color = { 1, 1, 1, 1 });
+	void Render(ColorShader* shader, Sprite& sprite, RenderInfo& ri, D3DXVECTOR4 color = { 1, 1, 1, 1 }, bool plus = false);
 };
 

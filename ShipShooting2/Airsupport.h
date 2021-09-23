@@ -1,9 +1,10 @@
 #pragma once
-class Airsupport : public Object
+class Airsupport : public ObjectUI
 {
 public:
 	Sprite spr;
 
+	float timer = 0.0f;
 	bool attack = false;
 
 	Airsupport(float x);

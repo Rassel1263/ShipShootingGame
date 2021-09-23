@@ -6,7 +6,6 @@ public:
 	Sprite spr;
 	RenderInfo ri;
 
-
 	std::vector<CWeapon*> weapons;
 
 	float forwardAngle = 0.0f;
@@ -20,6 +19,7 @@ public:
 	bool speedDown = 0.0f;
 	float speedDownTime = 0.0f;
 
+	int kills = 0;
 	bool fallowCamera = true;
 	bool stop = true;
 
@@ -42,6 +42,16 @@ public:
 
 	bool drawGameOver = false;
 
+	bool blink = false;
+	int blinkAmount = 0;
+	float blinkTime = 0.5f;
+	float blinkTimer = 0.0f;
+	float destBlink = -1.0f;
+
+	D3DXVECTOR2 limitPos = { 0, 0 };
+
+	BlinkShader* blinkShader = NULL;
+
 	Player();
 	
 	virtual void Update(float deltaTime) override;
@@ -50,6 +60,7 @@ public:
 	virtual bool Move(float deltaTime) override;
 	virtual void Hit(float damage);
 
+	void Blink(float deltaTime);
 	void SetTarget(EnemyType enemyType);
 	void SetItemEffective(int index);
 	void UpdateItemEffect(float deltaTime);

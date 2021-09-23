@@ -5,6 +5,8 @@ public:
 	Sprite spr;
 	RenderInfo ri;
 
+	Sprite gauge;
+
 	FocusedFire();
 
 	virtual void Update(float deltaTime) override;

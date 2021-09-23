@@ -3,57 +3,81 @@
 
 MsgBox::MsgBox()
 {
-	spr.LoadAll(L"Assets/Sprites/ui/ingame/messagebox.png");
-	spr.color.a = 0.0f;
-	spr.bCamera = false;
+	for (int i = 0; i < 2; ++i)
+	{
+		spr[i].LoadAll(L"Assets/Sprites/ui/ingame/messagebox.png");
+		spr[i].color.a = 0.0f;
+		spr[i].bCamera = false;
+	}
 }
 
 void MsgBox::Update(float deltaTime)
 {
-	if (spawnMsg)
-	{
-		spr.color.a += deltaTime * destColor;
-
-		if (spr.color.a >= 1.0f)
-		{
-			msgTime += deltaTime;
-
-			if (msgTime > 1.0f && !closeMsg)
-			{
-				closeMsg = true;
-				destColor = -destColor;
-			}
-		}
-
-		if (spr.color.a <= 0.0f)
-		{
-			spawnMsg = false;
-			closeMsg = false;
-			destColor = 1.0f;
-			msgTime = 0.0f;
-		}
-
-		msgBox.color.a = spr.color.a;
-		std::clamp(spr.color.a, 0.0f, 1.0f);
-	}
-
+	for(int i = 0; i < 2; ++i)
+		MessageUpdate(deltaTime, i);
 }
 
 void MsgBox::Render()
 {
-	if (spawnMsg)
+	if (msgInfo[0].spawnMsg)
 	{
-		spr.Render(RenderInfo{D3DXVECTOR2(800, -20)});
-		msgBox.Render(RenderInfo{D3DXVECTOR2(670, 60)});
+		spr[0].Render(RenderInfo{D3DXVECTOR2(800, -20)});
+		msgBox[0].Render(RenderInfo{D3DXVECTOR2(670, 60)});
+	}
+	
+	if (msgInfo[1].spawnMsg)
+	{
+		spr[1].Render(RenderInfo{ D3DXVECTOR2(800, 100) });
+		msgBox[1].Render(RenderInfo{ D3DXVECTOR2(670, 160) });
 	}
 }
 
 void MsgBox::SpawnMsgBox(std::wstring message)
 {
-	if (spawnMsg) return;
+	if (msgInfo[0].spawnMsg) return;
 
-	spawnMsg = true;
-	msgBox.LoadAll(L"Assets/Sprites/ui/ingame/Message/" + message + L".png");
-	msgBox.color.a = 0.0f;
-	msgBox.bCamera = false;
+	msgInfo[0].spawnMsg = true;
+	msgBox[0].LoadAll(L"Assets/Sprites/ui/ingame/Message/" + message + L".png");
+	msgBox[0].color.a = 0.0f;
+	msgBox[0].bCamera = false;
+}
+
+void MsgBox::SpawnMsgBox2(std::wstring message)
+{
+	if (msgInfo[1].spawnMsg) return;
+
+	msgInfo[1].spawnMsg = true;
+	msgBox[1].LoadAll(L"Assets/Sprites/ui/ingame/Message/" + message + L".png");
+	msgBox[1].color.a = 0.0f;
+	msgBox[1].bCamera = false;
+}
+
+void MsgBox::MessageUpdate(float deltaTime, int i)
+{
+	if (msgInfo[i].spawnMsg)
+	{
+		spr[i].color.a += deltaTime * msgInfo[i].destColor;
+
+		if (spr[i].color.a >= 1.0f)
+		{
+			msgInfo[i].msgTime += deltaTime;
+
+			if (msgInfo[i].msgTime > 1.0f && !msgInfo[i].closeMsg)
+			{
+				msgInfo[i].closeMsg = true;
+				msgInfo[i].destColor = -msgInfo[i].destColor;
+			}
+		}
+
+		if (spr[i].color.a <= 0.0f)
+		{
+			msgInfo[i].spawnMsg = false;
+			msgInfo[i].closeMsg = false;
+			msgInfo[i].destColor = 1.0f;
+			msgInfo[i].msgTime = 0.0f;
+		}
+
+		msgBox[i].color.a = spr[i].color.a;
+		std::clamp(spr[i].color.a, 0.0f, 1.0f);
+	}
 }

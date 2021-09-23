@@ -6,7 +6,7 @@ FloatingEnemy::FloatingEnemy(D3DXVECTOR2 pos) : CEnemy(pos)
 	attackTime = 1.0f;
 
 	type = EnemyType::FloatingEnemy;
-	ability.SetAbility(50, 50);
+	ability.SetAbility(50, 250);
 
 	Resize(24);
 
@@ -33,18 +33,40 @@ void FloatingEnemy::Render()
 	CEnemy::Render();
 }
 
+void FloatingEnemy::OnCollision(Collider& coli)
+{
+	if (coli.tag == L"obstacle")
+	{
+		if (static_cast<Obstacle*>(coli.obj)->type == Obstacle::ObstalceType::ROCK)
+		{
+			nowScene->obm.AddObject(new Effect(L"onexplode", pos, D3DXVECTOR2(0.4, 0.4), D3DXVECTOR2(0.5, 0.5), 1, true, 0.05f));
+			CEnemy::Destroy();
+		}
+	}
+
+	if (coli.tag == L"player")
+	{
+		nowScene->player->Hit(20);
+		Destroy();
+	}
+
+	CEnemy::OnCollision(coli);
+}
+
 void FloatingEnemy::Destroy()
 {
 	if (!GetNowSprite().bAnimation)
 	{
+		nowScene->AddScore(nowScene->GetRandomNumber(1000, 2000));
+
 		if(nowScene->GetRandomNumber(0, 3))
 			nowScene->obm.AddObject(new Item(pos, nowScene->GetRandomNumber(0, 5)));
 		else
 			nowScene->obm.AddObject(new Obstacle(pos, Obstacle::ObstalceType::MINE));
 
-		nowScene->enemyManager.SortEnemy(this, type);
+		nowScene->player->kills++;
 
-		destroy = true;
+		CEnemy::Destroy();
 	}
 }
 
@@ -54,7 +76,9 @@ void FloatingEnemy::Attack(float deltaTime)
 
 	if (attackTimer >= attackTime)
 	{
-		nowScene->obm.AddObject(new HomingBullet(pos, target, CBullet::BulletType::Torpedo, L"enemy", 10, D3DXToDegree(-curRadian) + 90));
+		D3DXVECTOR2 fixPos = pos + D3DXVECTOR2(cosf(curRadian), sinf(curRadian)) * 50;
+
+		nowScene->obm.AddObject(new HomingBullet(fixPos, target, CBullet::BulletType::Torpedo, L"enemy", 20, D3DXToDegree(-curRadian) + 90, 0.0f, 1000));
 		attackTimer = 0.0f;
 	}
 }

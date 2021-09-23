@@ -12,9 +12,11 @@ public:
 	std::vector<Sprite> font[6];
 	RenderInfo fontInfo[6];
 
-	Sprite skills;
 	Sprite focusEft;
+
+	Sprite skills[2];
 	Sprite skillCools[2];
+	RenderInfo skillInfo[2];
 
 	Sprite hpBck;
 	Sprite hp;
@@ -23,6 +25,7 @@ public:
 	Sprite speedUp;
 
 	RenderInfo hpInfo;
+
 
 	Player* player = NULL;
 

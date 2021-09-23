@@ -14,7 +14,7 @@ StageFont::StageFont(Type type)
 	}
 	if (type == Type::CLEAR)
 	{
-		spr.LoadAll(L"Assets/Sprites/message/stageClear/", 0.03f, false);
+		spr.LoadAll(L"Assets/Sprites/message/stageClear/", 0.05f, false);
 		bck.color.a = 1.0f;
 	}
 	else if (type == Type::FAIL)
@@ -43,7 +43,7 @@ void StageFont::Update(float deltaTime)
 			{
 				destroy = true;
 				Game::GetInstance().timeScale = 1.0f;
-				nowScene->obm.AddObject(new StageHelp());
+				nowScene->obm.AddObject(new StageHelp(nowScene->curStage));
 			}
 		}
 	}

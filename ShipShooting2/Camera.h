@@ -16,7 +16,6 @@ public:
 	D3DXVECTOR2 destCameraScale = cameraScale;
 	D3DXVECTOR2 destCameraQuaken = cameraQuaken;
 
-	D3DXVECTOR2 limitPos = { 0, 0 };
 public:
 	void Init();
 	void Update();

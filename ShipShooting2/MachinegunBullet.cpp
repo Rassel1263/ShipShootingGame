@@ -33,5 +33,8 @@ void MachinegunBullet::Render()
 
 void MachinegunBullet::CreateEffect()
 {
-	nowScene->obm.AddObject(new Effect(L"Hit_machinegun/", pos, D3DXVECTOR2(1, 1), D3DXVECTOR2(0.5, 0.5), 1, true, 0.05f, -nowScene->GetAngleFromTarget(pos, target->pos) + 90));
+	if(target)
+		nowScene->obm.AddObject(new Effect(L"Hit_machinegun/", pos, D3DXVECTOR2(1, 1), D3DXVECTOR2(0.5, 0.5), 1, true, 0.05f, -nowScene->GetAngleFromTarget(pos, target->pos) + 90));
+	else
+		nowScene->obm.AddObject(new Effect(L"Hit_machinegun/", pos, D3DXVECTOR2(1, 1), D3DXVECTOR2(0.5, 0.5), 1, true, 0.05f, 90));
 }

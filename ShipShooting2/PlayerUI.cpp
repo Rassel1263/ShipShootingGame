@@ -39,10 +39,14 @@ PlayerUI::PlayerUI(Player* player)
 
 	// 스킬
 
-	SetSprite(L"skills/skill.png", skills);
+	SetSprite(L"skill1.png", skills[0]);
+	SetSprite(L"skill2.png", skills[1]);
 
 	for (int i = 0; i < 2; ++i)
 		SetSprite(L"skills/skillCool.png", skillCools[i]);
+
+	skillInfo[0].pos = { D3DXVECTOR2(-735, -130) };
+	skillInfo[1].pos = { D3DXVECTOR2(-665, -130) };
 }
 
 void PlayerUI::Update(float deltaTime)
@@ -107,11 +111,11 @@ void PlayerUI::Render()
 	weaponCools[3].Render(RenderInfo{ D3DXVECTOR2(-681, -417) });
 
 	// 스킬
-	skills.Render(RenderInfo{ D3DXVECTOR2(-700, -130) });
-
-	skillCools[0].Render(RenderInfo{ D3DXVECTOR2(-735, -130) });
-	skillCools[1].Render(RenderInfo{ D3DXVECTOR2(-665, -130) });
-
+	for (int i = 0; i < 2; ++i)
+	{
+		skills[i].Render(skillInfo[i]);
+		skillCools[i].Render(skillInfo[i]);
+	}
 
 	hpBck.Render(hpInfo);
 	hp.Render(hpInfo);

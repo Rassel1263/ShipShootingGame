@@ -25,6 +25,9 @@
 
 #include "ShaderManager.h"
 #include "ColorShader.h"
+#include "BlinkShader.h"
+
+#include "SoundManager.h"
 
 #include "Collider.h"
 #include "Object.h"
@@ -65,12 +68,16 @@
 #include "CalcPage.h"
 #include "Fade.h"
 
+#include "AttackCollider.h"
+
 #include "MiniMap.h"
 #include "Map.h"
 
 #include "Main.h"
 #include "Help.h"
 #include "Rank.h"
+
+#include "LoadSprite.h"
 
 #include "Scene.h"
 extern Scene* nowScene;

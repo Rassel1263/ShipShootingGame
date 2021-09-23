@@ -100,6 +100,7 @@ void BigShip::ChoosePattern()
 
 void BigShip::UpdatePattern(float deltaTime)
 {
+
 	bool endPattern = false;
 
 	if (pattern == 1)
@@ -216,7 +217,8 @@ bool BigShip::Outro(float deltaTime)
 			if (effectTimer >= effectTime)
 			{
 				for (int i = 0; i < effectAmount; ++i)
-					nowScene->obm.AddObject(new Effect(L"ECannon", pos + D3DXVECTOR2(nowScene->GetRandomNumber(-800, 800), nowScene->GetRandomNumber(-80, 80)), D3DXVECTOR2(2, 2), D3DXVECTOR2(0.5, 0.5), 0.05f, 0));
+					nowScene->obm.AddObject(new Effect(L"ECannon", pos + D3DXVECTOR2(nowScene->GetRandomNumber(-800, 800), nowScene->GetRandomNumber(-80, 80)), D3DXVECTOR2(2, 2), D3DXVECTOR2(0.5, 0.5), 0.05f, 
+						0));
 
 				effectTimer = 0.0f;
 				effectTime -= 0.05f;
@@ -238,19 +240,22 @@ bool BigShip::Pattern1(float deltaTime)
 {
 	shootInterval += deltaTime;
 
-	if (shootInterval >= attackSpeed)
+	if (shootInterval >= attackSpeed)	
 	{
 		shootInterval = 0.0f;
 
 		float angle = GetAngleToTarget(cannonInfo[cannonIndex].pos);
 
 		D3DXVECTOR2 pos = nowScene->player->pos;
+
 		D3DXVECTOR2 fixpos = cannonInfo[cannonIndex].pos + D3DXVECTOR2(cosf(angle), sinf(angle)) * 13;
 		nowScene->obm.AddObject(new Effect(L"CannonShot", fixpos, D3DXVECTOR2(1, 1), D3DXVECTOR2(0.5f, 0.0f), 0.05f, cannonInfo[cannonIndex].rotate));
+
 
 		auto lambda = [=]
 		{
 			nowScene->obm.AddObject(new Effect(L"ECannon", pos, D3DXVECTOR2(2, 2), D3DXVECTOR2(0.5, 0.5), 0.05f, 0));
+
 			nowScene->obm.AddObject(new HitBox(pos, -50, -50, 50, 50, 10, 0.1f));
 		};
 

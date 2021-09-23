@@ -23,7 +23,7 @@ void CWeapon::Update(float deltaTime)
 
 MachineGun::MachineGun(Unit* owner) : CWeapon(owner)
 {
-	bulletAmount = 150;
+	bulletAmount = 30;
 	bulletMaxAmount = 30;
 	shootInterval = 0.15f;
 
@@ -39,6 +39,7 @@ void MachineGun::Update(float deltaTime)
 		reloadTimer += deltaTime;
 		if (reloadTimer >= reloadTime)
 		{
+			SoundManager::GetInstance().Play(L"realod");
 			bulletAmount += bulletMaxAmount;
 			reload = false;
 			reloadTimer = 0.0f;
@@ -55,6 +56,8 @@ void MachineGun::Shoot()
 	{
 		if (shootTimer >= shootInterval)
 		{
+			SoundManager::GetInstance().Play(L"machinegun");
+
 			shootTimer = 0.0f;
 
 			if(!nowScene->player->skill1)
@@ -65,7 +68,10 @@ void MachineGun::Shoot()
 		}
 	}
 	else
+	{
+		nowScene->msgBox->SpawnMsgBox2(L"obtainBullet");
 		reload = true;
+	}
 }
 
 ////////////////////////////////////
@@ -81,7 +87,7 @@ NavalGun::NavalGun(Unit* owner) : CWeapon(owner)
 	reloadTime = 1.0f;
 	reloadTimer = 0.0f;
 
-	damage = 5;
+	damage = 10;
 }
 
 void NavalGun::Update(float deltaTime)
@@ -108,6 +114,7 @@ void NavalGun::Shoot()
 	{
 		if (shootTimer >= shootInterval)
 		{
+			SoundManager::GetInstance().Play(L"navalgun");
 			Camera::GetInstance().cameraQuaken = { 5, 5 };
 			shootTimer = 0.0f;
 			bulletAmount--;
@@ -123,6 +130,8 @@ void NavalGun::Shoot()
 				nowScene->obm.AddObject(new Effect(L"Hit_navalgun/", owner->pos + nowScene->GetRandomVector(-800, 800, 500, 800), D3DXVECTOR2(1, 1), D3DXVECTOR2(0.5, 0.5), 1, true, 0.03f));
 		}
 	}
+	else
+		nowScene->msgBox->SpawnMsgBox2(L"obtainBullet");
 }
 
 ////////////////////////////////////
@@ -133,8 +142,7 @@ TorpedoLauncher::TorpedoLauncher(Unit* owner) : CWeapon(owner)
 {
 	shootInterval = 0.3f;
 	bulletMaxAmount = 15;
-	bulletAmount = 15;
-	damage = 10;
+	damage = 20;
 }
 
 void TorpedoLauncher::Shoot()
@@ -143,13 +151,16 @@ void TorpedoLauncher::Shoot()
 	{
 		if (shootTimer >= shootInterval)
 		{
+			SoundManager::GetInstance().Play(L"missile");
 			bulletAmount--;
 			shootTimer = 0.0f;
 
 			nowScene->obm.AddObject(new HomingBullet(owner->pos, owner->target, CBullet::BulletType::Torpedo, L"ally", damage,
-				owner->curRotate, 0.2f));
+				owner->curRotate, 0.2f, 700));
 		}
 	}
+	else
+		nowScene->msgBox->SpawnMsgBox2(L"obtainBullet");
 }
 
 ////////////////////////////////////
@@ -160,8 +171,7 @@ MissileTurret::MissileTurret(Unit* owner) : CWeapon(owner)
 {
 	shootInterval = 0.3f;
 	bulletMaxAmount = 10;
-	bulletAmount = 10;
-	damage = 15;
+	damage = 20;
 }
 
 void MissileTurret::Shoot()
@@ -170,13 +180,16 @@ void MissileTurret::Shoot()
 	{
 		if (shootTimer >= shootInterval)
 		{
+			SoundManager::GetInstance().Play(L"missile");
 			bulletAmount--;
 			shootTimer = 0.0f;
 
 			nowScene->obm.AddObject(new Effect(L"shoot_missile/", owner->pos, D3DXVECTOR2(1, 1), D3DXVECTOR2(0.5f, 0.0f), 1, true, 0.05f));
 
 			nowScene->obm.AddObject(new HomingBullet(owner->pos, owner->target, CBullet::BulletType::Missile, L"ally", damage,
-				owner->curRotate, 0.2f));
+				owner->curRotate, 0.2f, 1000));
 		}
 	}
+	else
+		nowScene->msgBox->SpawnMsgBox2(L"obtainBullet");
 }

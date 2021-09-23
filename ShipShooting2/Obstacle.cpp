@@ -27,16 +27,18 @@ Obstacle::Obstacle(D3DXVECTOR2 pos, ObstalceType type)
 		spr.LoadAll(L"Assets/Sprites/Obstacle/rock/" + std::to_wstring(index) + L".png");
 
 		if(index == 0)
-			CreateCollider(D3DXVECTOR2(-250, -140), D3DXVECTOR2(250, 140), L"obstacle");
+			CreateCollider(D3DXVECTOR2(-200, -120), D3DXVECTOR2(200, 120), L"obstacle");
 		else if(index == 1)
-			CreateCollider(D3DXVECTOR2(-234, -180), D3DXVECTOR2(234, 180), L"obstacle");
+			CreateCollider(D3DXVECTOR2(-200, -150), D3DXVECTOR2(200, 150), L"obstacle");
 		else if (index == 2)
-			CreateCollider(D3DXVECTOR2(-240, -130), D3DXVECTOR2(240, 130), L"obstacle");
+			CreateCollider(D3DXVECTOR2(-200, -130), D3DXVECTOR2(200, 130), L"obstacle");
 		else if(index == 3)
 			CreateCollider(D3DXVECTOR2(-40, -30), D3DXVECTOR2(40, 30), L"obstacle");
 	}
 
 	colorShader = new ColorShader();
+
+	layer = 6;
 }
 
 void Obstacle::Update(float deltaTime)
@@ -54,7 +56,7 @@ void Obstacle::Update(float deltaTime)
 	//	}
 	//}
 
-	if (pos.y < Camera::GetInstance().cameraPos.y - 600)
+	if (pos.y < Camera::GetInstance().cameraPos.y - 800)
 		destroy = true;
 
 	spr.Update(deltaTime);

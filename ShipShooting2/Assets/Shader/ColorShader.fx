@@ -1,5 +1,6 @@
 Texture2D spriteTexture;
 float4 color;
+bool plus;
 
 sampler2D InputSampler = sampler_state
 {
@@ -15,8 +16,13 @@ float4 main(ShaderInput input) : COLOR
 {
     float4 albedo = tex2D(InputSampler, input.uv);
     
-    if(albedo.a >= 0.8)
-        albedo += color;
+    if (albedo.a >= 0.8 || albedo.r >= 0.5)
+    {
+        if (plus)
+            albedo += color;
+        else
+            albedo = color;
+    }
     
     return albedo;
 }

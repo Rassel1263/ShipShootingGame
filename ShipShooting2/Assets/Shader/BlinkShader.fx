@@ -1,10 +1,10 @@
-Texture2D texture;
-float blinkTime;
-float blinkTimer;
+Texture2D spriteTexture;
+float blinkTime = 0.0f;
+float blinkTimer = 0.0f;
 
 sampler2D InputSampler = sampler_state
 {
-    Texture = <texture>;
+    Texture = <spriteTexture>;
 };
 
 struct ShaderInput
@@ -16,12 +16,13 @@ float4 main(ShaderInput input) : COLOR
 {
     float4 albedo = tex2D(InputSampler, input.uv);
     
-    albedo.a = blinkTimer / blinkTime;
+    if (albedo.a >= 0.8)
+        albedo.a = 1 - (blinkTimer / blinkTime);
 
     return albedo;
 }
 
-technique Color
+technique Blink
 {
     pass pass0
     {

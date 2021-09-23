@@ -5,6 +5,7 @@ public:
 	float minute = 0.0f;
 	float second = 0.0f;
 	float miniSecond = 0.0f;
+	bool timeOver = false;
 
 	ObstacleManager obstacleManager;
 

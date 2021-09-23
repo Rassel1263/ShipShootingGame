@@ -1,13 +1,13 @@
 #include "DXUT.h"
 #include "HomingBullet.h"
 
-HomingBullet::HomingBullet(D3DXVECTOR2 pos, Unit* target, BulletType type, std::wstring team, float damage, float angle, float startTime)
+HomingBullet::HomingBullet(D3DXVECTOR2 pos, Unit* target, BulletType type, std::wstring team, float damage, float angle, float startTime, float speed)
 	: CBullet(pos, target, team, damage)
 {
 	this->pos = pos;
 	this->type = type;
 
-	speed = 300;
+	this->speed = speed;
 
 	this->startTime = startTime;
 	turnSpeed = D3DXToRadian(10);
@@ -26,6 +26,8 @@ HomingBullet::HomingBullet(D3DXVECTOR2 pos, Unit* target, BulletType type, std::
 			spr.LoadAll(L"Assets/Sprites/Bullet/PlayerMissile", 0.05f);
 		else if(team == L"enemy")
 			spr.LoadAll(L"Assets/Sprites/Bullet/EnemyMissile", 0.05f);
+
+		turnSpeed = D3DXToRadian(20);
 
 		layer = 6;
 	}
