@@ -100,9 +100,10 @@ void CEnemy::Hit(float damage)
 		if (type == EnemyType::FloatingEnemy)
 		{
 			SoundManager::GetInstance().Play(L"explo");
+			nowScene->AddScore(nowScene->GetRandomNumber(1000, 2000));
 			nowScene->obm.AddObject(new Effect(L"onexplode", pos, D3DXVECTOR2(0.4, 0.4), D3DXVECTOR2(0.5, 0.5), 1, true, 0.05f));
 
-			GetNowSprite().LoadAll(L"Assets/Sprites/enemy/type1/sink/" + std::to_wstring(renderNum), 0.05f, false);
+			GetNowSprite().LoadAll(L"Assets/Sprites/enemy/type1/sink/" + std::to_wstring(renderNum), 0.03f, false);
 			GetNowSprite().Reset();
 		}
 

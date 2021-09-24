@@ -28,7 +28,7 @@ Player::Player()
 
 	blinkShader = new BlinkShader();
 
-	limitPos = { 1500, 600 };
+	limitPos = { 2000, 600 };
 }
 
 void Player::Update(float deltaTime)
@@ -54,9 +54,6 @@ void Player::Update(float deltaTime)
 		return;
 	}
 
-	if (fallowCamera)
-		CameraControll();
-
 	if (!stop)
 	{
 		Move(deltaTime);
@@ -65,6 +62,11 @@ void Player::Update(float deltaTime)
 		FirstSkillControll(deltaTime);
 		SecondSkillControll(deltaTime);
 	}
+
+	TargetUpdate(deltaTime);
+
+	if (fallowCamera)
+		CameraControll();
 
 	if (!nowScene->stageStart)
 		pos.y += 50 * Game::GetInstance().unscaleTime;
@@ -152,7 +154,7 @@ bool Player::Move(float deltaTime)
 
 	if (Input::GetInstance().KeyPress(VK_RIGHT))
 	{
-		curRotate += deltaTime * 200;
+		curRotate += deltaTime * 50 * speedLevel;
 	}
 
 	if (Input::GetInstance().KeyUp(VK_RIGHT))
@@ -160,7 +162,7 @@ bool Player::Move(float deltaTime)
 
 	if (Input::GetInstance().KeyPress(VK_LEFT))
 	{
-		curRotate -= deltaTime * 200;
+		curRotate -= deltaTime * 50 * speedLevel;
 	}
 
 	if (Input::GetInstance().KeyUp(VK_LEFT))
@@ -188,7 +190,7 @@ bool Player::Move(float deltaTime)
 	/*if (pos.x < -1000)
 		curRotate += (360 - curRotate) * 0.1f;*/
 
-	destSpeed = speedLevel * ((speedUp) ? 200.0f : 100.0f);
+	destSpeed = speedLevel * ((speedUp) ? 150.0f : 75.0f);
 	if (speedDown) destSpeed *= 0.5f;
 	ability.speed += std::ceil(destSpeed - ability.speed) * 0.1f;
 
@@ -232,11 +234,12 @@ void Player::Hit(float damage)
 	if (hit) return;
 	if (god || invincible) return;
 
-	Camera::GetInstance().cameraQuaken = { 15, 15 };
+	Camera::GetInstance().cameraQuaken = { 20, 20};
 	hit = true;
 	blink = true;
 	this->ability.hp -= damage;
-	nowScene->msgBox->SpawnMsgBox(L"Hit.png");
+	nowScene->msgBox->SpawnMsgBox(L"Hit");
+	nowScene->obm.AddObject(new Effect(L"ouch.png", D3DXVECTOR2(0, 0), D3DXVECTOR2(1, 1), D3DXVECTOR2(0.5, 0.5), 2, false, 1.0f));
 
 	if (ability.hp <= 0)
 	{
@@ -244,6 +247,10 @@ void Player::Hit(float damage)
 		GetNowSprite().Reset();
 
 		nowScene->stopTime = true;
+
+		Camera::GetInstance().destCameraPos = { pos.x, pos.y };
+		Camera::GetInstance().destDivideProj = 1.5f;
+
 		Game::GetInstance().timeScale = 0.2f;
 
 		bCollider = false;
@@ -278,6 +285,7 @@ void Player::Blink(float deltaTime)
 void Player::SetTarget(EnemyType enemyType)
 {
 	float minLength = INT_MAX;
+
 	target = NULL;
 
 	if (nowScene->enemyManager.allEnemys.size() <= 0)
@@ -287,8 +295,8 @@ void Player::SetTarget(EnemyType enemyType)
 	{
 		for (auto& enemy : nowScene->enemyManager.allEnemys)
 		{
-			if (enemy->ability.hp <= 0)
-				continue;
+			if (enemy->ability.hp <= 0) continue;
+			if (!CameraInCheck(enemy->pos)) continue;
 
 			D3DXVECTOR2 distance = enemy->pos - pos;
 			float length = D3DXVec2Length(&distance);
@@ -305,8 +313,8 @@ void Player::SetTarget(EnemyType enemyType)
 	{
 		for (auto& enemy : nowScene->enemyManager.floatingEnemys)
 		{
-			if (enemy->ability.hp <= 0)
-				continue;
+			if (enemy->ability.hp <= 0) continue;
+			if (!CameraInCheck(enemy->pos)) continue;
 
 			D3DXVECTOR2 distance = enemy->pos - pos;
 			float length = D3DXVec2Length(&distance);
@@ -324,6 +332,7 @@ void Player::SetTarget(EnemyType enemyType)
 		for (auto& enemy : nowScene->enemyManager.flyingEnemys)
 		{
 			if (enemy->ability.hp <= 0) continue;
+			if (!CameraInCheck(enemy->pos)) continue;
 
 			D3DXVECTOR2 distance = enemy->pos - pos;
 			float length = D3DXVec2Length(&distance);
@@ -335,6 +344,45 @@ void Player::SetTarget(EnemyType enemyType)
 			}
 		}
 	}
+
+	if (target)
+	{
+		targetRestTime = 0.75f;
+
+		if (prevTarget != target)
+		{
+			prevTarget = target;
+			nowScene->obm.AddObject(new Effect(L"Sniper", &target->pos, D3DXVECTOR2(1, 1), D3DXVECTOR2(0.5, 0.5), 0.1f));
+		}
+	}
+
+}
+
+void Player::TargetUpdate(float deltaTime)
+{
+	if (target)
+	{
+		targetRestTime -= deltaTime;
+
+		if (target->pos.x > pos.x + 960 || target->pos.x < pos.x - 960 || target->destroy)
+		{
+			prevTarget = target;
+			target = NULL;
+		}
+
+		if (targetRestTime <= 0.0f)
+			target = NULL;
+
+	}
+}
+
+bool Player::CameraInCheck(D3DXVECTOR2 pos)
+{
+	if (pos.x < Camera::GetInstance().cameraPos.x + 960 && pos.x > Camera::GetInstance().cameraPos.x - 960 &&
+		pos.y < Camera::GetInstance().cameraPos.y + 540 && pos.y > Camera::GetInstance().cameraPos.y - 540)
+		return true;
+
+	return false;
 }
 
 void Player::SetItemEffective(int index)
@@ -479,8 +527,19 @@ void Player::SecondSkillControll(float deltaTime)
 
 void Player::CameraControll()
 {
-	if (pos.x > -960 && pos.x < 960)
-		Camera::GetInstance().destCameraPos.x = pos.x;
+	if (target)
+	{
+		Camera::GetInstance().destCameraPos.x = target->pos.x;
+	}
+	else
+	{
+		if (pos.x > 960)
+			Camera::GetInstance().destCameraPos.x = 959;
+		else if(pos.x < -960)
+			Camera::GetInstance().destCameraPos.x = -959;
+		else if(pos.x > -960 && pos.x < 960)
+			Camera::GetInstance().destCameraPos.x = pos.x;
+	}
 
 	Camera::GetInstance().destCameraPos.y = pos.y + 200;
 }

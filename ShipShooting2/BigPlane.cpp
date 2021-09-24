@@ -18,13 +18,12 @@ BigPlane::BigPlane(D3DXVECTOR2 pos) : FlyingEnemy(pos)
     Resize(8);
     for(int i = 0; i < 8; ++i)
         GetSprite(i).LoadAll(L"Assets/Sprites/enemy/typeboss2/" + std::to_wstring(i), 0.05f, false);
+    SetAni(4);
 
 
     bodies.clear();
 
-	ability.SetAbility(1000, 100);
-
-    renderNum = 4;
+	ability.SetAbility(400, 100);
 
     attackTimer = 0.0f;
     attackTime = 0.0f;
@@ -41,6 +40,15 @@ void BigPlane::Update(float deltaTime)
 
     if (setAirPos)
         pos.y = airPos;
+
+    itemTimer += deltaTime;
+
+    if (itemTimer >= 10.0f)
+    {
+        nowScene->obm.AddObject(new Item(target->pos + nowScene->GetRandomVector(-100, 100, -100, 100), 2));
+        itemTimer = 0.0f;
+    }
+
 
     UpdatePattern(deltaTime);
 
@@ -100,7 +108,7 @@ void BigPlane::Hit(float damage)
 
 void BigPlane::ChoosePattern()
 {
-    pattern = 3;
+    pattern = nowScene->GetRandomNumber(1, 3);
     shootInterval = 0.0f;
 
     if (pattern == 1)
@@ -197,6 +205,7 @@ bool BigPlane::Outro(float deltaTime)
         {
             if (effectTimer >= effectTime)
             {
+                SoundManager::GetInstance().Play(L"explo");
                 nowScene->obm.AddObject(new Effect(L"onexplode", pos + nowScene->GetRandomVector(-500, 500, -300, 300), D3DXVECTOR2(0.5, 0.5), D3DXVECTOR2(0.5, 0.5), 1, true, 0.05f));
 
                 effectTime -= 0.05f;

@@ -276,6 +276,9 @@
     <ClCompile Include="LoadSprite.cpp" />
     <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="AttackCollider.cpp" />
+    <ClCompile Include="NavalgunBullet.cpp">
+      <Filter>Object\Bullet</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Texture.h">
@@ -433,6 +436,9 @@
     <ClInclude Include="LoadSprite.h" />
     <ClInclude Include="SoundManager.h" />
     <ClInclude Include="AttackCollider.h" />
+    <ClInclude Include="NavalgunBullet.h">
+      <Filter>Object\Bullet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CLInclude Include="resource.h">

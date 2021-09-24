@@ -5,6 +5,7 @@ public:
 	enum class BulletType
 	{
 		Machinegun,
+		Navalgun,
 		Cannon,
 		Torpedo,
 		Missile

@@ -64,7 +64,7 @@ void Scene::LoadAll()
 	// Player
 	SoundManager::GetInstance().Create(L"machinegun", L"Assets/Sound/Player/gun.mp3", 5);
 	SoundManager::GetInstance().Create(L"navalgun", L"Assets/Sound/Player/navalgun.mp3", 5);
-	SoundManager::GetInstance().SetVolume(L"navalgun", 300);
+	SoundManager::GetInstance().SetVolume(L"navalgun", 200);
 	SoundManager::GetInstance().Create(L"missile", L"Assets/Sound/Player/missile.mp3", 5);
 	SoundManager::GetInstance().Create(L"airVoi", L"Assets/Sound/Player/airStart.mp3", 5);
 	SoundManager::GetInstance().Create(L"airMove", L"Assets/Sound/Player/airMove.mp3", 5);
@@ -73,6 +73,11 @@ void Scene::LoadAll()
 	// Effect
 	SoundManager::GetInstance().Create(L"item", L"Assets/Sound/Effect/Item.mp3", 1);
 	SoundManager::GetInstance().Create(L"reload", L"Assets/Sound/Effect/reload.mp3", 1);
+	SoundManager::GetInstance().Create(L"msg1", L"Assets/Sound/Effect/msg.mp3", 1);
+	SoundManager::GetInstance().Create(L"msg2", L"Assets/Sound/Effect/msg2.mp3", 1);
+	SoundManager::GetInstance().Create(L"msg3", L"Assets/Sound/Effect/msg3.mp3", 1);
+	SoundManager::GetInstance().Create(L"skillMsg", L"Assets/Sound/Effect/skillMsg.mp3", 1);
+	SoundManager::GetInstance().Create(L"start", L"Assets/Sound/Effect/start.mp3", 1);
 }
 
 void Scene::AddScore(int score)

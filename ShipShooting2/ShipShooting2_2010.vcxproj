@@ -420,6 +420,7 @@
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="MiniMap.cpp" />
     <ClCompile Include="MsgBox.cpp" />
+    <ClCompile Include="NavalgunBullet.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="Obstacle.cpp" />
     <ClCompile Include="ObstacleManager.cpp" />
@@ -473,6 +474,7 @@
     <ClInclude Include="Map.h" />
     <ClInclude Include="MiniMap.h" />
     <ClInclude Include="MsgBox.h" />
+    <ClInclude Include="NavalgunBullet.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="Obstacle.h" />
     <ClInclude Include="ObstacleManager.h" />

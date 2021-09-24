@@ -12,7 +12,7 @@ struct CUSTOMVERTEX
 class Game : public Singleton<Game>
 {
 public:
-	bool pause = true;
+	bool pause = false;
 
 	float timeScale = 1.0f;
 	float unscaleTime = 0.0f;

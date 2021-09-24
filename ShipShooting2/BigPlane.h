@@ -15,6 +15,8 @@ public:
 	float effectTime = 0.0f;
 	float effectTimer = 0.0f;
 
+	float itemTimer = 0.0f;
+
 
 	int effectAmount = 0;
 

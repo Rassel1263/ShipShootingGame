@@ -9,9 +9,10 @@ Effect::Effect(std::wstring eftName, D3DXVECTOR2 pos, D3DXVECTOR2 scale, D3DXVEC
 	ri.scale = scale;
 	ri.pivot = pivot;
 	spr.bCamera = bCamera;
+	this->bCamera = bCamera;
 
 	this->index = index;
-	
+
 	spr.LoadAll(filePath, 0.05f, false);
 	ri.rotate = rotate;
 
@@ -28,10 +29,34 @@ Effect::Effect(std::wstring eftName, D3DXVECTOR2 pos, D3DXVECTOR2 scale, D3DXVEC
 	layer = 10;
 }
 
+Effect::Effect(std::wstring eftName, D3DXVECTOR2* pos, D3DXVECTOR2 scale, D3DXVECTOR2 pivot, float aniTime, float rotate, std::function<void()> func)
+{
+	std::wstring filePath = L"Assets/Sprites/effect/" + eftName;
+
+	this->pos = *pos;
+	this->fallowPos = pos;
+	ri.scale = scale;
+	ri.pivot = pivot;
+
+	this->index = index;
+
+	spr.LoadAll(filePath, aniTime, false);
+	ri.rotate = rotate;
+
+	this->func = func;
+
+	layer = 10;
+
+	this->index = 1;
+}
+
 void Effect::Update(float deltaTime)
 {
 	if (index == 1)
 	{
+		if (fallowPos)
+			pos = *fallowPos;
+
 		if (!spr.bAnimation)
 		{
 			if (func) func();

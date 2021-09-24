@@ -8,10 +8,17 @@ Item::Item(D3DXVECTOR2 pos, int index)
 	spr.LoadAll(L"Assets/Sprites/Item/" + std::to_wstring(index));
 
 	CreateCollider(D3DXVECTOR2(-30, -30), D3DXVECTOR2(30, 30), L"item");
+
+	timer = 5.0f;
 }
 
 void Item::Update(float deltaTime)
 {
+	timer -= deltaTime;
+
+	if (timer <= 0.0)
+		destroy = true;
+
 	spr.Update(deltaTime);
 }
 

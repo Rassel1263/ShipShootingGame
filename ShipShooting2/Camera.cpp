@@ -16,8 +16,7 @@ void Camera::Init()
 
 void Camera::Update()
 {
-
-	D3DXVec2Lerp(&cameraPos, &cameraPos, &destCameraPos, 0.1f);
+	D3DXVec2Lerp(&cameraPos, &cameraPos, &destCameraPos, 0.05f);
 	D3DXVec2Lerp(&cameraScale, &cameraScale, &destCameraScale, 0.1f);
 	D3DXVec2Lerp(&cameraQuaken, &cameraQuaken, &destCameraQuaken, 0.1f);
 

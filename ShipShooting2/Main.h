@@ -4,6 +4,8 @@ class Main : public Object
 public:
 	Sprite fadeSpr;
 
+	int fadeIndex = 0;
+
 	bool fade = false;
 	std::vector<Sprite> ui;
 

@@ -6,6 +6,8 @@ public:
 	Sprite spr;
 	RenderInfo ri;
 
+	Unit* prevTarget = NULL;
+
 	std::vector<CWeapon*> weapons;
 
 	float forwardAngle = 0.0f;
@@ -22,6 +24,8 @@ public:
 	int kills = 0;
 	bool fallowCamera = true;
 	bool stop = true;
+	
+	float targetRestTime = 0.0f;
 
 	// æ∆¿Ã≈€
 	bool speedUp = false;
@@ -62,6 +66,8 @@ public:
 
 	void Blink(float deltaTime);
 	void SetTarget(EnemyType enemyType);
+	void TargetUpdate(float deltaTime);
+	bool CameraInCheck(D3DXVECTOR2 pos);
 	void SetItemEffective(int index);
 	void UpdateItemEffect(float deltaTime);
 	void FirstSkillControll(float deltaTime);

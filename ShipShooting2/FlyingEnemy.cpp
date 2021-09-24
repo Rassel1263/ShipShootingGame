@@ -5,7 +5,7 @@ FlyingEnemy::FlyingEnemy(D3DXVECTOR2 pos) : CEnemy(pos)
 {
 	type = EnemyType::FlyingEnemy;
 	airPos = pos.y;
-	ability.SetAbility(100, 500);
+	ability.SetAbility(30, 500);
 	attackTime = 3.0f;
 	attackTimer = 3.0f;
 
@@ -16,6 +16,7 @@ FlyingEnemy::FlyingEnemy(D3DXVECTOR2 pos) : CEnemy(pos)
 
 	//GetSprite(i).LoadAll(L"aa" + std::to_wstring(i));
 
+	SetAni(-nowScene->GetAngleFromTarget(pos, target->pos) + 450);
 	CreateCollider(D3DXVECTOR2(-50, -50), D3DXVECTOR2(50, 50), L"enemy");
 
 	shadow = new ColorShader();
@@ -94,7 +95,7 @@ void FlyingEnemy::Attack(float deltaTime)
 {
 	D3DXVECTOR2 distance = nowScene->player->pos - pos;
 
-	if (D3DXVec2Length(&distance) <= 400)
+	if (D3DXVec2Length(&distance) <= 500)
 	{
 		if (attackTimer >= attackTime)
 		{

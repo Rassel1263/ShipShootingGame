@@ -17,7 +17,7 @@ void GameScene::Init()
 
 	obstacleManager.Init(300, 1000);
 
-	enemyManager.SetSpawnTime(4.0f, 10.0f);
+	enemyManager.SetSpawnTime(4.0f, 7.0f);
 
 	nowScene->obm.AddObject(new Font(L"kk", minute, D3DXVECTOR2(-100, 465), D3DXVECTOR2(1, 1), 30.0f, 1, 0));
 	nowScene->obm.AddObject(new Font(L"kk", second, D3DXVECTOR2(0, 465), D3DXVECTOR2(1, 1), 30.0f, 1, 0));
@@ -36,7 +36,7 @@ void GameScene::Update(float deltaTime)
 
 	if (player->moveDistance >= destination && !spawnBoss)
 	{
-		nowScene->enemyManager.SpawnEnemy(D3DXVECTOR2(0, 19000), EnemyType::BigShip);
+		nowScene->enemyManager.SpawnEnemy(D3DXVECTOR2(nowScene->player->pos.x, nowScene->player->pos.y + 500), EnemyType::BigShip);
 		player->moveDistance = destination;
 	}
 

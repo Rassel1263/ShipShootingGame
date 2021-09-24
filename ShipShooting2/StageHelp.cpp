@@ -15,6 +15,7 @@ StageHelp::StageHelp(int index)
 	complete.color.a = 0.0f;
 	complete.bCamera = false;
 	
+	SoundManager::GetInstance().Play(L"start");
 
 	this->index = index;
 }

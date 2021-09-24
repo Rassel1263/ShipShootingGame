@@ -10,6 +10,8 @@ public:
 	float attackSpeed = 0.0f;
 	float shootInterval = 0.0f;
 
+	float itemTimer = 0.0f;
+
 	float outroTime = 0.0f;
 	float effectTime = 0.0f;
 	float effectTimer = 0.0f;

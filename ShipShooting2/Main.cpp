@@ -10,7 +10,8 @@ Main::Main()
 	
 	std::wstring filePath = L"Assets/Sprites/ui/outgame/Menu/";
 	fadeSpr.LoadAll(L"Assets/Sprites/black.png");
-	fadeSpr.color.a = 0.0f;
+
+	fade = false;
 
 	ui[0].LoadAll(filePath + L"background");
 	ui[1].LoadAll(filePath + L"deco.png");
@@ -21,10 +22,34 @@ Main::Main()
 	ui[6].LoadAll(filePath + L"gameexit.png");
 	ui[7].LoadAll(filePath + L"menuselect.png");
 
+	for (int i = 1; i < 8; ++i)
+		ui[i].color.a = 0.0f;
+
 }
 
 void Main::Update(float deltaTime)
 {
+	if (fade)
+	{
+		fadeSpr.color.a += deltaTime;
+
+		if (fadeSpr.color.a >= 1.0f)
+		{
+			if (cNum == 0)
+				Game::GetInstance().ChangeScene(new GameScene());
+			else
+				PostQuitMessage(0);
+		}
+	}
+	else
+	{
+		if (fadeSpr.color.a > 0.0f)
+		{
+			fadeSpr.color.a -= deltaTime;
+			return;
+		}
+	}
+
 	ChoiceBtn();
 
 	if(alpha < 1.0f)
@@ -56,21 +81,6 @@ void Main::Update(float deltaTime)
 			break;
 		}
 	}
-
-
-	if (fade)
-	{
-		fadeSpr.color.a += deltaTime;
-
-		if (fadeSpr.color.a >= 1.0f)
-		{
-			if (cNum == 0)
-				Game::GetInstance().ChangeScene(new GameScene());
-			else
-				PostQuitMessage(0);
-		}
-	}
-
 
 	ui[0].Update(deltaTime);
 }

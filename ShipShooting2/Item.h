@@ -5,6 +5,8 @@ public:
 	Sprite spr;
 	RenderInfo ri;
 
+	float timer = 0.0f;
+
 	int index = 0;
 
 	Item(D3DXVECTOR2 pos, int index);

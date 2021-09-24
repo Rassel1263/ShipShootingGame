@@ -16,6 +16,7 @@ BigShip::BigShip(D3DXVECTOR2 pos) : FloatingEnemy(pos)
     Resize(2);
     GetSprite(0).LoadAll(L"Assets/Sprites/enemy/typeboss1/enter", 0.05f, false);
     GetSprite(1).LoadAll(L"Assets/Sprites/enemy/typeboss1/move", 0.05f, true);
+    SetAni(0);
 
     sGun.resize(24);
 
@@ -46,7 +47,7 @@ BigShip::BigShip(D3DXVECTOR2 pos) : FloatingEnemy(pos)
 
     bodies.clear();
 
-    ability.SetAbility(500, 100);
+    ability.SetAbility(250, 100);
 
     attackTimer = 0.0f;
     attackTime = 0.0f;
@@ -60,12 +61,20 @@ void BigShip::Update(float deltaTime)
 {
     if (Intro(deltaTime)) return;
     if (Outro(deltaTime)) return;
+    
+    itemTimer += deltaTime;
+
+    if (itemTimer >= 10.0f)
+    {
+        nowScene->obm.AddObject(new Item(target->pos + nowScene->GetRandomVector(-100, 100, -100, 100), 1));
+        itemTimer = 0.0f;
+    }
 
     UpdatePattern(deltaTime);
 
     for (int i = 0; i < 12; ++i)
     {
-        if(i < 2)
+        if (i < 2)
             SetWeaponRotate(bGunInfo[i], -nowScene->GetAngleFromTarget(bGunInfo[i].ri.pos, target->pos) + 450);
 
         SetWeaponRotate(sGunInfo[i], -nowScene->GetAngleFromTarget(sGunInfo[i].ri.pos, target->pos) + 450);
@@ -107,7 +116,7 @@ void BigShip::ChoosePattern()
     if (pattern == 1)
     {
         attackTime = 2.4f;
-        attackSpeed = 0.2f;
+        attackSpeed = 0.1f;
     }
     else if (pattern == 2)
     {
@@ -174,7 +183,7 @@ bool BigShip::Intro(float deltaTime)
         GetNowSprite().Reset();
         SetAni(1);
         intro = false;
-        CreateCollider(D3DXVECTOR2(-500, -500), D3DXVECTOR2(500, 500), L"enemy");
+        CreateCollider(D3DXVECTOR2(-500, -150), D3DXVECTOR2(500, 150), L"enemy");
     }
 
     GetNowSprite().Update(deltaTime);
@@ -202,6 +211,14 @@ bool BigShip::Outro(float deltaTime)
 
             GetNowSprite().color.a -= deltaTime;
 
+            for (auto& spr : bGun)
+                spr.color.a = GetNowSprite().color.a;
+            for (auto& spr : sGun)
+                spr.color.a = GetNowSprite().color.a;
+
+            fire.color.a = GetNowSprite().color.a;
+            smoke.color.a = GetNowSprite().color.a;
+
             if (GetNowSprite().color.a <= 0.0f)
             {
                 nowScene->player->stop = false;
@@ -215,6 +232,7 @@ bool BigShip::Outro(float deltaTime)
         {
             if (effectTimer >= effectTime)
             {
+                SoundManager::GetInstance().Play(L"explo");
                 nowScene->obm.AddObject(new Effect(L"onexplode", pos + nowScene->GetRandomVector(-500, 500, -300, 300), D3DXVECTOR2(0.5, 0.5), D3DXVECTOR2(0.5, 0.5), 1, true, 0.05f));
 
                 effectTime -= 0.05f;
@@ -243,7 +261,8 @@ bool BigShip::Pattern1(float deltaTime)
 
         nowScene->obm.AddObject(new MachinegunBullet(fixPos, target, L"enemy", 5, 1000));
 
-        gunIndex++;
+        if(++gunIndex > 11)
+            gunIndex = 0;
     }
 
     if (attackTimer >= attackTime)
@@ -259,9 +278,10 @@ bool BigShip::Pattern2(float deltaTime)
 
     if (shootInterval >= attackSpeed)
     {
-        D3DXVECTOR2 targetPos = target->pos;
+        D3DXVECTOR2 targetPos = target->pos + nowScene->GetRandomVector(-100, 100, -100, 100);
         auto lambda = [=] 
         {
+            Camera::GetInstance().cameraQuaken = { 15, 15 };
             nowScene->obm.AddObject(new Effect(L"onexplode", targetPos, D3DXVECTOR2(0.3, 0.3), D3DXVECTOR2(0.5, 0.5), 1, true, 0.05f));
             nowScene->obm.AddObject(new AttackCollider(targetPos, D3DXVECTOR2(-50, -50), D3DXVECTOR2(50, 50), 20, 0.1f));  
         };
@@ -282,8 +302,9 @@ bool BigShip::Pattern3(float deltaTime)
 
     if (shootInterval >= attackSpeed)
     {
+        Camera::GetInstance().cameraQuaken = { 7, 7 };
         D3DXVECTOR2 fixPos = pos + D3DXVECTOR2(nowScene->GetRandomNumber(-400, 400), 0);
-        nowScene->obm.AddObject(new HomingBullet(pos, target, CBullet::BulletType::Torpedo, L"enemy", 15, nowScene->GetRandomNumber(0, 360), 0.0f));
+        nowScene->obm.AddObject(new HomingBullet(pos, target, CBullet::BulletType::Torpedo, L"enemy", 15, nowScene->GetRandomNumber(0, 360), 0.0f, 600));
 
         shootInterval = 0.0f;
     }

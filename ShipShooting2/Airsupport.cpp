@@ -14,7 +14,7 @@ Airsupport::Airsupport(float x)
 void Airsupport::Update(float deltaTime)
 {
 	timer += deltaTime;
-	if (timer < 2.0f) return;
+	if (timer < 1.0f) return;
 
 	
 

@@ -52,6 +52,10 @@ PlayerUI::PlayerUI(Player* player)
 void PlayerUI::Update(float deltaTime)
 {
 	hp.heightRatio = 1 - player->ability.hp / player->ability.maxHp;
+
+	speedUp.heightRatio = hp.heightRatio;
+	invincible.heightRatio = hp.heightRatio;
+
 	speedUp.widthRatio = player->speedUpTime / 5.0f;
 	invincible.widthRatio = player->invincibleTime / 2.0f;
 

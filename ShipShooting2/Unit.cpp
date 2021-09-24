@@ -5,6 +5,9 @@ Unit::Unit()
 {
     colorShader = new ColorShader();
 
+    smoke.LoadAll(L"Assets/Sprites/effect/onsmoke", 0.05f);
+    fire.LoadAll(L"Assets/Sprites/effect/onfire", 0.05f);
+
     layer = 5;
 }
 
@@ -21,6 +24,9 @@ void Unit::Update(float deltaTime)
         }
     }
 
+
+    fire.Update(deltaTime);
+    smoke.Update(deltaTime);
     GetNowSprite().Update(deltaTime);
 }
 
@@ -33,6 +39,7 @@ void Unit::Render()
     else
         GetNowSprite().Render(ri);
 
+    HpEffectRender();
     Object::Render();
 }
 
@@ -65,6 +72,16 @@ void Unit::SetAni(float rotate, bool bigPlane)
         fixRotateScene = (int)((rotate / 45)) % 8;
 
     renderNum = (abs(fixRotateScene));
+}
+
+void Unit::HpEffectRender()
+{
+    if (ability.hp / ability.maxHp <= 0.6f)
+        smoke.Render(RenderInfo{ pos, D3DXVECTOR2(1, 1), D3DXVECTOR2(0.5, 0.2) });
+
+    if (ability.hp / ability.maxHp <= 0.4f)
+        fire.Render(RenderInfo{ pos, D3DXVECTOR2(1, 1), D3DXVECTOR2(0.5, 0.2) });
+        
 }
 
 

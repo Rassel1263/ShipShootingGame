@@ -22,6 +22,7 @@ void GameScene2::Init()
 	nowScene->obm.AddObject(new Font(L"kk", minute, D3DXVECTOR2(-100, 465), D3DXVECTOR2(1, 1), 30.0f, 1, 0));
 	nowScene->obm.AddObject(new Font(L"kk", second, D3DXVECTOR2(0, 465), D3DXVECTOR2(1, 1), 30.0f, 1, 0));
 	nowScene->obm.AddObject(new Font(L"kk", miniSecond, D3DXVECTOR2(100, 465), D3DXVECTOR2(1, 1), 30.0f, 1, 0));
+	nowScene->obm.AddObject(new Font(L"kk", score, D3DXVECTOR2(850, 465), D3DXVECTOR2(1, 1), 30.0f, 3, 0));
 }
 
 void GameScene2::Update(float deltaTime)

@@ -6,14 +6,14 @@ FloatingEnemy::FloatingEnemy(D3DXVECTOR2 pos) : CEnemy(pos)
 	attackTime = 1.0f;
 
 	type = EnemyType::FloatingEnemy;
-	ability.SetAbility(50, 250);
+	ability.SetAbility(50, 200);
 
 	Resize(24);
 
 	for (int i = 0; i < 24; ++i)
 		GetSprite(i).LoadAll(L"Assets/Sprites/enemy/type1/move/" + std::to_wstring(i));
-	//GetSprite(i).LoadAll(L"aa"+ std::to_wstring(i));
 
+	SetAni(-nowScene->GetAngleFromTarget(pos, target->pos) + 450);
 	CreateCollider(D3DXVECTOR2(-50, -50), D3DXVECTOR2(50, 50), L"enemy");
 }
 
@@ -46,8 +46,10 @@ void FloatingEnemy::OnCollision(Collider& coli)
 
 	if (coli.tag == L"player")
 	{
+		if(type == EnemyType::FloatingEnemy)
+			Hit(ability.maxHp);
+
 		nowScene->player->Hit(20);
-		Destroy();
 	}
 
 	CEnemy::OnCollision(coli);
@@ -57,9 +59,8 @@ void FloatingEnemy::Destroy()
 {
 	if (!GetNowSprite().bAnimation)
 	{
-		nowScene->AddScore(nowScene->GetRandomNumber(1000, 2000));
 
-		if(nowScene->GetRandomNumber(0, 3))
+		if (nowScene->GetRandomNumber(0, 3))
 			nowScene->obm.AddObject(new Item(pos, nowScene->GetRandomNumber(0, 5)));
 		else
 			nowScene->obm.AddObject(new Obstacle(pos, Obstacle::ObstalceType::MINE));
@@ -78,7 +79,7 @@ void FloatingEnemy::Attack(float deltaTime)
 	{
 		D3DXVECTOR2 fixPos = pos + D3DXVECTOR2(cosf(curRadian), sinf(curRadian)) * 50;
 
-		nowScene->obm.AddObject(new HomingBullet(fixPos, target, CBullet::BulletType::Torpedo, L"enemy", 20, D3DXToDegree(-curRadian) + 90, 0.0f, 1000));
+		nowScene->obm.AddObject(new HomingBullet(fixPos, target, CBullet::BulletType::Torpedo, L"enemy", 10, D3DXToDegree(-curRadian) + 90, 0.0f, 700));
 		attackTimer = 0.0f;
 	}
 }

@@ -27,11 +27,11 @@ Obstacle::Obstacle(D3DXVECTOR2 pos, ObstalceType type)
 		spr.LoadAll(L"Assets/Sprites/Obstacle/rock/" + std::to_wstring(index) + L".png");
 
 		if(index == 0)
-			CreateCollider(D3DXVECTOR2(-200, -120), D3DXVECTOR2(200, 120), L"obstacle");
+			CreateCollider(D3DXVECTOR2(-200, -100), D3DXVECTOR2(200, 100), L"obstacle");
 		else if(index == 1)
-			CreateCollider(D3DXVECTOR2(-200, -150), D3DXVECTOR2(200, 150), L"obstacle");
+			CreateCollider(D3DXVECTOR2(-150, -120), D3DXVECTOR2(150, 120), L"obstacle");
 		else if (index == 2)
-			CreateCollider(D3DXVECTOR2(-200, -130), D3DXVECTOR2(200, 130), L"obstacle");
+			CreateCollider(D3DXVECTOR2(-190, -90), D3DXVECTOR2(190, 90), L"obstacle");
 		else if(index == 3)
 			CreateCollider(D3DXVECTOR2(-40, -30), D3DXVECTOR2(40, 30), L"obstacle");
 	}
@@ -55,6 +55,9 @@ void Obstacle::Update(float deltaTime)
 	//		hit = false;
 	//	}
 	//}
+
+	if (nowScene->spawnBoss)
+		destroy = true;
 
 	if (pos.y < Camera::GetInstance().cameraPos.y - 800)
 		destroy = true;

@@ -67,7 +67,6 @@ void StageFont::Update(float deltaTime)
 			{
 				Game::GetInstance().timeScale = 1.0f;
 				Game::GetInstance().ChangeScene(new MainScene());
-				destroy = true;
 			}
 		}
 	}

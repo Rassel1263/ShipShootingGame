@@ -36,6 +36,7 @@ void MsgBox::SpawnMsgBox(std::wstring message)
 {
 	if (msgInfo[0].spawnMsg) return;
 
+	SoundManager::GetInstance().Play(L"msg" + std::to_wstring(nowScene->GetRandomNumber(1, 3)));
 	msgInfo[0].spawnMsg = true;
 	msgBox[0].LoadAll(L"Assets/Sprites/ui/ingame/Message/" + message + L".png");
 	msgBox[0].color.a = 0.0f;
@@ -46,6 +47,7 @@ void MsgBox::SpawnMsgBox2(std::wstring message)
 {
 	if (msgInfo[1].spawnMsg) return;
 
+	SoundManager::GetInstance().Play(L"skillMsg");
 	msgInfo[1].spawnMsg = true;
 	msgBox[1].LoadAll(L"Assets/Sprites/ui/ingame/Message/" + message + L".png");
 	msgBox[1].color.a = 0.0f;

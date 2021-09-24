@@ -30,6 +30,8 @@ public:
 	Team team = Team::None;
 
 	std::vector<Sprite> sprites;
+	Sprite fire;
+	Sprite smoke;
 	RenderInfo ri;
 
 	bool hit = false;
@@ -46,7 +48,6 @@ public:
 
 	// ±ôºýÀÓ
 
-
 	Unit();
 
 	virtual void Update(float deltaTime) override;
@@ -56,6 +57,8 @@ public:
 	virtual void Hit(float damage);
 
 	void SetAni(float rotate, bool bigPlane = false);
+	void HpEffectRender();
+
 
 	Sprite& GetNowSprite();
 

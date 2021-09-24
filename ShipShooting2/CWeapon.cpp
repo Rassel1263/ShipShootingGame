@@ -56,6 +56,7 @@ void MachineGun::Shoot()
 	{
 		if (shootTimer >= shootInterval)
 		{
+			Camera::GetInstance().cameraQuaken = { 2, 2 };
 			SoundManager::GetInstance().Play(L"machinegun");
 
 			shootTimer = 0.0f;
@@ -64,7 +65,7 @@ void MachineGun::Shoot()
 				bulletAmount--;
 
 			nowScene->obm.AddObject(new Effect(L"shoot_machinegun/", owner->pos, D3DXVECTOR2(1, 1), D3DXVECTOR2(0.5f, 0.5f), 1, true, 0.05f));
-			nowScene->obm.AddObject(new MachinegunBullet(owner->pos, owner->target, L"ally", 10, 1500));
+			nowScene->obm.AddObject(new MachinegunBullet(owner->pos, owner->target, L"ally", damage, 2000));
 		}
 	}
 	else
@@ -115,7 +116,7 @@ void NavalGun::Shoot()
 		if (shootTimer >= shootInterval)
 		{
 			SoundManager::GetInstance().Play(L"navalgun");
-			Camera::GetInstance().cameraQuaken = { 5, 5 };
+			Camera::GetInstance().cameraQuaken = { 10, 10 };
 			shootTimer = 0.0f;
 			bulletAmount--;
 
@@ -156,7 +157,7 @@ void TorpedoLauncher::Shoot()
 			shootTimer = 0.0f;
 
 			nowScene->obm.AddObject(new HomingBullet(owner->pos, owner->target, CBullet::BulletType::Torpedo, L"ally", damage,
-				owner->curRotate, 0.2f, 700));
+				owner->curRotate, 0.1f, 800));
 		}
 	}
 	else
